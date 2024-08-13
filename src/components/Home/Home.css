@@ -1,0 +1,100 @@
+.home-container {
+  background-image: url('/public/image/pp 1 (4).svg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: white;
+  height: 100vh;
+  width: 100vw;
+  font-family: Arial, sans-serif;
+  position: relative;
+
+}
+
+.home-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(10, 7, 7, 0.151); /* เพิ่ม overlay เพื่อให้ข้อความอ่านง่ายขึ้น */
+  z-index: 1;
+}
+
+.home-container > * {
+  position: relative;
+  z-index: 2;
+}
+
+.home-container-container {
+  color: rgb(255, 241, 241);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+}
+
+nav ul li {
+  margin-left: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* ใช้ความสูงเต็มหน้าจอ */
+  text-align: center;
+  padding: 0 20px;
+}
+
+h1 {
+  font-size: 2.5vw;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 3.5vw;
+  margin-bottom: 50px;
+}
+
+button {
+  background-color: #ecf0f1;
+  border: none;
+  padding: 25px 50px;
+  font-size: 1vw;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  border-radius: 15px;
+}
+
+button:hover {
+  background-color: #bdc3c7;
+  transform: scale(1.05); /* เพิ่มเอฟเฟกต์เมื่อ hover */
+}

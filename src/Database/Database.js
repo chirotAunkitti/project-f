@@ -4,8 +4,8 @@ const mysql = require('mysql2');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root', // เปลี่ยนเป็น username ของคุณ
-  password: '12345', // เปลี่ยนเป็น password ของคุณ
-  database: 'project-f'
+  password: '', // เปลี่ยนเป็น password ของคุณ
+  database: 'project_f'
 });
 
 db.connect(err => {
@@ -17,3 +17,4 @@ db.connect(err => {
 });
 
 module.exports = db;
+ 

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import './Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
     const formData = {
-      email: email, // ใช้ค่าจาก useState
-      password: password, // ใช้ค่าจาก useState
+      email: email,
+      password: password,
     };
   
     try {
@@ -26,17 +26,28 @@ function Login() {
       if (response.ok) {
         const result = await response.json();
         console.log('Login successful:', result);
-        setMessage('ล็อกอินสำเร็จ');
-        // นำทางไปยังหน้าถัดไป
-        navigate('/home'); // แก้ไขตามหน้าที่ต้องการนำทางไป
+        Swal.fire({
+          icon: 'success',
+          title: 'success',
+          text: 'welcome!',
+        });
+        navigate('/home');
       } else {
         const error = await response.json();
         console.error('Login error:', error);
-        setMessage(error.message); // แสดงข้อความข้อผิดพลาด
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: error.message || 'An error occurred logging in',
+        });
       }
     } catch (error) {
       console.error('Fetch error:', error);
-      setMessage('เกิดข้อผิดพลาดในการล็อกอิน');
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: 'An error occurred logging in.',
+      });
     }
   };
   
@@ -49,7 +60,6 @@ function Login() {
       <div className="image-container"></div>
       <div className="form-container">
         <h2>User Login</h2>
-        {message && <div className="error-message">{message}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <input

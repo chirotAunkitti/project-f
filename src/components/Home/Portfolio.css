@@ -1,0 +1,106 @@
+.portfolio {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 0;
+  position: relative;
+}
+
+.portfolio h2 {
+  font-size: 36px;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+
+.portfolio-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px; /* ปรับ gap ระหว่างรูปภาพ */
+}
+
+.portfolio-item {
+  flex: 0 1 calc(33.333% - 40px); /* 33.333% - 40px เพื่อให้มีระยะห่างระหว่างรูปภาพ */
+  text-align: center;
+  margin-bottom: 20px; /* เพิ่มระยะห่างระหว่างแถว */
+  position: relative; /* ใช้ position: relative; เพื่อวางรูปบวกภายในองค์ประกอบ */
+  overflow: hidden; /* ซ่อนส่วนที่เกินออกไปจากขอบ */
+}
+
+/* สไตล์รูปภาพ */
+.portfolio-icon {
+  width: 100%;
+  max-width: 300px; /* ขนาดสูงสุดของรูปภาพ */
+  height: auto;
+  transition: filter 0.3s ease; /* ทำให้เอฟเฟกต์เปลี่ยนสีมีการเคลื่อนไหว */
+}
+
+/* สไตล์ชื่อสินค้า */
+.portfolio-name {
+  width: 100%; /* ทำให้ชื่อมีความกว้างเท่ากับรูปภาพ */
+  box-sizing: border-box; /* รวม padding เข้าไปในการคำนวณความกว้าง */
+  font-size: 1.2rem;
+  margin-top: 10px; /* เพิ่มระยะห่างระหว่างรูปภาพกับชื่อ */
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem; /* ปรับ padding เพื่อลดความกว้าง */
+  text-align: center;
+}
+
+/* เอฟเฟกต์เมื่อเมาส์ชี้ไปที่ภาพ */
+.portfolio-item:hover .portfolio-icon {
+  filter: brightness(0.8) sepia(1) hue-rotate(90deg); /* ปรับสีของภาพเมื่อเมาส์ชี้ */
+}
+
+.portfolio-item:hover .portfolio-name {
+  color: #000; /* เปลี่ยนสีข้อความเป็นสีดำเมื่อเมาส์ชี้ */
+}
+
+/* สร้างเอฟเฟกต์ที่มองเห็นได้ */
+.portfolio-item::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: rgba(255, 255, 255, 0.656); /* สีพื้นหลังที่มืดลง */
+  opacity: 0;
+  transition: opacity 0.3s ease; /* ทำให้เอฟเฟกต์การมองเห็นมีการเคลื่อนไหว */
+  pointer-events: none; /* ไม่ให้สีพื้นหลังตอบสนองการคลิก */
+}
+
+/* เปลี่ยนสีพื้นหลังของภาพเมื่อเมาส์ชี้ */
+.portfolio-item:hover::after {
+  opacity: 1;
+}
+
+/* สไตล์รูปบวก */
+.portfolio-item .plus-icon {
+  position: absolute; /* วางรูปบวกแบบ absolute */
+  top: 42%; /* จัดตำแหน่งกลางแนวตั้ง */
+  left: 50%; /* จัดตำแหน่งกลางแนวนอน */
+  transform: translate(-60%, -50%); /* เคลื่อนย้ายตำแหน่งเพื่อให้แน่นอนที่กลาง */
+  font-size: 50px; /* ขนาดของรูปบวก */
+  color: rgba(254, 240, 240, 0.8); /* สีของรูปบวก */
+  opacity: 0; /* ซ่อนรูปบวกเริ่มต้น */
+  transition: opacity 0.3s ease; /* ทำให้การแสดงผลรูปบวกมีการเคลื่อนไหว */
+  pointer-events: none; /* ไม่ให้รูปบวกตอบสนองการคลิก */
+}
+
+/* แสดงรูปบวกเมื่อเมาส์ชี้ไปที่ภาพ */
+.portfolio-item:hover .plus-icon {
+  opacity: 1; /* ทำให้รูปบวกมองเห็นได้เมื่อเมาส์ชี้ไปที่ภาพ */
+}
+
+/* ปรับแต่งรูปร่างและขนาดของไอคอนบวก */
+.plus-icon::before {
+  content: "+";
+  font-size: 5rem; /* ขนาดของสัญลักษณ์บวก */
+  display: block;
+}

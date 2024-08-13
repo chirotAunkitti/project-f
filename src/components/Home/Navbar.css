@@ -1,0 +1,62 @@
+/* สไตล์ของ Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10001; /* ชั่วคราวเพื่อทดสอบ */
+  height: 60px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0, 0.982);
+}
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    transition: opacity 0.3s ease;
+  }
+  
+  .logo-hidden {
+    opacity: 0;
+  }
+  
+  nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav ul li {
+    margin-left: 20px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  nav ul li:hover {
+    color: #bdc3c7;
+  }
+  
+  nav ul li.active {
+    color: #f39c12; /* เปลี่ยนสีให้เป็นสีเหลืองเมื่อเป็น active */
+    text-shadow: 0 0 10px #f39c12; /* เพิ่มแสงออกมา */
+  }
+  
+  .order-link {
+    color: white; /* ตั้งค่าสีของตัวหนังสือเป็นสีขาว */
+    text-decoration: none; /* เอาเส้นใต้ลิงค์ออก */
+  }
+  
+  .order-link:hover {
+    text-decoration: underline; /* ทำให้ลิงค์มีเส้นใต้เมื่อวางเมาส์ */
+  }
+  
