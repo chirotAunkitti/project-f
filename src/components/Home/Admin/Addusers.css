@@ -1,0 +1,80 @@
+/* สำหรับหน้า Addusers */
+.addusers-container {
+    padding: 20px;
+    background-color: #e6e6fa; /* ใช้สีพื้นหลังเหมือนใน Editusers */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.addusers-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 10px;
+    align-items: center;
+}
+
+.addusers-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.addusers-form-group {
+    margin-bottom: 15px;
+}
+
+.addusers-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.addusers-form-group input {
+    width: 20%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.addusers-button {
+    padding: 10px 20px;
+    background-color: #4a4a7f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.addusers-button:hover {
+    background-color: #3a3a6f;
+}
+
+/* กำหนดลักษณะของลิงก์ภายในปุ่ม */
+.addusers-button a {
+    text-decoration: none; /* ไม่มีเส้นใต้ */
+    color: rgb(250, 233, 233); /* ตัวหนังสือสีดำ */
+}
+
+.addusers-button a:hover {
+    color: white; /* เปลี่ยนสีเมื่อ hover */
+}
+
+.addusers-back-button {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #4a4a7f;
+    padding: 10px;
+    color: white;
+}
+
+.addusers-back-link {
+    color: rgb(255, 254, 254);
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}

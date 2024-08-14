@@ -1,0 +1,78 @@
+
+
+/* สำหรับหน้า Editusers */
+.editusers-container {
+    padding: 20px;
+    background-color: #e6e6fa;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .editusers-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 10px;
+    align-items: center;
+  }
+  
+  .editusers-header h2 {
+    margin: 0;
+    color: #333;
+  }
+  
+  .editusers-form-group {
+    margin-bottom: 15px;
+  }
+  
+  .editusers-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .editusers-form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .editusers-button {
+    padding: 10px 20px;
+    background-color: #4a4a7f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .editusers-button:hover {
+    background-color: #3a3a6f;
+  }
+  /* กำหนดลักษณะของลิงก์ภายในปุ่ม */
+button a {
+    text-decoration: none; /* ไม่มีเส้นใต้ */
+    color: rgb(250, 233, 233); /* ตัวหนังสือสีดำ */
+  }
+  
+  button a:hover {
+    color: white; /* เปลี่ยนสีเมื่อ hover */
+  }
+  .back-button {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  .back-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+  

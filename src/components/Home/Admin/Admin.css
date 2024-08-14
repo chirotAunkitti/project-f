@@ -1,3 +1,4 @@
+/* สำหรับหน้า Admin */
 .admin-container {
     display: flex;
     height: 100vh;
@@ -5,9 +6,12 @@
   
   .sidebar {
     width: 200px;
-    background-color: #4a4a7f;
-    padding: 20px;
-  }
+    background-color: #4a4a7f; /* สีม่วงเข้ม */
+    padding: 20px;  
+    height: 300vh; /* ทำให้ความสูงของ Sidebar เต็มหน้าจอ */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* เงาเล็กน้อยเพื่อเน้น */
+
+}
   
   .sidebar-title {
     color: white;
@@ -48,4 +52,56 @@
   
   .header h2 {
     margin: 0;
+  }
+  
+  /* ตาราง */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #4a4a7f;
+    color: white;
+  }
+  
+  button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3a3a6f;
+    color: white;
+  }
+  
+
+  /* ปุ่ม Add Edit Delete */
+  .button-Add {
+    flex: 1;
+    background-color:#23dc3f;
+    padding: 20px;
+    color: white;
+  }
+  .button-Edit{
+    flex: 1;
+    background-color:#3a3a6f;
+    padding: 20px;
+    color: white;
+  }
+  .button-Delete{
+    flex: 1;
+    background-color:#d01d1d;
+    padding: 20px;
+    color: white;
   }
