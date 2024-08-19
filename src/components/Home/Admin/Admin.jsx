@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   deleteProduct,
+  deleteordercollars,
+  deletetags,
   deletecollars,
   deleteUser, // ฟังก์ชันใหม่สำหรับดึงข้อมูล smart_collars
   fetchAddressTags, // ฟังก์ชันใหม่สำหรับดึงข้อมูล address_tags
@@ -15,7 +17,6 @@ import "./Admin.css";
 function Admin() {
   const [currentPage, setCurrentPage] = useState("User Management");
   const [users, setUsers] = useState([]);
-  const [order1, setOrder1] = useState([]);
   const [products, setProducts] = useState([]); // State สำหรับสินค้า
   const [smartCollars, setSmartCollars] = useState([]); // State สำหรับ smart_collars
   const [addressTags, setAddressTags] = useState([]); // State สำหรับ address_tags
@@ -92,6 +93,18 @@ function Admin() {
     navigate(`/addusers`);
   };
 
+  const handleAddorder1Click = (userId) => {
+    navigate(`/addorder1`);
+  };
+
+  const handleAddorder2Click = (userId) => {
+    navigate(`/addorder2`);
+  };
+
+  const handleAddorder3Click = (userId) => {
+    navigate(`/addorder3`);
+  };
+
   const handleDeleteClick = async (userId) => {
     try {
       const response = await deleteUser(userId);
@@ -112,6 +125,28 @@ function Admin() {
       alert("Smart collar deleted successfully!");
       // Refresh the smart collars list after deletion
       fetchSmartCollarsData();
+    } catch (error) {
+      console.error("Error deleting smart collar:", error);
+    }
+  };
+
+  const handleTagDeleteClick = async (tagsId) => {
+    try {
+      await deletetags(tagsId);
+      alert("Smart collar deleted successfully!");
+      // Refresh the smart collars list after deletion
+      fetchAddressTagsData();
+    } catch (error) {
+      console.error("Error deleting smart collar:", error);
+    }
+  };
+
+  const handleordercollarsDeleteClick = async (ordercollarsId) => {
+    try {
+      await deleteordercollars(ordercollarsId);
+      alert("Smart collar deleted successfully!");
+      // Refresh the smart collars list after deletion
+      fetchCollarsData();
     } catch (error) {
       console.error("Error deleting smart collar:", error);
     }
@@ -210,6 +245,9 @@ function Admin() {
             <th>Price</th>
             <th>Image</th>
             <th>Actions</th>
+            {/* <button className="button-Add" onClick={() => handleAddClick()}>
+              Add
+            </button> */}
           </tr>
         </thead>
         <tbody>
@@ -273,6 +311,9 @@ function Admin() {
             <th>Price</th>
             <th>Image</th>
             <th>Actions</th>
+            <button className="button-Add" onClick={() => handleAddorder1Click()}>
+              Add
+            </button>
           </tr>
         </thead>
         <tbody>
@@ -335,6 +376,9 @@ function Admin() {
             <th>Price</th>
             <th>Image</th>
             <th>Actions</th>
+            <button className="button-Add" onClick={() => handleAddorder2Click()}>
+              Add
+            </button>
           </tr>
         </thead>
         <tbody>
@@ -368,7 +412,7 @@ function Admin() {
                   </button>
                   <button
                     className="button-Delete"
-                    // onClick={() => handleProductDeleteClick(tag.id)}
+                    onClick={() => handleTagDeleteClick(tag.id)}
                   >
                     Delete
                   </button>
@@ -396,6 +440,9 @@ function Admin() {
             <th>Price</th>
             <th>Image</th>
             <th>Actions</th>
+            <button className="button-Add" onClick={() => handleAddorder3Click()}>
+              Add
+            </button>
           </tr>
         </thead>
         <tbody>
@@ -429,7 +476,7 @@ function Admin() {
                   </button>
                   <button
                     className="button-Delete"
-                    // onClick={() => handleProductDeleteClick(collar.id)}
+                    onClick={() => handleordercollarsDeleteClick(collar.id)}
                   >
                     Delete
                   </button>

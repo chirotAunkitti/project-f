@@ -17,6 +17,9 @@ import Register from "./components/Register.jsx";
 import OrderEdit from "./components/Home/Admin/orderEdit.jsx";
 import Order2Edit from "./components/Home/Admin/Order2Edit.jsx";
 import Order3Edit from "./components/Home/Admin/Order3Edit.jsx";
+import Addorder1 from "./components/Home/Admin/Addorder1.jsx";
+import Addorder2 from "./components/Home/Admin/Addorder2.jsx";
+import Addorder3 from "./components/Home/Admin/Addorder3.jsx";
 
 function App() {
   return (
@@ -34,6 +37,9 @@ function App() {
           <Route path="/orderedit/:id" element={<OrderEdit />} />
           <Route path="/order2edit/:id" element={<Order2Edit />} />
           <Route path="/order3edit/:id" element={<Order3Edit />} />
+          <Route path="/addorder1" element={<Addorder1 />} />
+          <Route path="/addorder2" element={<Addorder2 />} />
+          <Route path="/addorder3" element={<Addorder3 />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>

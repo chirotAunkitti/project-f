@@ -1,0 +1,75 @@
+.addorder1-container {
+    padding: 20px;
+    /* สีพื้นหลังสำหรับ container */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* จัดให้เนื้อหากลาง */
+}
+
+.addorder1-header {
+    display: flex;
+    justify-content: center; /* จัดตำแหน่งหัวเรื่องตรงกลาง */
+    margin-bottom: 20px;
+}
+
+.addorder1-header h2 {
+    margin: 0;
+    color: #333;
+    background: none; /* ลบพื้นหลังออกจากข้อความ */
+    padding: 0; /* ลบ padding ออก */
+}
+
+.addorder1-form-group {
+    margin-bottom: 15px;
+    width: 100%; /* ให้ฟอร์มกรุ๊ปใช้ความกว้างทั้งหมด */
+    max-width: 500px; /* กำหนดความกว้างสูงสุด */
+}
+
+.addorder1-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.addorder1-form-group input {
+    width: 100%; /* ให้ input ใช้ความกว้างทั้งหมด */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.addorder1-button {
+    padding: 10px 20px;
+    background-color: #4a4a7f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px; /* เพิ่มระยะห่างด้านบน */
+}
+
+.addorder1-button:hover {
+    background-color: #3a3a6f;
+}
+
+.addorder1-back-button {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #4a4a7f;
+    padding: 10px;
+    color: white;
+    margin-top: 10px; /* เพิ่มระยะห่างด้านบน */
+}
+
+.addorder1-back-link {
+    color: rgb(255, 254, 254);
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}

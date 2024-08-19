@@ -156,3 +156,38 @@ export const deletecollars = async (collarsId) => {
   }
 };
 
+// ลบสินค้า order Product 2
+export const deletetags = async (tagsId) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/api/address-tags/${tagsId}`);
+    return response;
+  } catch (error) {
+    console.error('Error deleting collar:', error);
+    throw error;
+  }
+};
+
+// ลบสินค้า order Product 3
+export const deleteordercollars = async (ordercollarsId) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/api/ordercollars/${ordercollarsId}`);
+    return response;
+  } catch (error) {
+    console.error('Error deleting collar:', error);
+    throw error;
+  }
+};
+
+
+export const addProder1 = async (prtder1Data) => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/ordersmart-collars', prtder1Data, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding user:', error);
+    throw error;
+  }
+};
+

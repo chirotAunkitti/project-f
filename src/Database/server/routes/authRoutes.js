@@ -503,5 +503,93 @@ router.delete('/smart-collars/:id', (req, res) => {
   });
 });
 
+//ลบ order product2
+router.delete('/address-tags/:id', (req, res) => {
+  const { id } = req.params;
+  const query = "DELETE FROM address_tags WHERE id = ?";
+  
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถลบข้อมูลสินค้าได้" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: "ไม่พบสินค้าที่ต้องการลบ" });
+    }
+
+    res.status(200).json({ message: "ลบข้อมูลสินค้าสำเร็จ" });
+  });
+});
+
+//ลบ order product3
+router.delete('/ordercollars/:id', (req, res) => {
+  const { id } = req.params;
+  const query = "DELETE FROM collars WHERE id = ?";
+  
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถลบข้อมูลสินค้าได้" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: "ไม่พบสินค้าที่ต้องการลบ" });
+    }
+
+    res.status(200).json({ message: "ลบข้อมูลสินค้าสำเร็จ" });
+  });
+});
+
+
+// API สำหรับเพิ่มสินค้าใหม่ใน smart_collars
+router.post('/smart-collars', (req, res) => {
+  const { name, price, image } = req.body;
+  
+  // ตรวจสอบข้อมูลที่ได้รับจาก request
+  if (!name || !price || !image) {
+    return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+  }
+
+  const query = "INSERT INTO smart_collars (name, price, image) VALUES (?, ?, ?)";
+
+  db.query(query, [name, price, image], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+    }
+
+    res.status(201).json({ message: "เพิ่มสินค้าสำเร็จ", productId: results.insertId });
+  });
+});
+
+
+// API สำหรับเพิ่มสินค้าใหม่ใน smart_collars
+
+router.post('/ordersmart-collars', upload.single('image'), (req, res) => {
+  const { name, price } = req.body;
+  const image = req.file ? `uploads/${req.file.filename}` : null;
+
+  if (!name || !price || !image) {
+    return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+  }
+
+  const query = "INSERT INTO smart_collars (name, price, image) VALUES (?, ?, ?)";
+
+  db.query(query, [name, price, image], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+    }
+
+    res.status(201).json({ 
+      message: "เพิ่มสินค้าสำเร็จ", 
+      product: { id: results.insertId, name, price, image } 
+    });
+  });
+});
+
+
+
 
 module.exports = router;
