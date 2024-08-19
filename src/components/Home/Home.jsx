@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import About from './About';
 import Contact from './Contact';
-import './Home.css'; // Assume we have a separate CSS file for styling
+import './Home.css';
 import Navbar from './Navbar';
 import Portfolio from './Portfolio';
 import Services from './Services';
+import Content from './content';
 
 
 
@@ -19,7 +20,6 @@ function Home() {
   const almostRef = useRef(null);
 
 
-
   const scrollToServices = () => {
     servicesRef.current.scrollIntoView({ behavior: 'smooth' });
   };
@@ -27,15 +27,19 @@ function Home() {
   const scrollToPortfolio = () => {
     portfolioRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
   const scrollToAbout = () => {
     aboutRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
   const scrollToContact = () => {
     contactRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
   const scrollToContent = () => {
     ContentRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
   const scrollToAlmost = () => {
     almostRef.current.scrollIntoView({ behavior: 'smooth' });
   };
@@ -71,12 +75,11 @@ function Home() {
       <div id="contact" ref={contactRef}>
         <Contact />
       </div>
-      {/* <div ref={contactRef}>
+      <div ref={contactRef}>
         <Content />
-      </div> */}
+      </div>
     </div>  
   );
 }
-
 
 export default Home;

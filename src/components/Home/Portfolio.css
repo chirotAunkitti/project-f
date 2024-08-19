@@ -34,7 +34,7 @@
 /* สไตล์รูปภาพ */
 .portfolio-icon {
   width: 100%;
-  max-width: 300px; /* ขนาดสูงสุดของรูปภาพ */
+  max-width: 400px; /* ขนาดสูงสุดของรูปภาพ */
   height: auto;
   transition: filter 0.3s ease; /* ทำให้เอฟเฟกต์เปลี่ยนสีมีการเคลื่อนไหว */
 }

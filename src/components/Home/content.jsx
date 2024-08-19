@@ -5,13 +5,13 @@ const Content = () => {
   return (
     <div className="content__container">
       <div className="contentr__text">
-        <p className="subscription-text">Copyright © Your Website 2024</p>
+        <p className="subscription-text"></p>
       </div>
       <div className="contentr__text">
         <p className="subscription-text">Screw D</p>
       </div>
       <div className="contentr__text">
-        <p className="subscription-text">Privacy Policy Terms of Use</p>
+        <p className="subscription-text"></p>
       </div>
     </div>
   );

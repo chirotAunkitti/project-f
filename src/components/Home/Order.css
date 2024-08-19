@@ -1,9 +1,9 @@
 .order-page {
     position: relative; /* กำหนดให้ตัวพ่อมีการอ้างตำแหน่ง */
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     max-width: 1200px;
     margin: 0 auto;
-    padding: 100px;
+    padding: 200px;
 }
   
   header {
@@ -115,3 +115,11 @@
   .filter-buttons button.active {
     background-color: #c8f7c5;
   }
+
+
+
+
+
+
+
+  

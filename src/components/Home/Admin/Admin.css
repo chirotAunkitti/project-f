@@ -4,15 +4,17 @@
     height: 100vh;
   }
   
+  /* แทบข้างๆ สี */
   .sidebar {
     width: 200px;
     background-color: #4a4a7f; /* สีม่วงเข้ม */
-    padding: 20px;  
+    padding: 10px;  
     height: 300vh; /* ทำให้ความสูงของ Sidebar เต็มหน้าจอ */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* เงาเล็กน้อยเพื่อเน้น */
 
 }
   
+/* Admin Panel */
   .sidebar-title {
     color: white;
     margin-bottom: 10px;
@@ -22,6 +24,7 @@
     color: black;
   }
   
+  /* เมนู ข้างๆ */
   .sidebar-button {
     display: block;
     width: 100%;
@@ -35,12 +38,14 @@
     cursor: pointer;
   }
   
+  /* ขนาด ตาราง */
   .main-content {
     flex: 1;
     background-color: #e6e6fa;
     padding: 20px;
   }
   
+  /* แทบ User Management */
   .header {
     display: flex;
     justify-content: space-between;
@@ -48,10 +53,12 @@
     background-color: white;
     padding: 10px;
     align-items: center;
+    
   }
   
   .header h2 {
     margin: 0;
+    
   }
   
   /* ตาราง */
@@ -61,12 +68,15 @@
     margin-top: 20px;
   }
   
+  /* เส้นตาราง */
   th, td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #000000;
+    
   }
   
+  /* แทบnavbar ID	Email */
   th {
     background-color: #4a4a7f;
     color: white;
@@ -105,3 +115,5 @@
     padding: 20px;
     color: white;
   }
+
+  

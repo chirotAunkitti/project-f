@@ -1,42 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Popup from './Popup';
-import './Portfolio.css'; // ไฟล์ CSS ของ Portfolio
+import './Portfolio.css';
 
 function Portfolio() {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [portfolioItems, setPortfolioItems] = useState([]);
 
-  const portfolioItems = [
-    {
-      id: 1,
-      name: 'Nut',
-      image: `${process.env.PUBLIC_URL}/image/nn.svg`,
-      description: 'A nut is a mechanical fastener with a threaded hole. It is typically used in conjunction with a mating bolt or screw to fasten multiple parts together securely. The nut and bolt work together, with the bolt providing the male thread and the nut providing the female thread.'
-    },
-    {
-      id: 2,
-      name: 'Screw',
-      image: `${process.env.PUBLIC_URL}/image/nn.svg`,
-      description: 'A screw is a type of fastener, typically made of metal, characterized by a helical ridge, known as a male thread.'
-    },
-    {
-      id: 3,
-      name: 'J-bolt',
-      image: `${process.env.PUBLIC_URL}/image/nn.svg`,
-      description: 'A J-bolt is a fastener shaped like the letter J.'
-    },
-    {
-      id: 4,
-      name: 'U-bolt',
-      image: `${process.env.PUBLIC_URL}/image/nn.svg`,
-      description: 'A U-bolt is a bolt in the shape of the letter U with screw threads on both ends.'
-    },
-    {
-      id: 5,
-      name: 'Nut',
-      image: `${process.env.PUBLIC_URL}/image/nn.svg`,
-      description: 'A nut is a mechanical fastener with a threaded hole.'
-    },
-  ];
+  useEffect(() => {
+    // ฟังก์ชันสำหรับดึงข้อมูลจาก API
+    const fetchPortfolioItems = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/products'); // เรียก API 
+        const data = await response.json();
+        setPortfolioItems(data);
+      } catch (error) {
+        console.error('Error fetching portfolio items:', error);
+      }
+    };
+
+    fetchPortfolioItems();
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
@@ -57,7 +40,7 @@ function Portfolio() {
               alt={`Portfolio Item ${item.name}`}
               className="portfolio-icon"
             />
-            <div className="plus-icon"></div> {/* เพิ่มรูปบวก */}
+            <div className="plus-icon"></div>
             <p className="portfolio-name">{item.name}</p>
           </div>
         ))}

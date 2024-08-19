@@ -10,9 +10,13 @@ function Popup({ item, onClose }) {
       <div className="popup-content" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>&times;</button>
         <h3>{item.name}</h3>
-        <img src={item.image} alt={item.name} className="popup-image" />
+        {item.image && (
+          <img src={item.image} alt={item.name} className="popup-image" />
+        )}
         <p>{item.description}</p>
         <button className="project-button" onClick={onClose}>Close project</button>
+        {/* เพิ่มปุ่มเพิ่มเติมตามต้องการ เช่น "สั่งซื้อ" */}
+        {/* <button className="order-button" onClick={() => alert('Order placed!')}>Order</button> */}
       </div>
     </div>,
     document.body // ทำให้ป๊อปอัปแสดงอยู่เหนือทุกอย่าง

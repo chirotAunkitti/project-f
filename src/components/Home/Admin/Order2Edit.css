@@ -1,0 +1,55 @@
+/* Order2Edit.css */
+
+.order2-edit-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 100px;
+    background-color: #e6e6fa; /* พื้นหลังที่คล้ายกับ Editusers */
+    border-radius: 100px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order2-edit-container h2 {
+    color: #333;
+  }
+  
+  .order2-form-group {
+    margin-bottom: 15px;
+  }
+  
+  .order2-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .order2-form-group input,
+  .order2-form-group textarea {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .order2-product-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .order2-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #151719;
+    color: rgb(253, 241, 241);
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .order2-button:hover {
+    background-color: #0056b3;
+  }
+  

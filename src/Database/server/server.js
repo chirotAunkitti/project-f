@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const db = require('../Database');  // เส้นทางที่ถูกต้อง
 const authRoutes = require('./routes/authRoutes');
-
+const path = require('path');
 const app = express();
 const port = 8000;
 
@@ -12,6 +12,7 @@ app.use(cors({
   origin: 'http://localhost:3000'
 }));
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ใช้งานเส้นทางจาก authRoutes
 app.use('/api', authRoutes);
