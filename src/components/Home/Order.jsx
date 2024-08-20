@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import "./Order.css";
 
 function Order() {
@@ -9,11 +9,6 @@ function Order() {
   const [products, setProducts] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
   const navigate = useNavigate();
-
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -37,7 +32,7 @@ function Order() {
   const addToCart = (product) => {
     const uniqueId = uuidv4();
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingProduct = cart.find(item => item.id === uniqueId);
+    const existingProduct = cart.find((item) => item.id === uniqueId);
 
     if (existingProduct) {
       existingProduct.quantity += 1;
@@ -49,36 +44,44 @@ function Order() {
     console.log(`${product.name} added to cart`);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div className={`order-page ${darkMode ? 'dark' : ''}`}>
-      <header>
-        <h1>Screw D</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/home">Home</Link>
-            </li>
-            <li>
-              <a href="#" className="active">
-                Catalog
-              </a>
-            </li>
-            <li>
-              <a href="#">About</a>
-            </li>
-            <li>
-              <a href="#">Blog</a>
-            </li>
-            <li>
-              <Link to="/shoppingCart" className="cart-icon">
-                🛒
-              </Link>
-            </li>
-          </ul>
-          <button className="darkMode" onClick={toggleDarkMode}>
-            {darkMode ? '🌜' : '🌞'}
-          </button>
-        </nav>
+    <div className={`order-page ${darkMode ? "dark" : ""}`}>
+      <header className="order-header">
+        <h2>Screw D</h2>
+        <div className="header-right">
+          <nav>
+            <ul className="nav-links">
+              <li>
+                <Link to="/home">Home</Link>
+              </li>
+              <li>
+                <a href="#" className="active">
+                  Catalog
+                </a>
+              </li>
+              <li>
+                <a href="#">About</a>
+              </li>
+              <li>
+                <a href="#">Blog</a>
+              </li>
+              <li>
+                <Link to="/shoppingCart" className="cart-icon">
+                  🛒
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          <div className="dark-mode-toggle">
+            <button className="darkMode" onClick={toggleDarkMode}>
+              {darkMode ? "🌜" : "🌞"}
+            </button>
+          </div>
+        </div>
       </header>
       <main>
         <h2>Catalog</h2>

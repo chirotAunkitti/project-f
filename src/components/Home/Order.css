@@ -10,17 +10,21 @@
 .order-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* จัดแนวที่ด้านบน */
+  align-items: center; /* ปรับเป็นจัดแนวที่ตรงกลาง */
 }
 
-h1 {
-  font-size: 24px;
+h2 {
+  font-size: 0px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
 }
 
 nav ul {
   display: flex;
   list-style-type: none;
-  justify-content: flex-end; /* จัดแนวเมนูไปทางขวา */
   margin: 0;
   padding: 0;
 }
@@ -31,25 +35,26 @@ nav ul li {
 
 nav ul li a {
   text-decoration: none;
-  color: #333; /* สีข้อความเริ่มต้นเป็นสีเข้ม */
+  color: #333; /* สีข้อความเริ่มต้น */
 }
 
 /* สไตล์ไอคอนตะกร้า */
 .cart-icon {
   font-size: 20px;
+  margin-left: 20px; /* เพิ่มระยะห่างระหว่างเมนูกับไอคอน */
 }
 
 /* ปุ่มเปิด/ปิดโหมดมืด */
 .dark-mode-toggle {
-  margin-top: 10px; /* เว้นที่ด้านบนของปุ่ม */
-  text-align: right; /* จัดแนวปุ่มไปทางขวา */
-  width: 100%; /* ทำให้ div มีความกว้างเต็ม */
+  display: flex;
+  align-items: center; /* จัดไอคอนให้อยู่ในแนวกลางกับเมนู */
+  margin-left: 20px; /* เพิ่มระยะห่างระหว่างไอคอนตะกร้ากับปุ่มสลับโหมด */
 }
 
 .darkMode {
   background: none;
   border: none;
-  font-size: 32px; /* เพิ่มขนาดไอคอน */
+  font-size: 32px; /* ขนาดของไอคอนโหมดมืด */
   cursor: pointer;
   color: inherit; /* ใช้สีตามธีม */
 }
@@ -103,7 +108,7 @@ nav ul li a {
 }
 
 .order-page.dark nav ul li a {
-  color: #ddd; /* สีข้อความอ่อนลงสำหรับโหมดมืด */
+  color: #ddd; /* สีข้อความในโหมดมืด */
 }
 
 .order-page.dark .darkMode {
