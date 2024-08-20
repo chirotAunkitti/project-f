@@ -589,7 +589,112 @@ router.post('/ordersmart-collars', upload.single('image'), (req, res) => {
   });
 });
 
+// API สำหรับเพิ่มสินค้าใหม่ใน address_tags
 
+router.post('/orderaddress-tags', upload.single('image'), (req, res) => {
+  const { name, price } = req.body;
+  const image = req.file ? `uploads/${req.file.filename}` : null;
+
+  if (!name || !price || !image) {
+    return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+  }
+
+  const query = "INSERT INTO address_tags (name, price, image) VALUES (?, ?, ?)";
+
+  db.query(query, [name, price, image], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+    }
+
+    res.status(201).json({ 
+      message: "เพิ่มสินค้าสำเร็จ", 
+      product: { id: results.insertId, name, price, image } 
+    });
+  });
+});
+
+// API สำหรับเพิ่มสินค้าใหม่ใน address_tags
+
+router.post('/order3collars', upload.single('image'), (req, res) => {
+  const { name, price } = req.body;
+  const image = req.file ? `uploads/${req.file.filename}` : null;
+
+  if (!name || !price || !image) {
+    return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+  }
+
+  const query = "INSERT INTO collars (name, price, image) VALUES (?, ?, ?)";
+
+  db.query(query, [name, price, image], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+    }
+
+    res.status(201).json({ 
+      message: "เพิ่มสินค้าสำเร็จ", 
+      product: { id: results.insertId, name, price, image } 
+    });
+  });
+});
+
+
+// เพิ่มสินค้าหรืออัปเดตปริมาณสินค้าที่มีอยู่ในตะกร้า
+router.post('/add-to-cart', (req, res) => {
+  const { productId, productName, productImage, productPrice } = req.body;
+  
+  // ตรวจสอบว่ามีสินค้านี้ในตะกร้าหรือไม่
+  const sqlCheck = "SELECT * FROM ShoppingCart WHERE productId = ?";
+  db.query(sqlCheck, [productId], (err, result) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    if (result.length > 0) {
+      // หากมีสินค้าอยู่แล้วในตะกร้า ให้เพิ่มปริมาณ
+      const sqlUpdate = "UPDATE ShoppingCart SET quantity = quantity + 1 WHERE productId = ?";
+      db.query(sqlUpdate, [productId], (err, result) => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        res.send('Product quantity updated in cart');
+      });
+    } else {
+      // หากไม่มีสินค้าในตะกร้า ให้เพิ่มสินค้าใหม่
+      const sqlInsert = "INSERT INTO ShoppingCart (productId, productName, productImage, productPrice, quantity) VALUES (?, ?, ?, ?, ?)";
+      db.query(sqlInsert, [productId, productName, productImage, productPrice, 1], (err, result) => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        res.send('Product added to cart');
+      });
+    }
+  });
+});
+
+// ดึงข้อมูลสินค้าจากตะกร้า
+router.get('/cart', (req, res) => {
+  const sqlSelect = "SELECT * FROM ShoppingCart";
+  db.query(sqlSelect, (err, result) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.send(result);
+  });
+});
+
+// ลบสินค้าจากตะกร้า
+router.delete('/remove-from-cart/:id', (req, res) => {
+  const productId = req.params.id;
+  const sqlDelete = "DELETE FROM ShoppingCart WHERE productId = ?";
+  db.query(sqlDelete, [productId], (err, result) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.send('Product removed from cart');
+  });
+});
 
 
 module.exports = router;

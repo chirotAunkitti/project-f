@@ -1,0 +1,128 @@
+.shopping-cart-page {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+  }
+  
+  .shopping-cart-header {
+    background-color: #000;
+    color: white;
+    padding: 25px 0;
+    width: 100%;
+  }
+  
+  .shopping-cart-header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .shopping-cart-header .nav-link {
+    color: white; /* เปลี่ยนสีของลิงก์เป็นสีขาว */
+    text-decoration: none; /* ลบขีดข้างใต้ลิงก์ */
+    margin-right: 20px;
+    font-size: 16px;
+  }
+  
+  .shopping-cart-header nav span {
+    margin-right: 20px;
+  }
+  
+  .shopping-cart-header .right {
+    margin-left: auto;
+  }
+  
+  .shopping-cart-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+  }
+  
+  .shopping-cart-content h1 {
+    font-size: 24px;
+    margin-top: 65px;
+  }
+  
+  .shopping-cart-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .shopping-cart-content th,
+  .shopping-cart-content td {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid #000000;
+  }
+  
+  .shopping-cart-content th {
+    background-color: #000000;
+    color: white;
+  }
+  
+  .shopping-cart-content td img {
+    width: 100px; /* ปรับขนาดของรูปภาพสินค้า */
+    height: auto; /* ให้รูปภาพคงอัตราส่วน */
+    object-fit: cover; /* ป้องกันการบิดเบือนของภาพ */
+    margin-right: 10px; /* เว้นระยะห่างระหว่างรูปภาพและชื่อสินค้า */
+  }
+  
+  .shopping-cart-content .quantity-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .shopping-cart-content .quantity-controls button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .shopping-cart-content .remove-button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+  }
+  
+  .shopping-cart-content .order-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 20px;
+    float: right;
+    width: 300px;
+  }
+  
+  .shopping-cart-content .order-summary h2 {
+    font-size: 18px;
+    margin-top: 0;
+  }
+  
+  .shopping-cart-content .order-summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  
+  .shopping-cart-content .checkout {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .shopping-cart-content .coupon-link {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  

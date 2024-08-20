@@ -20,6 +20,8 @@ import Order3Edit from "./components/Home/Admin/Order3Edit.jsx";
 import Addorder1 from "./components/Home/Admin/Addorder1.jsx";
 import Addorder2 from "./components/Home/Admin/Addorder2.jsx";
 import Addorder3 from "./components/Home/Admin/Addorder3.jsx";
+import ShoppingCart from "./components/Home/Shoppingcart.jsx";
+import Makepayment from "./components/Home/Makepayment.jsx";
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
           <Route path="/addorder1" element={<Addorder1 />} />
           <Route path="/addorder2" element={<Addorder2 />} />
           <Route path="/addorder3" element={<Addorder3 />} />
+          <Route path="/shoppingCart" element={<ShoppingCart />} />
+          <Route path="/makepayment" element={<Makepayment />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>

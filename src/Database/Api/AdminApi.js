@@ -178,7 +178,7 @@ export const deleteordercollars = async (ordercollarsId) => {
   }
 };
 
-
+// เพิ่ม สินค้า order Product1
 export const addProder1 = async (prtder1Data) => {
   try {
     const response = await axios.post('http://localhost:8000/api/ordersmart-collars', prtder1Data, {
@@ -191,3 +191,66 @@ export const addProder1 = async (prtder1Data) => {
   }
 };
 
+// เพิ่ม สินค้า order Product2
+export const addProder2 = async (prtder2Data) => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/orderaddress-tags', prtder2Data, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding user:', error);
+    throw error;
+  }
+};
+
+
+// เพิ่ม สินค้า order Product3
+export const addProder3 = async (prtder3Data) => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/order3collars', prtder3Data, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding user:', error);
+    throw error;
+  }
+};
+
+// เพิ่ม สินค้า ในตะกร้า
+export const addtocart = async (tocartData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/add-to-cart', tocartData, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding user:', error);
+    throw error;
+  }
+};
+
+// ดึงข้อมูลสินค้าจากตะกร้า
+export const cart = async (cartData) => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/cart', cartData, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding user:', error);
+    throw error;
+  }
+};
+
+// ลบสินค้า ในตะกร้า
+    export const removecart = async (id) => {
+        try {
+          const response = await axios.delete(`http://localhost:8000/api/remove-from-cart/${id}`);
+          return response;
+        } catch (error) {
+          console.error('Error deleting collar:', error);
+          throw error;
+        }
+      };
