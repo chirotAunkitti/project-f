@@ -1,14 +1,16 @@
+/* เพิ่มการนำเข้าฟอนต์ในไฟล์ CSS */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
 .home-container {
-  background-image: url('/public/image/pp 1 (4).svg');
-  background-size: cover;
-  background-position: center center;
+  background-size: cover; /* ปรับให้ภาพพื้นหลังเต็มจอ */
+  background-position: center center; /* จัดตำแหน่งภาพให้อยู่ตรงกลาง */
   background-repeat: no-repeat;
   color: white;
   height: 100vh;
   width: 100vw;
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif; /* ใช้ฟอนต์ Montserrat */
   position: relative;
-
+  transition: background-image 0s ease-in-out; /* เพิ่มการเปลี่ยนแปลงที่นุ่มนวล */
 }
 
 .home-container::before {
@@ -18,8 +20,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(10, 7, 7, 0.151); /* เพิ่ม overlay เพื่อให้ข้อความอ่านง่ายขึ้น */
-  z-index: 1;
+  background-color: rgba(10, 7, 7, 0.05); /* ลดความเข้มของ overlay */
 }
 
 .home-container > * {
@@ -31,10 +32,10 @@
   color: rgb(255, 241, 241);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end; /* จัดวางเนื้อหาลงมาที่ด้านล่างของพื้นที่ container */
   text-align: center;
+  margin-bottom: 20px; /* เพิ่มระยะห่างจากขอบล่างของหน้าจอ */
 }
-
 
 .logo {
   font-size: 24px;
@@ -56,34 +57,37 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh; /* ใช้ความสูงเต็มหน้าจอ */
+  justify-content: flex-end; /* จัดวางเนื้อหาลงมาที่ด้านล่างของหน้าจอ */
+  height: 100vh;
   text-align: center;
   padding: 0 20px;
 }
 
 h1 {
-  font-size: 3.5vw;
-  margin-bottom: 5px;
+  font-size: 2.5vw; /* ขนาดฟอนต์ของ Welcome to Screw D Company. */
+  margin-bottom: 10px; /* เพิ่มระยะห่างจากข้อความด้านล่าง */
+  font-weight: 400; /* น้ำหนักฟอนต์ปกติ */
 }
 
 h2 {
-  font-size: 3.5vw;
+  font-size: 4vw; /* ขนาดฟอนต์ของ IT'S NICE TO MEET YOU */
   margin-bottom: 50px;
+  font-weight: 600; /* น้ำหนักฟอนต์หนักขึ้น */
 }
 
 button {
-  background-color: #ecf0f1;
+  background-color: rgba(111, 117, 120, 0.72); /* สีของปุ่ม */
   border: none;
   padding: 25px 50px;
-  font-size: 1vw;
+  font-size: 2vw;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
   border-radius: 15px;
+  margin-bottom: 130px; /* ระยะห่างจากขอบล่างของหน้าจอ */
 }
 
 button:hover {
-  background-color: #bdc3c7;
+  background-color: rgba(111, 117, 120, 1); /* สีเมื่อ hover */
   transform: scale(1.05); /* เพิ่มเอฟเฟกต์เมื่อ hover */
 }

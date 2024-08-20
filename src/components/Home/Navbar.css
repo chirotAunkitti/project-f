@@ -37,7 +37,7 @@
   nav ul li {
     margin-left: 20px;
     font-size: 14px;
-    color: white;
+    color: rgb(0, 0, 0);
     cursor: pointer;
     transition: color 0.3s ease;
   }
@@ -52,7 +52,7 @@
   }
   
   .order-link {
-    color: white; /* ตั้งค่าสีของตัวหนังสือเป็นสีขาว */
+    color: rgb(3, 2, 2); /* ตั้งค่าสีของตัวหนังสือเป็นสีขาว */
     text-decoration: none; /* เอาเส้นใต้ลิงค์ออก */
   }
   

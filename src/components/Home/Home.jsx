@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import About from './About';
 import Contact from './Contact';
 import './Home.css';
@@ -7,10 +7,14 @@ import Portfolio from './Portfolio';
 import Services from './Services';
 import Content from './content';
 
-
-
 function Home() {
-
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const imagePaths = [
+    '/image/logo/ll.jpg',
+    '/image/logo/gg.jpg',
+    '/image/logo/Untitleddesign.png',
+    '/image/logo/hh.jpg',
+  ];
 
   const servicesRef = useRef(null);
   const portfolioRef = useRef(null);
@@ -18,7 +22,6 @@ function Home() {
   const contactRef = useRef(null);
   const ContentRef = useRef(null);
   const almostRef = useRef(null);
-
 
   const scrollToServices = () => {
     servicesRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -44,13 +47,19 @@ function Home() {
     almostRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === imagePaths.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 4000);
+
+    return () => clearInterval(intervalId);
+  }, [imagePaths.length]);
 
   return (
-    <div className="home-container">
-      {/* <div ref={almostRef}>
-        <Almost />
-      </div> */}
-       <Navbar 
+    <div className="home-container" style={{ backgroundImage: `url(${imagePaths[currentImageIndex]})` }}>
+      <Navbar 
         scrollToServices={scrollToServices}
         scrollToPortfolio={scrollToPortfolio}
         scrollToAbout={scrollToAbout}
@@ -58,8 +67,8 @@ function Home() {
       />
       <main>
         <div className="home-container-container">
-        <h1>Welcome to Screw D Company.</h1>
-        <h2>IT'S NICE TO MEET YOU</h2>
+          <h1>Welcome to Screw D Company.</h1>
+          <h2>IT'S NICE TO MEET YOU</h2>
         </div>
         <button onClick={scrollToServices}>TELL ME MORE</button>
       </main>
@@ -83,3 +92,6 @@ function Home() {
 }
 
 export default Home;
+
+
+

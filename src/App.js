@@ -23,11 +23,13 @@ import Addorder3 from "./components/Home/Admin/Addorder3.jsx";
 import ShoppingCart from "./components/Home/Shoppingcart.jsx";
 import Makepayment from "./components/Home/Makepayment.jsx";
 
+
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
+          
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
