@@ -34,7 +34,7 @@
   flex-direction: column;
   justify-content: flex-end; /* จัดวางเนื้อหาลงมาที่ด้านล่างของพื้นที่ container */
   text-align: center;
-  margin-bottom: 20px; /* เพิ่มระยะห่างจากขอบล่างของหน้าจอ */
+  margin-bottom: 50px; /* เพิ่มระยะห่างจากขอบล่างของหน้าจอ */
 }
 
 .logo {
@@ -64,7 +64,7 @@ main {
 }
 
 h1 {
-  font-size: 2.5vw; /* ขนาดฟอนต์ของ Welcome to Screw D Company. */
+  font-size: 2vw; /* ขนาดฟอนต์ของ Welcome to Screw D Company. */
   margin-bottom: 10px; /* เพิ่มระยะห่างจากข้อความด้านล่าง */
   font-weight: 400; /* น้ำหนักฟอนต์ปกติ */
 }

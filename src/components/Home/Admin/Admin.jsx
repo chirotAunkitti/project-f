@@ -165,8 +165,8 @@ function Admin() {
   };
 
 
-  const handleProductEditClick = (productId, collarId) => {
-    navigate(`/editproduct/${(productId, collarId)}`);
+  const handleProductEditClick = (productId) => {
+    navigate(`/editproduct/${(productId)}`);
   };
 
   const handleOrderEditClick = (collarId) => {

@@ -51,7 +51,7 @@ function Order() {
   return (
     <div className={`order-page ${darkMode ? "dark" : ""}`}>
       <header className="order-header">
-        <h2>Screw D</h2>
+        <h4>Screw D</h4>
         <div className="header-right">
           <nav>
             <ul className="nav-links">

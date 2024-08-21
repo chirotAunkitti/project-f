@@ -7,7 +7,7 @@
   /* แทบข้างๆ สี */
   .sidebar {
     width: 200px;
-    background-color: #4a4a7f; /* สีม่วงเข้ม */
+    background-color: #000000; /* สีม่วงเข้ม */
     padding: 10px;  
     height: 300vh; /* ทำให้ความสูงของ Sidebar เต็มหน้าจอ */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* เงาเล็กน้อยเพื่อเน้น */
@@ -30,7 +30,7 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #3a3a6f;
+    background-color: #000000;
     color: white;
     border: none;
     border-radius: 5px;
@@ -41,7 +41,7 @@
   /* ขนาด ตาราง */
   .main-content {
     flex: 1;
-    background-color: #e6e6fa;
+    background-color: #999393;
     padding: 20px;
   }
   
@@ -64,21 +64,21 @@
   /* ตาราง */
   table {
     width: 100%;
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
     margin-top: 20px;
   }
   
   /* เส้นตาราง */
   th, td {
     padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #000000;
+    /* text-align: left; */
+    border-bottom: 2px solid #fffefe;
     
   }
   
   /* แทบnavbar ID	Email */
   th {
-    background-color: #4a4a7f;
+    background-color: #121212;
     color: white;
   }
   
@@ -105,7 +105,7 @@
   }
   .button-Edit{
     flex: 1;
-    background-color:#3a3a6f;
+    background-color:#000000;
     padding: 20px;
     color: white;
   }

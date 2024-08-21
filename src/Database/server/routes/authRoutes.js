@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../../Database"); // เส้นทางถูกต้อง
+const db = require("../../Database"); 
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
@@ -65,6 +65,7 @@ router.get("/users", (req, res) => {
     res.status(200).json(results);
   });
 });
+
 
 // เส้นทางสำหรับการดึงข้อมูลผู้ใช้ตาม ID Admin
 router.get("/users/:id", (req, res) => {
@@ -673,6 +674,7 @@ router.post('/add-to-cart', (req, res) => {
   });
 });
 
+
 // ดึงข้อมูลสินค้าจากตะกร้า
 router.get('/cart', (req, res) => {
   const sqlSelect = "SELECT * FROM ShoppingCart";
@@ -683,6 +685,7 @@ router.get('/cart', (req, res) => {
     res.send(result);
   });
 });
+
 
 // ลบสินค้าจากตะกร้า
 router.delete('/remove-from-cart/:id', (req, res) => {
