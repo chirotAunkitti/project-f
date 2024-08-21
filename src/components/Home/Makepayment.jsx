@@ -10,7 +10,7 @@ function Makepayment() {
   };
   return (
     <div className="payment-container">
-      <h2>วิธีชำระเงิน</h2>
+      <h2>Payment method</h2>
 
       <div className="payment-method">
         <h3>ชำระเงินทันที</h3>
