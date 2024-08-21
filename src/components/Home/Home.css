@@ -78,13 +78,13 @@ h2 {
 button {
   background-color: rgba(111, 117, 120, 0.72); /* สีของปุ่ม */
   border: none;
-  padding: 25px 50px;
-  font-size: 2vw;
+  padding: 25px 70px;
+  /* font-size: 2vw; */
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
   border-radius: 15px;
-  margin-bottom: 130px; /* ระยะห่างจากขอบล่างของหน้าจอ */
+  margin-bottom: 50px; /* ระยะห่างจากขอบล่างของหน้าจอ */
 }
 
 button:hover {

@@ -1,16 +1,18 @@
+
 /* การจัดการขนาดของหน้าและสไตล์ทั่วไป */
 .order-page {
   position: relative;
-  max-width: 1200px;
+  /* max-width: 1200px; */
+  font-family: 'Prompt', sans-serif;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
 }
 
 /* ส่วนหัวของหน้าและเมนูนำทาง */
 .order-header {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* ปรับเป็นจัดแนวที่ตรงกลาง */
+  /* align-items: center; ปรับเป็นจัดแนวที่ตรงกลาง */
 }
 
 h2 {
@@ -64,7 +66,7 @@ nav ul li a {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: -30px;
   max-height: 100vh;
   overflow-y: auto;
 }
@@ -74,7 +76,7 @@ nav ul li a {
 }
 
 .product-item img {
-  width: 100%;
+  width: 80%;
   height: auto;
   object-fit: cover;
   border-radius: 10px;
@@ -86,20 +88,30 @@ nav ul li a {
 .filter-buttons {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-size: 1.7vw;
 }
 
-.filter-buttons button {
+/* สไตล์ใหม่สำหรับปุ่มสั่งซื้อสินค้า */
+.filter-buttons .order-product-button {
   padding: 10px 20px;
   border: none;
-  background-color: #f0f0f0;
+  background-color: #878282;
+  color: #fff;
   border-radius: 20px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1.2rem;
 }
 
-.filter-buttons button.active {
-  background-color: #c8f7c5;
+.filter-buttons .order-product-button.active {
+  background-color: #98dd48;
 }
+
+.filter-buttons .order-product-button:hover {
+  background-color: #87eb45;
+}
+
 
 /* สไตล์สำหรับโหมดมืด */
 .order-page.dark {
@@ -138,3 +150,35 @@ nav ul li a.active {
 .order-page.dark nav ul li a.active {
   color: #fff; /* สีข้อความเป็นสีขาวสำหรับสถานะที่ใช้งานในโหมดมืด */
 }
+
+/* สไตล์ใหม่สำหรับปุ่มในหน้า Order */
+.order-button-custom {
+  background-color: #668c3b; /* สีพื้นหลังที่แตกต่าง */
+  color: white; /* สีข้อความ */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.order-button-custom:hover {
+  background-color: #45a049; /* เปลี่ยนสีเมื่อ hover */
+}
+
+/* สไตล์ใหม่สำหรับไอคอนรถเข็นในหน้า Order */
+.cart-icon-custom {
+  font-size: 24px; /* ขนาดไอคอน */
+  color: #fff0f0; /* สีของไอคอน */
+  margin-left: 20px;
+  cursor: pointer;
+  background: none; /* ไม่มีพื้นหลัง */
+  border: none; /* ไม่มีกรอบ */
+  padding: 0; /* เอา padding ออก */
+  transition: color 0.3s ease;
+}
+
+.cart-icon-custom:hover {
+  color: #000; /* เปลี่ยนสีเมื่อ hover */
+}
+

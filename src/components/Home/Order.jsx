@@ -87,19 +87,25 @@ function Order() {
         <h2>Catalog</h2>
         <div className="filter-buttons">
           <button
-            className={category === "Smart collars" ? "active" : ""}
+            className={`order-product-button ${
+              category === "Smart collars" ? "active" : ""
+            }`}
             onClick={() => handleCategoryChange("Smart collars")}
           >
             Order Product 1
           </button>
           <button
-            className={category === "Address tags" ? "active" : ""}
+            className={`order-product-button ${
+              category === "Address tags" ? "active" : ""
+            }`}
             onClick={() => handleCategoryChange("Address tags")}
           >
             Order Product 2
           </button>
           <button
-            className={category === "Collars" ? "active" : ""}
+            className={`order-product-button ${
+              category === "Collars" ? "active" : ""
+            }`}
             onClick={() => handleCategoryChange("Collars")}
           >
             Order Product 3
@@ -112,13 +118,13 @@ function Order() {
               <h3>{product.name}</h3>
               <p>${product.price}</p>
               <button
-                className="order-button"
+                className="order-button-custom"
                 onClick={() => console.log(`Ordering ${product.name}`)}
               >
                 Order
               </button>
               <button
-                className="add-to-cart"
+                className="cart-icon-custom"
                 onClick={() => addToCart(product)}
               >
                 🛒
