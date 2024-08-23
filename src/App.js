@@ -22,6 +22,7 @@ import Addorder2 from "./components/Home/Admin/Addorder2.jsx";
 import Addorder3 from "./components/Home/Admin/Addorder3.jsx";
 import ShoppingCart from "./components/Home/Shoppingcart.jsx";
 import Makepayment from "./components/Home/Makepayment.jsx";
+import ShowQRCode from "./components/Home/ShowQRCode .jsx";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/addorder3" element={<Addorder3 />} />
           <Route path="/shoppingCart" element={<ShoppingCart />} />
           <Route path="/makepayment" element={<Makepayment />} />
+          <Route path="/showQRCode" element={<ShowQRCode />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>

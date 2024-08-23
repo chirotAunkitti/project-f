@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { qrcode } from "../../Database/Api/AdminApi";
 import "./Shoppingcart.css";
 
 function Shoppingcart() {
   const [items, setItems] = useState([]);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,9 +36,24 @@ function Shoppingcart() {
     0
   );
 
-  const handleCheckout = () => {
-    navigate("/makepayment");
+  const handleCheckout = async () => {
+    try {
+      const response = await qrcode(items, subtotal);
+      navigate("/showQRCode", { 
+        state: { 
+          qrCodeUrl: response.Result,
+          orderDetails: {
+            items: items,
+            totalAmount: subtotal
+          }
+        } 
+      });
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      alert('เกิดข้อผิดพลาดในการสร้าง QR Code');
+    }
   };
+
 
   return (
     <div className="shopping-cart-page">
@@ -52,7 +69,6 @@ function Shoppingcart() {
               ORDER
             </Link>
           </span>
-          {/* <span className="right">CART {items.length}</span> */}
         </nav>
       </header>
       <div className="shopping-cart-content">
@@ -117,11 +133,6 @@ function Shoppingcart() {
             <span>การจัดส่ง</span>
             <span>Free</span>
           </p>
-          {/* <p>
-            <a href="#" className="coupon-link">
-              Add coupon code +
-            </a>
-          </p> */}
           <p>
             <strong>ราคารวมทั้งหมด</strong>
             <strong>${subtotal}</strong>

@@ -1,3 +1,5 @@
+// require('dotenv').config(); // โหลดค่า environment variables
+
 const express = require('express');
 const cors = require('cors');
 const db = require('../Database');  // เส้นทางที่ถูกต้อง

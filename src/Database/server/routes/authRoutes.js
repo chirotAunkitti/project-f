@@ -2,9 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../Database"); 
 const multer = require("multer");
+const { Client } = require('@line/bot-sdk'); 
 const upload = multer({ dest: "uploads/" });
 
-const bcrypt = require("bcrypt");
+const QRCode = require('qrcode');
+const generatePayload = require('promptpay-qr');
+const bodyParser = require('body-parser');
 
 // เส้นทางสำหรับการลงทะเบียน
 router.post("/register", (req, res) => {
@@ -699,5 +702,49 @@ router.delete('/remove-from-cart/:id', (req, res) => {
   });
 });
 
+// Qr Code
+router.post('/generateQR', async (req, res) => {
+  try {
+    // รับข้อมูลจาก request body แทนการดึงจากฐานข้อมูล
+    const { items, totalAmount } = req.body;
+
+    // คำนวณยอดรวมจากข้อมูลที่ส่งมา (ถ้าไม่มี totalAmount)
+    const amount = totalAmount || items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    ); // จำนวนเงินในหน่วยบาท
+
+    const mobileNumber = '0956721589'; // หมายเลขโทรศัพท์ที่ใช้ในการชำระเงิน
+    const payload = generatePayload(mobileNumber, { amount });
+    const option = {
+        color: {
+            dark: '#000',
+            light: '#fff'
+        }
+    };
+
+    QRCode.toDataURL(payload, option, (err, url) => {
+        if (err) {
+            console.log('Generate QR Code failed');
+            return res.status(400).json({
+                RespCode: 400,
+                RespMessage: 'Bad request: ' + err
+            });
+        } else {
+            return res.status(200).json({
+                RespCode: 200,
+                RespMessage: 'Success',
+                Result: url
+            });
+        }
+    });
+  } catch (error) {
+    console.error('Error generating QR code:', error);
+    res.status(500).json({
+      RespCode: 500,
+      RespMessage: 'Server error'
+    });
+  }
+});
 
 module.exports = router;

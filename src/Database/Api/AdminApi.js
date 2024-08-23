@@ -254,3 +254,18 @@ export const cart = async (cartData) => {
           throw error;
         }
       };
+
+
+//สำหรับสร้าง QR code จากตะกร้าสินค้า
+export const qrcode = async (items, totalAmount) => {
+  try {
+    const response = await axios.post(`http://localhost:8000/api/generateQR`, {
+      items,
+      totalAmount
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error generating QR code:', error);
+    throw error;
+  }
+};

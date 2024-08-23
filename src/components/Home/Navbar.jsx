@@ -45,8 +45,8 @@ function Navbar({ scrollToServices, scrollToPortfolio, scrollToAbout, scrollToCo
           <li className={activeSection === 'services' ? 'active' : ''} onClick={scrollToServices}>SERVICES</li>
           <li className={activeSection === 'portfolio' ? 'active' : ''} onClick={scrollToPortfolio}>PORTFOLIO</li>
           <li className={activeSection === 'about' ? 'active' : ''} onClick={scrollToAbout}>ABOUT</li>
-          <li><Link to="/order" className="order-link">ORDER</Link></li> {/* ใช้ Link แทนการใช้ <li> */}
           <li className={activeSection === 'contact' ? 'active' : ''} onClick={scrollToContact}>CONTACT</li>
+          <li><Link to="/order" className="order-link">ORDER</Link></li> 
         </ul>
       </nav>
     </header>
