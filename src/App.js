@@ -23,6 +23,8 @@ import Addorder3 from "./components/Home/Admin/Addorder3.jsx";
 import ShoppingCart from "./components/Home/Shoppingcart.jsx";
 import Makepayment from "./components/Home/Makepayment.jsx";
 import ShowQRCode from "./components/Home/ShowQRCode .jsx";
+import Checkslip from "./components/Home/Checkslip.jsx";
+import Delivery from "./components/Home/Delivery.jsx";
 
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
           <Route path="/shoppingCart" element={<ShoppingCart />} />
           <Route path="/makepayment" element={<Makepayment />} />
           <Route path="/showQRCode" element={<ShowQRCode />} />
+          <Route path="/checkslip" element={<Checkslip />} />
+          <Route path="/delivery" element={<Delivery />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>

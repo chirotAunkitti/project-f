@@ -19,7 +19,7 @@ function Home() {
   const servicesRef = useRef(null);
   const portfolioRef = useRef(null);
   const aboutRef = useRef(null);
-  const contactRef = useRef(null);
+  // const contactRef = useRef(null);
   const ContentRef = useRef(null);
   const almostRef = useRef(null);
 
@@ -35,9 +35,9 @@ function Home() {
     aboutRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToContact = () => {
-    contactRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
+  // const scrollToContact = () => {
+  //   contactRef.current.scrollIntoView({ behavior: 'smooth' });
+  // };
 
   const scrollToContent = () => {
     ContentRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -63,12 +63,12 @@ function Home() {
         scrollToServices={scrollToServices}
         scrollToPortfolio={scrollToPortfolio}
         scrollToAbout={scrollToAbout}
-        scrollToContact={scrollToContact}
+        // scrollToContact={scrollToContact}
       />
       <main>
         <div className="home-container-container">
           <h1>Welcome to Screw D Company.</h1>
-          <h2>IT'S NICE TO MEET YOU</h2>
+          <h7>IT'S NICE TO MEET YOU</h7>
         </div>
         <button onClick={scrollToServices}>TELL ME MORE</button>
       </main>
@@ -81,10 +81,10 @@ function Home() {
       <div id="about" ref={aboutRef}>
         <About />
       </div>
-      <div id="contact" ref={contactRef}>
+      {/* <div id="contact" ref={contactRef}>
         <Contact />
-      </div>
-      <div ref={contactRef}>
+      </div> */}
+      <div>
         <Content />
       </div>
     </div>  

@@ -10,7 +10,9 @@ import {
   fetchCollars,
   fetchProducts,
   fetchSmartCollars,
-  fetchUsers
+  fetchUsers,
+  fetchddelivery,
+  fetchOrders
 } from "../../../Database/Api/AdminApi.js";
 import "./Admin.css";
 
@@ -21,6 +23,11 @@ function Admin() {
   const [smartCollars, setSmartCollars] = useState([]); // State สำหรับ smart_collars
   const [addressTags, setAddressTags] = useState([]); // State สำหรับ address_tags
   const [collars, setCollars] = useState([]); // State สำหรับ collars
+  const [deliveries, setDeliveries] = useState([]);
+  const [orderlist, setOrderlist] = useState([]);
+
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +41,10 @@ function Admin() {
       fetchAddressTagsData();
     } else if (currentPage === "Order Product 3") {
       fetchCollarsData();
+    } else if (currentPage === "address") {
+      renderDeliveriesData();
+    }else if (currentPage === "Order list") {
+      fetchOrderlistData();
     }
   }, [currentPage]);
 
@@ -46,15 +57,30 @@ function Admin() {
     }
   };
 
-  
-
-
   const fetchProductsData = async () => {
     try {
       const productsData = await fetchProducts(); // ใช้ฟังก์ชันดึงข้อมูลสินค้า
       setProducts(productsData);
     } catch (error) {
       console.error("Error fetching products:", error);
+    }
+  };
+
+  const renderDeliveriesData = async () => {
+    try {
+      const DeliveriesData = await fetchddelivery(); // ใช้ฟังก์ชันดึงข้อมูลที่อยู่ลูกค้า
+      setDeliveries(DeliveriesData);
+    } catch (error) {
+      console.error("Error fetching Deliveries:", error);
+    }
+  };
+
+    const fetchOrderlistData = async () => {
+    try {
+      const OrderlistData = await fetchOrders(); // ใช้ฟังก์ชันดึงข้อมูลรายการสั่งซื้อ
+      setOrderlist(OrderlistData);
+    } catch (error) {
+      console.error("Error fetching Orderlist:", error);
     }
   };
 
@@ -118,7 +144,7 @@ function Admin() {
       console.error("Error deleting user:", error);
     }
   };
-  
+
   const handleOrderDeleteClick = async (collarId) => {
     try {
       await deletecollars(collarId);
@@ -151,7 +177,6 @@ function Admin() {
       console.error("Error deleting smart collar:", error);
     }
   };
-  
 
   const handleProductDeleteClick = async (productId) => {
     try {
@@ -164,9 +189,8 @@ function Admin() {
     }
   };
 
-
   const handleProductEditClick = (productId) => {
-    navigate(`/editproduct/${(productId)}`);
+    navigate(`/editproduct/${productId}`);
   };
 
   const handleOrderEditClick = (collarId) => {
@@ -311,7 +335,10 @@ function Admin() {
             <th>Price</th>
             <th>Image</th>
             <th>Actions</th>
-            <button className="button-Add" onClick={() => handleAddorder1Click()}>
+            <button
+              className="button-Add"
+              onClick={() => handleAddorder1Click()}
+            >
               Add
             </button>
           </tr>
@@ -363,7 +390,6 @@ function Admin() {
       </table>
     </div>
   );
-  
 
   const renderOrderProduct2 = () => (
     <div>
@@ -376,7 +402,10 @@ function Admin() {
             <th>Price</th>
             <th>Image</th>
             <th>Actions</th>
-            <button className="button-Add" onClick={() => handleAddorder2Click()}>
+            <button
+              className="button-Add"
+              onClick={() => handleAddorder2Click()}
+            >
               Add
             </button>
           </tr>
@@ -440,7 +469,10 @@ function Admin() {
             <th>Price</th>
             <th>Image</th>
             <th>Actions</th>
-            <button className="button-Add" onClick={() => handleAddorder3Click()}>
+            <button
+              className="button-Add"
+              onClick={() => handleAddorder3Click()}
+            >
               Add
             </button>
           </tr>
@@ -493,6 +525,128 @@ function Admin() {
     </div>
   );
 
+  const renderDeliveries = () => (
+    <div>
+      <h3>Delivery Management</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Recipient Name</th>
+            <th>Address Line 1</th>
+            <th>Address Line 2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Postal Code</th>
+            <th>Country</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {deliveries.length > 0 ? (
+            deliveries.map((delivery) => (
+              <tr key={delivery.id}>
+                <td>{delivery.id}</td>
+                <td>{delivery.recipient_name}</td>
+                <td>{delivery.address_line1}</td>
+                <td>{delivery.address_line2 || "-"}</td>
+                <td>{delivery.city}</td>
+                <td>{delivery.state}</td>
+                <td>{delivery.postal_code}</td>
+                <td>{delivery.country}</td>
+                <td>{delivery.phone_number || "-"}</td>
+                <td>
+                  <button
+                    className="button-Edit"
+                    // onClick={() => handleEditDeliveryClick(delivery.id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="button-Delete"
+                    // onClick={() => handleDeleteDeliveryClick(delivery.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="10">No deliveries found</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      {/* <button className="button-Add" onClick={handleAddDeliveryClick}>
+        Add New Delivery
+      </button> */}
+    </div>
+  );
+
+  const renderOrderlist = () => (
+    <div>
+      <h3>Order List</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Total Amount</th>
+            <th>Order Date</th>
+            <th>Slip Image</th>
+            <th>Verified</th>
+            <th>Receiver Name</th>
+            <th>Sending Bank</th>
+            <th>Transaction Date</th>
+            <th>Transaction Time</th>
+            <th>Items</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orderlist.length > 0 ? (
+            orderlist.map((order) => (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>{order.user_id}</td>
+                <td>{order.total_amount}</td>
+                <td>{new Date(order.order_date).toLocaleDateString()}</td>
+                <td>
+                  {order.slip_image_url ? (
+                    <img src={order.slip_image_url} alt="Slip" width="100" />
+                  ) : (
+                    'No image'
+                  )}
+                </td>
+                <td>{order.slip_verified ? 'Verified' : 'Not Verified'}</td>
+                <td>{order.receiver_name}</td>
+                <td>{order.sending_bank}</td>
+                <td>{order.trans_date}</td>
+                <td>{order.trans_time}</td>
+                <td>
+                  {order.items.map((item, index) => (
+                    <div key={index}>
+                      <p>Product ID: {item.product_id}</p>
+                      <p>Quantity: {item.quantity}</p>
+                      <p>Price: {item.price}</p>
+                    </div>
+                  ))}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="11">No orders found</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+  
+
+
   const renderContent = () => {
     switch (currentPage) {
       case "User Management":
@@ -505,10 +659,10 @@ function Admin() {
         return renderOrderProduct2(); // แสดงตาราง address tags
       case "Order Product 3":
         return renderOrderProduct3(); // แสดงตาราง collars
-      case "System Settings":
-        return <div>System Settings Content</div>;
-      case "E-commerce Management":
-        return <div>E-commerce Management Content</div>;
+      case "address":
+        return renderDeliveries();
+      case "Order list":
+        return renderOrderlist();
       default:
         return <div>Select a page</div>;
     }
@@ -551,15 +705,15 @@ function Admin() {
         </button>
         <button
           className="sidebar-button"
-          onClick={() => setCurrentPage("System Settings")}
+          onClick={() => setCurrentPage("address")}
         >
-          System Settings
+          address
         </button>
         <button
           className="sidebar-button"
-          onClick={() => setCurrentPage("E-commerce Management")}
+          onClick={() => setCurrentPage("Order list")}
         >
-          E-commerce Management
+          Order list
         </button>
       </div>
 

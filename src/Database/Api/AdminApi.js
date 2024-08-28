@@ -269,3 +269,48 @@ export const qrcode = async (items, totalAmount) => {
     throw error;
   }
 };
+
+
+
+export const deli = async (data) => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/delivery', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error sending delivery data:', error.message);
+    throw error;
+  }
+};
+
+// ดึงข้อมูล ฟอร์มที่อยู่หน้า Admin
+export const fetchddelivery = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/delivery-admin');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching smart collars:', error);
+    throw error;
+  }
+};
+
+// บันทึกข้อมูลคำสั่งซื้อและสลิป
+export const saveOrderToDatabase = async (orderData) => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/save-order', orderData);
+    return response.data;
+  } catch (error) {
+    console.error('Error saving order:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+// ดึงข้อมูลคำสั่งซื้อสำหรับหน้า Admin
+export const fetchOrders = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/orders-admin');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    throw error;
+  }
+};

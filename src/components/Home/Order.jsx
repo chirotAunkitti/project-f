@@ -52,6 +52,9 @@ function Order() {
     <div className={`order-page ${darkMode ? "dark" : ""}`}>
       <header className="order-header">
         <h4>Screw D</h4>
+        <p className="Catalog-order">
+          Catalog
+        </p>
         <div className="header-right">
           <nav>
             <ul className="nav-links">
@@ -76,6 +79,7 @@ function Order() {
               </li>
             </ul>
           </nav>
+
           <div className="dark-mode-toggle">
             <button className="darkMode" onClick={toggleDarkMode}>
               {darkMode ? "🌜" : "🌞"}
@@ -84,7 +88,6 @@ function Order() {
         </div>
       </header>
       <main>
-        <h2>Catalog</h2>
         <div className="filter-buttons">
           <button
             className={`order-product-button ${

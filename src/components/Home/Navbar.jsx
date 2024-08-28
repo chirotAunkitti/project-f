@@ -16,16 +16,16 @@ function Navbar({ scrollToServices, scrollToPortfolio, scrollToAbout, scrollToCo
       const servicesSection = document.getElementById('services');
       const portfolioSection = document.getElementById('portfolio');
       const aboutSection = document.getElementById('about');
-      const contactSection = document.getElementById('contact');
+      // const contactSection = document.getElementById('contact');
 
       if (window.scrollY >= servicesSection.offsetTop && window.scrollY < portfolioSection.offsetTop) {
         setActiveSection('services');
       } else if (window.scrollY >= portfolioSection.offsetTop && window.scrollY < aboutSection.offsetTop) {
         setActiveSection('portfolio');
-      } else if (window.scrollY >= aboutSection.offsetTop && window.scrollY < contactSection.offsetTop) {
+      } else if (window.scrollY >= aboutSection.offsetTop && window.scrollY < aboutSection.offsetTop) {
         setActiveSection('about');
-      } else if (window.scrollY >= contactSection.offsetTop) {
-        setActiveSection('contact');
+      // } else if (window.scrollY >= contactSection.offsetTop) {
+      //   setActiveSection('contact');
       } else {
         setActiveSection('');
       }
@@ -45,7 +45,7 @@ function Navbar({ scrollToServices, scrollToPortfolio, scrollToAbout, scrollToCo
           <li className={activeSection === 'services' ? 'active' : ''} onClick={scrollToServices}>SERVICES</li>
           <li className={activeSection === 'portfolio' ? 'active' : ''} onClick={scrollToPortfolio}>PORTFOLIO</li>
           <li className={activeSection === 'about' ? 'active' : ''} onClick={scrollToAbout}>ABOUT</li>
-          <li className={activeSection === 'contact' ? 'active' : ''} onClick={scrollToContact}>CONTACT</li>
+          {/* <li className={activeSection === 'contact' ? 'active' : ''} onClick={scrollToContact}>CONTACT</li> */}
           <li><Link to="/order" className="order-link">ORDER</Link></li> 
         </ul>
       </nav>

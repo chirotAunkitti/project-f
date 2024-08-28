@@ -64,15 +64,15 @@ main {
 }
 
 h1 {
-  font-size: 2vw; /* ขนาดฟอนต์ของ Welcome to Screw D Company. */
-  margin-bottom: 10px; /* เพิ่มระยะห่างจากข้อความด้านล่าง */
-  font-weight: 400; /* น้ำหนักฟอนต์ปกติ */
+  font-size: 2.5vw; /* ขนาดฟอนต์ของ Welcome to Screw D Company. */
+  margin-bottom: 30px; /* เพิ่มระยะห่างจากข้อความด้านล่าง */
+  font-weight: 500; /* น้ำหนักฟอนต์ปกติ */
 }
 
-h2 {
+h7 {
   font-size: 4vw; /* ขนาดฟอนต์ของ IT'S NICE TO MEET YOU */
   margin-bottom: 50px;
-  font-weight: 600; /* น้ำหนักฟอนต์หนักขึ้น */
+  font-weight: 550; /* น้ำหนักฟอนต์หนักขึ้น */
 }
 
 button {

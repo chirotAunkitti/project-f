@@ -12,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   /* align-items: center; ปรับเป็นจัดแนวที่ตรงกลาง */
+  font-weight: bold;
 }
 
 h2 {
@@ -185,4 +186,11 @@ h4 {
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: 400;
+}
+
+.Catalog-order{
+  margin-bottom: 50px; 
+  font-size: 50px;
+  margin-left: 180px;
+  font-weight: bold;
 }

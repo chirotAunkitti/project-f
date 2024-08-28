@@ -747,4 +747,131 @@ router.post('/generateQR', async (req, res) => {
   }
 });
 
+
+
+//บันทึกข้อมูล ฟอร์ม ที่อยู่
+router.post('/delivery', (req, res) => {
+  const { recipient_name, address_line1, address_line2, city, state, postal_code, country, phone_number } = req.body;
+
+  // ตรวจสอบค่าที่ส่งเข้ามา
+  if (!recipient_name || !address_line1 || !address_line2 || !city || !state || !postal_code || !country || !phone_number) {
+    return res.status(400).send('Missing required fields');
+  }
+
+  const sql = 'INSERT INTO delivery (recipient_name, address_line1, address_line2, city, state, postal_code, country, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+  const values = [recipient_name, address_line1, address_line2, city, state, postal_code, country, phone_number];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error inserting data into the database:', err);
+      return res.status(500).send('Error inserting data into the database');
+    }
+    return res.status(201).send('Delivery information saved successfully');
+  });
+});
+
+
+// ดึงข้อมูล แบบฟอร์ม ที่อยู่ หน้า Admin
+router.get("/delivery-admin", (req, res) => {
+  const query = "SELECT * FROM delivery";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถดึงข้อมูลได้" });
+    }
+    res.status(200).json(results);
+  });
+});
+
+router.post('/save-order', (req, res) => {
+  const { items, totalAmount, slipData } = req.body;
+
+  console.log('Received order data:', { items, totalAmount, slipData });
+
+  // ตรวจสอบข้อมูลที่จำเป็น
+  if (!items || !totalAmount || !slipData) {
+    console.error('Missing required fields:', { items, totalAmount, slipData });
+    return res.status(400).send('Missing required fields');
+  }
+
+  // บันทึกข้อมูลลงในตาราง orders
+  const orderSql = 'INSERT INTO orders (user_id, total_amount, slip_image_url, receiver_name, sending_bank, trans_date, trans_time) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  const orderValues = [
+    1, // ใส่ user_id ตามที่คุณต้องการ (อาจจะมาจากระบบ authentication)
+    totalAmount,
+    slipData.slipImageUrl,
+    slipData.receiverName,
+    slipData.sendingBank,
+    slipData.transDate,
+    slipData.transTime
+  ];
+
+  db.query(orderSql, orderValues, (err, orderResult) => {
+    if (err) {
+      console.error('Error inserting order data:', err);
+      return res.status(500).send('Error saving order data: ' + err.message);
+    }
+
+    const orderId = orderResult.insertId;
+
+    // บันทึกรายการสินค้าลงในตาราง order_items
+    const itemSql = 'INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ?';
+    const itemValues = items.map(item => [orderId, item.id, item.quantity, item.price]);
+
+    db.query(itemSql, [itemValues], (err) => {
+      if (err) {
+        console.error('Error inserting order items:', err);
+        return res.status(500).send('Error saving order items: ' + err.message);
+      }
+
+      return res.status(201).send('Order and slip information saved successfully');
+    });
+  });
+});
+
+// ดึงข้อมูลคำสั่งซื้อสำหรับหน้า Admin
+router.get("/orders-admin", (req, res) => {
+  const query = `
+    SELECT o.*, oi.product_id, oi.quantity, oi.price
+    FROM orders o
+    LEFT JOIN order_items oi ON o.id = oi.order_id
+  `;
+  
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถดึงข้อมูลได้" });
+    }
+
+    // จัดรูปแบบข้อมูลให้เหมาะสม
+    const formattedResults = results.reduce((acc, row) => {
+      if (!acc[row.id]) {
+        acc[row.id] = {
+          id: row.id,
+          user_id: row.user_id,
+          total_amount: row.total_amount,
+          order_date: row.order_date,
+          slip_image_url: row.slip_image_url,
+          slip_verified: row.slip_verified,
+          receiver_name: row.receiver_name,
+          sending_bank: row.sending_bank,
+          trans_date: row.trans_date,
+          trans_time: row.trans_time,
+          items: []
+        };
+        
+      }
+      acc[row.id].items.push({
+        product_id: row.product_id,
+        quantity: row.quantity,
+        price: row.price
+      });
+      return acc;
+    }, {});
+
+    res.status(200).json(Object.values(formattedResults));
+  });
+});
+
+
 module.exports = router;

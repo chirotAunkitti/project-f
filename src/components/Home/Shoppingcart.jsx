@@ -37,6 +37,11 @@ function Shoppingcart() {
   );
 
   const handleCheckout = async () => {
+    if (items.length === 0) {
+      alert("ไม่มีสินค้าในรายการ กรุณาเพิ่มสินค้าก่อนชำระเงิน");
+      return;
+    }
+
     try {
       const response = await qrcode(items, subtotal);
       navigate("/showQRCode", { 
@@ -113,7 +118,7 @@ function Shoppingcart() {
                       className="remove-button"
                       onClick={() => removeItem(item.id)}
                     >
-                      x
+                      --x--
                     </button>
                   </td>
                 </tr>
@@ -137,9 +142,13 @@ function Shoppingcart() {
             <strong>ราคารวมทั้งหมด</strong>
             <strong>${subtotal}</strong>
           </p>
-          <button className="checkout" onClick={handleCheckout}>
-            CHECKOUT
-          </button>
+          <button 
+          className="checkout" 
+          onClick={handleCheckout}
+          disabled={items.length === 0} // ปิดปุ่มเมื่อไม่มีสินค้า
+        >
+          CHECKOUT
+        </button>
         </div>
       </div>
     </div>
