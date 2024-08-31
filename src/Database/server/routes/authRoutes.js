@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../../Database"); 
+const db = require("../../Database");
 const multer = require("multer");
-const { Client } = require('@line/bot-sdk'); 
+const { Client } = require("@line/bot-sdk");
 const upload = multer({ dest: "uploads/" });
 
-const QRCode = require('qrcode');
-const generatePayload = require('promptpay-qr');
-const bodyParser = require('body-parser');
+const QRCode = require("qrcode");
+const generatePayload = require("promptpay-qr");
+const bodyParser = require("body-parser");
+const fs = require("fs");
+const path = require("path");
 
 // เส้นทางสำหรับการลงทะเบียน
 router.post("/register", (req, res) => {
@@ -48,12 +50,10 @@ router.post("/login", (req, res) => {
     }
 
     const user = results[0];
-    res
-      .status(200)
-      .json({
-        message: "ล็อกอินสำเร็จ",
-        user: { id: user.id, email: user.email },
-      });
+    res.status(200).json({
+      message: "ล็อกอินสำเร็จ",
+      user: { id: user.id, email: user.email },
+    });
   });
 });
 
@@ -68,7 +68,6 @@ router.get("/users", (req, res) => {
     res.status(200).json(results);
   });
 });
-
 
 // เส้นทางสำหรับการดึงข้อมูลผู้ใช้ตาม ID Admin
 router.get("/users/:id", (req, res) => {
@@ -165,13 +164,12 @@ router.get("/products", (req, res) => {
 
     results = results.map((item) => ({
       ...item,
-      image: item.image ? url + item.image.replace(/\\/g, "/") : null,  // ตรวจสอบว่าค่า image เป็น null หรือไม่
+      image: item.image ? url + item.image.replace(/\\/g, "/") : null, // ตรวจสอบว่าค่า image เป็น null หรือไม่
     }));
 
     res.status(200).json(results);
   });
 });
-
 
 // เส้นทางสำหรับการดึงรายละเอียดสินค้าตาม ID
 router.get("/products/:id", (req, res) => {
@@ -242,54 +240,55 @@ router.put("/products/:id", upload.single("image"), async (req, res) => {
 });
 
 // ดึงข้อมูลผลิตภัณฑ์ตามหมวดหมู่
-router.get('/order/:category', (req, res) => {
+router.get("/order/:category", (req, res) => {
   const category = req.params.category;
   const tableNames = {
-    'Smart collars': 'smart_collars',
-    'Address tags': 'address_tags',
-    'Collars': 'collars'
+    "Smart collars": "smart_collars",
+    "Address tags": "address_tags",
+    Collars: "collars",
   };
 
   const tableName = tableNames[category];
 
   if (!tableName) {
-    return res.status(400).json({ message: 'ไม่พบสินค้าตามหมวดหมู่' });
+    return res.status(400).json({ message: "ไม่พบสินค้าตามหมวดหมู่" });
   }
 
-  const query = 'SELECT * FROM ' + tableName;
+  const query = "SELECT * FROM " + tableName;
 
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching products:', err);
-      return res.status(500).json({ message: 'เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์' });
+      console.error("Error fetching products:", err);
+      return res
+        .status(500)
+        .json({ message: "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์" });
     }
 
     const url = req.protocol + "://" + req.get("host") + "/";
 
     results = results.map((item) => ({
       ...item,
-      image: item.image ? url + item.image.replace(/\\/g, "/") : null,  // ตรวจสอบว่าค่า image เป็น null หรือไม่
+      image: item.image ? url + item.image.replace(/\\/g, "/") : null, // ตรวจสอบว่าค่า image เป็น null หรือไม่
     }));
 
     res.json(results);
   });
 });
 
-
 // ตัวอย่างเส้นทางสำหรับ smart collars
-router.get('/orders/smart-collars', (req, res) => {
-  const query = 'SELECT * FROM smart_collars';
+router.get("/orders/smart-collars", (req, res) => {
+  const query = "SELECT * FROM smart_collars";
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching smart collars:', err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      console.error("Error fetching smart collars:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
 
     const url = req.protocol + "://" + req.get("host") + "/";
 
     results = results.map((item) => ({
       ...item,
-      image: item.image ? url + item.image.replace(/\\/g, "/") : null,  // ตรวจสอบว่าค่า image เป็น null หรือไม่
+      image: item.image ? url + item.image.replace(/\\/g, "/") : null, // ตรวจสอบว่าค่า image เป็น null หรือไม่
     }));
 
     res.json(results);
@@ -297,19 +296,19 @@ router.get('/orders/smart-collars', (req, res) => {
 });
 
 // เส้นทางสำหรับ address tags
-router.get('/orders/address-tags', (req, res) => {
-  const query = 'SELECT * FROM address_tags';
+router.get("/orders/address-tags", (req, res) => {
+  const query = "SELECT * FROM address_tags";
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching address tags:', err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      console.error("Error fetching address tags:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
 
     const url = req.protocol + "://" + req.get("host") + "/";
 
     results = results.map((item) => ({
       ...item,
-      image: item.image ? url + item.image.replace(/\\/g, "/") : null,  // ตรวจสอบว่าค่า image เป็น null หรือไม่
+      image: item.image ? url + item.image.replace(/\\/g, "/") : null, // ตรวจสอบว่าค่า image เป็น null หรือไม่
     }));
 
     res.json(results);
@@ -317,19 +316,19 @@ router.get('/orders/address-tags', (req, res) => {
 });
 
 // เส้นทางสำหรับ collars
-router.get('/orders/collars', (req, res) => {
-  const query = 'SELECT * FROM collars';
+router.get("/orders/collars", (req, res) => {
+  const query = "SELECT * FROM collars";
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching collars:', err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      console.error("Error fetching collars:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
 
     const url = req.protocol + "://" + req.get("host") + "/";
 
     results = results.map((item) => ({
       ...item,
-      image: item.image ? url + item.image.replace(/\\/g, "/") : null,  // ตรวจสอบว่าค่า image เป็น null หรือไม่
+      image: item.image ? url + item.image.replace(/\\/g, "/") : null, // ตรวจสอบว่าค่า image เป็น null หรือไม่
     }));
 
     res.json(results);
@@ -337,24 +336,26 @@ router.get('/orders/collars', (req, res) => {
 });
 
 // ดึงข้อมูล smart collar ตาม ID เพื่อแสดงในหน้าแก้ไข
-router.get('/smart-collars/:id', (req, res) => {
+router.get("/smart-collars/:id", (req, res) => {
   const id = req.params.id;
-  const query = 'SELECT * FROM smart_collars WHERE id = ?';
-  
+  const query = "SELECT * FROM smart_collars WHERE id = ?";
+
   db.query(query, [id], (err, results) => {
     if (err) {
-      console.error('Error fetching smart collar:', err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      console.error("Error fetching smart collar:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
-    
+
     if (results.length === 0) {
-      return res.status(404).json({ message: 'Smart collar not found' });
+      return res.status(404).json({ message: "Smart collar not found" });
     }
 
     const url = req.protocol + "://" + req.get("host") + "/";
     const smartCollar = {
       ...results[0],
-      image: results[0].image ? url + results[0].image.replace(/\\/g, "/") : null,
+      image: results[0].image
+        ? url + results[0].image.replace(/\\/g, "/")
+        : null,
     };
 
     res.json(smartCollar);
@@ -369,7 +370,8 @@ router.put("/smart-collars/:id", upload.single("image"), async (req, res) => {
     const image = req.file ? req.file.path : null;
 
     // อัปเดตข้อมูล smart collar ในฐานข้อมูล
-    const query = "UPDATE smart_collars SET name = ?, price = ?, image = ? WHERE id = ?";
+    const query =
+      "UPDATE smart_collars SET name = ?, price = ?, image = ? WHERE id = ?";
     db.query(query, [name, price, image, id], (err, results) => {
       if (err) {
         console.error("Database error:", err);
@@ -387,26 +389,27 @@ router.put("/smart-collars/:id", upload.single("image"), async (req, res) => {
   }
 });
 
-
 // ดึงข้อมูล address tag ตาม ID เพื่อแสดงในหน้าแก้ไข
-router.get('/address-tags/:id', (req, res) => {
+router.get("/address-tags/:id", (req, res) => {
   const id = req.params.id;
-  const query = 'SELECT * FROM address_tags WHERE id = ?';
-  
+  const query = "SELECT * FROM address_tags WHERE id = ?";
+
   db.query(query, [id], (err, results) => {
     if (err) {
-      console.error('Error fetching address tag:', err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      console.error("Error fetching address tag:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
-    
+
     if (results.length === 0) {
-      return res.status(404).json({ message: 'Address tag not found' });
+      return res.status(404).json({ message: "Address tag not found" });
     }
 
     const url = req.protocol + "://" + req.get("host") + "/";
     const addressTag = {
       ...results[0],
-      image: results[0].image ? url + results[0].image.replace(/\\/g, "/") : null,
+      image: results[0].image
+        ? url + results[0].image.replace(/\\/g, "/")
+        : null,
     };
 
     res.json(addressTag);
@@ -414,50 +417,53 @@ router.get('/address-tags/:id', (req, res) => {
 });
 
 // อัปเดตข้อมูล address tag ตาม ID
-router.put('/address-tags/:id', upload.single('image'), async (req, res) => {
+router.put("/address-tags/:id", upload.single("image"), async (req, res) => {
   try {
     const { id } = req.params;
     const { name, price } = req.body;
     const image = req.file ? req.file.path : null;
 
     // อัปเดตข้อมูล address tag ในฐานข้อมูล
-    const query = 'UPDATE address_tags SET name = ?, price = ?, image = ? WHERE id = ?';
+    const query =
+      "UPDATE address_tags SET name = ?, price = ?, image = ? WHERE id = ?";
     db.query(query, [name, price, image, id], (err, results) => {
       if (err) {
-        console.error('Error updating address tag:', err);
-        return res.status(500).json({ message: 'ไม่สามารถอัปเดตข้อมูลได้' });
+        console.error("Error updating address tag:", err);
+        return res.status(500).json({ message: "ไม่สามารถอัปเดตข้อมูลได้" });
       }
 
       if (results.affectedRows === 0) {
-        return res.status(404).json({ message: 'ไม่พบข้อมูลที่ต้องการอัปเดต' });
+        return res.status(404).json({ message: "ไม่พบข้อมูลที่ต้องการอัปเดต" });
       }
 
-      res.status(200).json({ message: 'อัปเดตข้อมูลสำเร็จ' });
+      res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จ" });
     });
   } catch (error) {
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
 // ดึงข้อมูล collar ตาม ID
-router.get('/collars/:id', (req, res) => {
+router.get("/collars/:id", (req, res) => {
   const id = req.params.id;
-  const query = 'SELECT * FROM collars WHERE id = ?';
+  const query = "SELECT * FROM collars WHERE id = ?";
 
   db.query(query, [id], (err, results) => {
     if (err) {
-      console.error('Error fetching collar:', err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      console.error("Error fetching collar:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
 
     if (results.length === 0) {
-      return res.status(404).json({ message: 'Collar not found' });
+      return res.status(404).json({ message: "Collar not found" });
     }
 
     const url = req.protocol + "://" + req.get("host") + "/";
     const collar = {
       ...results[0],
-      image: results[0].image ? url + results[0].image.replace(/\\/g, "/") : null,
+      image: results[0].image
+        ? url + results[0].image.replace(/\\/g, "/")
+        : null,
     };
 
     res.json(collar);
@@ -465,34 +471,34 @@ router.get('/collars/:id', (req, res) => {
 });
 
 // อัปเดตข้อมูล collar
-router.put('/collars/:id', upload.single('image'), (req, res) => {
+router.put("/collars/:id", upload.single("image"), (req, res) => {
   const id = req.params.id;
   const { name, price } = req.body;
   const image = req.file ? req.file.path : null;
 
-  const query = 'UPDATE collars SET name = ?, price = ?, image = ? WHERE id = ?';
+  const query =
+    "UPDATE collars SET name = ?, price = ?, image = ? WHERE id = ?";
 
   db.query(query, [name, price, image, id], (err, result) => {
     if (err) {
-      console.error('Error updating collar:', err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      console.error("Error updating collar:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Collar not found' });
+      return res.status(404).json({ message: "Collar not found" });
     }
 
-    res.json({ message: 'Collar updated successfully' });
+    res.json({ message: "Collar updated successfully" });
   });
 });
 
-
 //ลบ order product1
 
-router.delete('/smart-collars/:id', (req, res) => {
+router.delete("/smart-collars/:id", (req, res) => {
   const { id } = req.params;
   const query = "DELETE FROM smart_collars WHERE id = ?";
-  
+
   db.query(query, [id], (err, results) => {
     if (err) {
       console.error("Database error:", err);
@@ -508,10 +514,10 @@ router.delete('/smart-collars/:id', (req, res) => {
 });
 
 //ลบ order product2
-router.delete('/address-tags/:id', (req, res) => {
+router.delete("/address-tags/:id", (req, res) => {
   const { id } = req.params;
   const query = "DELETE FROM address_tags WHERE id = ?";
-  
+
   db.query(query, [id], (err, results) => {
     if (err) {
       console.error("Database error:", err);
@@ -527,10 +533,10 @@ router.delete('/address-tags/:id', (req, res) => {
 });
 
 //ลบ order product3
-router.delete('/ordercollars/:id', (req, res) => {
+router.delete("/ordercollars/:id", (req, res) => {
   const { id } = req.params;
   const query = "DELETE FROM collars WHERE id = ?";
-  
+
   db.query(query, [id], (err, results) => {
     if (err) {
       console.error("Database error:", err);
@@ -545,32 +551,35 @@ router.delete('/ordercollars/:id', (req, res) => {
   });
 });
 
-
 // API สำหรับเพิ่มสินค้าใหม่ใน smart_collars
-router.post('/smart-collars', (req, res) => {
+router.post("/smart-collars", (req, res) => {
   const { name, price, image } = req.body;
-  
+
   // ตรวจสอบข้อมูลที่ได้รับจาก request
   if (!name || !price || !image) {
     return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
   }
 
-  const query = "INSERT INTO smart_collars (name, price, image) VALUES (?, ?, ?)";
+  const query =
+    "INSERT INTO smart_collars (name, price, image) VALUES (?, ?, ?)";
 
   db.query(query, [name, price, image], (err, results) => {
     if (err) {
       console.error("Database error:", err);
-      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+      return res
+        .status(500)
+        .json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
     }
 
-    res.status(201).json({ message: "เพิ่มสินค้าสำเร็จ", productId: results.insertId });
+    res
+      .status(201)
+      .json({ message: "เพิ่มสินค้าสำเร็จ", productId: results.insertId });
   });
 });
-
 
 // API สำหรับเพิ่มสินค้าใหม่ใน smart_collars
 
-router.post('/ordersmart-collars', upload.single('image'), (req, res) => {
+router.post("/ordersmart-collars", upload.single("image"), (req, res) => {
   const { name, price } = req.body;
   const image = req.file ? `uploads/${req.file.filename}` : null;
 
@@ -578,24 +587,27 @@ router.post('/ordersmart-collars', upload.single('image'), (req, res) => {
     return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
   }
 
-  const query = "INSERT INTO smart_collars (name, price, image) VALUES (?, ?, ?)";
+  const query =
+    "INSERT INTO smart_collars (name, price, image) VALUES (?, ?, ?)";
 
   db.query(query, [name, price, image], (err, results) => {
     if (err) {
       console.error("Database error:", err);
-      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+      return res
+        .status(500)
+        .json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
     }
 
-    res.status(201).json({ 
-      message: "เพิ่มสินค้าสำเร็จ", 
-      product: { id: results.insertId, name, price, image } 
+    res.status(201).json({
+      message: "เพิ่มสินค้าสำเร็จ",
+      product: { id: results.insertId, name, price, image },
     });
   });
 });
 
 // API สำหรับเพิ่มสินค้าใหม่ใน address_tags
 
-router.post('/orderaddress-tags', upload.single('image'), (req, res) => {
+router.post("/orderaddress-tags", upload.single("image"), (req, res) => {
   const { name, price } = req.body;
   const image = req.file ? `uploads/${req.file.filename}` : null;
 
@@ -603,24 +615,27 @@ router.post('/orderaddress-tags', upload.single('image'), (req, res) => {
     return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
   }
 
-  const query = "INSERT INTO address_tags (name, price, image) VALUES (?, ?, ?)";
+  const query =
+    "INSERT INTO address_tags (name, price, image) VALUES (?, ?, ?)";
 
   db.query(query, [name, price, image], (err, results) => {
     if (err) {
       console.error("Database error:", err);
-      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+      return res
+        .status(500)
+        .json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
     }
 
-    res.status(201).json({ 
-      message: "เพิ่มสินค้าสำเร็จ", 
-      product: { id: results.insertId, name, price, image } 
+    res.status(201).json({
+      message: "เพิ่มสินค้าสำเร็จ",
+      product: { id: results.insertId, name, price, image },
     });
   });
 });
 
 // API สำหรับเพิ่มสินค้าใหม่ใน address_tags
 
-router.post('/order3collars', upload.single('image'), (req, res) => {
+router.post("/order3collars", upload.single("image"), (req, res) => {
   const { name, price } = req.body;
   const image = req.file ? `uploads/${req.file.filename}` : null;
 
@@ -633,21 +648,22 @@ router.post('/order3collars', upload.single('image'), (req, res) => {
   db.query(query, [name, price, image], (err, results) => {
     if (err) {
       console.error("Database error:", err);
-      return res.status(500).json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+      return res
+        .status(500)
+        .json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
     }
 
-    res.status(201).json({ 
-      message: "เพิ่มสินค้าสำเร็จ", 
-      product: { id: results.insertId, name, price, image } 
+    res.status(201).json({
+      message: "เพิ่มสินค้าสำเร็จ",
+      product: { id: results.insertId, name, price, image },
     });
   });
 });
 
-
 // เพิ่มสินค้าหรืออัปเดตปริมาณสินค้าที่มีอยู่ในตะกร้า
-router.post('/add-to-cart', (req, res) => {
+router.post("/add-to-cart", (req, res) => {
   const { productId, productName, productImage, productPrice } = req.body;
-  
+
   // ตรวจสอบว่ามีสินค้านี้ในตะกร้าหรือไม่
   const sqlCheck = "SELECT * FROM ShoppingCart WHERE productId = ?";
   db.query(sqlCheck, [productId], (err, result) => {
@@ -657,29 +673,34 @@ router.post('/add-to-cart', (req, res) => {
 
     if (result.length > 0) {
       // หากมีสินค้าอยู่แล้วในตะกร้า ให้เพิ่มปริมาณ
-      const sqlUpdate = "UPDATE ShoppingCart SET quantity = quantity + 1 WHERE productId = ?";
+      const sqlUpdate =
+        "UPDATE ShoppingCart SET quantity = quantity + 1 WHERE productId = ?";
       db.query(sqlUpdate, [productId], (err, result) => {
         if (err) {
           return res.status(500).send(err);
         }
-        res.send('Product quantity updated in cart');
+        res.send("Product quantity updated in cart");
       });
     } else {
       // หากไม่มีสินค้าในตะกร้า ให้เพิ่มสินค้าใหม่
-      const sqlInsert = "INSERT INTO ShoppingCart (productId, productName, productImage, productPrice, quantity) VALUES (?, ?, ?, ?, ?)";
-      db.query(sqlInsert, [productId, productName, productImage, productPrice, 1], (err, result) => {
-        if (err) {
-          return res.status(500).send(err);
+      const sqlInsert =
+        "INSERT INTO ShoppingCart (productId, productName, productImage, productPrice, quantity) VALUES (?, ?, ?, ?, ?)";
+      db.query(
+        sqlInsert,
+        [productId, productName, productImage, productPrice, 1],
+        (err, result) => {
+          if (err) {
+            return res.status(500).send(err);
+          }
+          res.send("Product added to cart");
         }
-        res.send('Product added to cart');
-      });
+      );
     }
   });
 });
 
-
 // ดึงข้อมูลสินค้าจากตะกร้า
-router.get('/cart', (req, res) => {
+router.get("/cart", (req, res) => {
   const sqlSelect = "SELECT * FROM ShoppingCart";
   db.query(sqlSelect, (err, result) => {
     if (err) {
@@ -689,84 +710,109 @@ router.get('/cart', (req, res) => {
   });
 });
 
-
 // ลบสินค้าจากตะกร้า
-router.delete('/remove-from-cart/:id', (req, res) => {
+router.delete("/remove-from-cart/:id", (req, res) => {
   const productId = req.params.id;
   const sqlDelete = "DELETE FROM ShoppingCart WHERE productId = ?";
   db.query(sqlDelete, [productId], (err, result) => {
     if (err) {
       return res.status(500).send(err);
     }
-    res.send('Product removed from cart');
+    res.send("Product removed from cart");
   });
 });
 
+
 // Qr Code
-router.post('/generateQR', async (req, res) => {
+router.post("/generateQR", async (req, res) => {
   try {
     // รับข้อมูลจาก request body แทนการดึงจากฐานข้อมูล
     const { items, totalAmount } = req.body;
 
     // คำนวณยอดรวมจากข้อมูลที่ส่งมา (ถ้าไม่มี totalAmount)
-    const amount = totalAmount || items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    ); // จำนวนเงินในหน่วยบาท
+    const amount =
+      totalAmount ||
+      items.reduce((sum, item) => sum + item.price * item.quantity, 0); // จำนวนเงินในหน่วยบาท
 
-    const mobileNumber = '0956721589'; // หมายเลขโทรศัพท์ที่ใช้ในการชำระเงิน
+    const mobileNumber = "0956721589"; // หมายเลขโทรศัพท์ที่ใช้ในการชำระเงิน
     const payload = generatePayload(mobileNumber, { amount });
     const option = {
-        color: {
-            dark: '#000',
-            light: '#fff'
-        }
+      color: {
+        dark: "#000",
+        light: "#fff",
+      },
     };
 
     QRCode.toDataURL(payload, option, (err, url) => {
-        if (err) {
-            console.log('Generate QR Code failed');
-            return res.status(400).json({
-                RespCode: 400,
-                RespMessage: 'Bad request: ' + err
-            });
-        } else {
-            return res.status(200).json({
-                RespCode: 200,
-                RespMessage: 'Success',
-                Result: url
-            });
-        }
+      if (err) {
+        console.log("Generate QR Code failed");
+        return res.status(400).json({
+          RespCode: 400,
+          RespMessage: "Bad request: " + err,
+        });
+      } else {
+        return res.status(200).json({
+          RespCode: 200,
+          RespMessage: "Success",
+          Result: url,
+        });
+      }
     });
   } catch (error) {
-    console.error('Error generating QR code:', error);
+    console.error("Error generating QR code:", error);
     res.status(500).json({
       RespCode: 500,
-      RespMessage: 'Server error'
+      RespMessage: "Server error",
     });
   }
 });
 
-
-
 //บันทึกข้อมูล ฟอร์ม ที่อยู่
-router.post('/delivery', (req, res) => {
-  const { recipient_name, address_line1, address_line2, city, state, postal_code, country, phone_number } = req.body;
+router.post("/delivery", (req, res) => {
+  const {
+    recipient_name,
+    address_line1,
+    address_line2,
+    city,
+    state,
+    postal_code,
+    country,
+    phone_number,
+  } = req.body;
 
   // ตรวจสอบค่าที่ส่งเข้ามา
-  if (!recipient_name || !address_line1 || !address_line2 || !city || !state || !postal_code || !country || !phone_number) {
-    return res.status(400).send('Missing required fields');
+  if (
+    !recipient_name ||
+    !address_line1 ||
+    !address_line2 ||
+    !city ||
+    !state ||
+    !postal_code ||
+    !country ||
+    !phone_number
+  ) {
+    return res.status(400).send("Missing required fields");
   }
 
-  const sql = 'INSERT INTO delivery (recipient_name, address_line1, address_line2, city, state, postal_code, country, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-  const values = [recipient_name, address_line1, address_line2, city, state, postal_code, country, phone_number];
+  const sql =
+    "INSERT INTO delivery (recipient_name, address_line1, address_line2, city, state, postal_code, country, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  const values = [
+    recipient_name,
+    address_line1,
+    address_line2,
+    city,
+    state,
+    postal_code,
+    country,
+    phone_number,
+  ];
 
   db.query(sql, values, (err, result) => {
     if (err) {
-      console.error('Error inserting data into the database:', err);
-      return res.status(500).send('Error inserting data into the database');
+      console.error("Error inserting data into the database:", err);
+      return res.status(500).send("Error inserting data into the database");
     }
-    return res.status(201).send('Delivery information saved successfully');
+    return res.status(201).send("Delivery information saved successfully");
   });
 });
 
@@ -783,49 +829,75 @@ router.get("/delivery-admin", (req, res) => {
   });
 });
 
-router.post('/save-order', (req, res) => {
+
+
+const { v4: uuidv4 } = require("uuid");
+
+router.post("/save-order", (req, res) => {
   const { items, totalAmount, slipData } = req.body;
 
-  console.log('Received order data:', { items, totalAmount, slipData });
+  // สร้างชื่อไฟล์ที่ไม่ซ้ำกันโดยใช้ UUID
+  const fileName = `${uuidv4()}`;
+  const filePath = path.join(__dirname, "../uploads", fileName);
 
-  // ตรวจสอบข้อมูลที่จำเป็น
-  if (!items || !totalAmount || !slipData) {
-    console.error('Missing required fields:', { items, totalAmount, slipData });
-    return res.status(400).send('Missing required fields');
-  }
+  // แปลง base64 เป็นไฟล์และบันทึก
+  const base64Data = slipData.slipImageUrl.replace(
+    /^data:image\/\w+;base64,/,
+    ""
+  );
+  const buffer = Buffer.from(base64Data, "base64");
 
-  // บันทึกข้อมูลลงในตาราง orders
-  const orderSql = 'INSERT INTO orders (user_id, total_amount, slip_image_url, receiver_name, sending_bank, trans_date, trans_time) VALUES (?, ?, ?, ?, ?, ?, ?)';
-  const orderValues = [
-    1, // ใส่ user_id ตามที่คุณต้องการ (อาจจะมาจากระบบ authentication)
-    totalAmount,
-    slipData.slipImageUrl,
-    slipData.receiverName,
-    slipData.sendingBank,
-    slipData.transDate,
-    slipData.transTime
-  ];
-
-  db.query(orderSql, orderValues, (err, orderResult) => {
+  fs.writeFile(filePath, buffer, (err) => {
     if (err) {
-      console.error('Error inserting order data:', err);
-      return res.status(500).send('Error saving order data: ' + err.message);
+      console.error("Error saving file:", err);
+      return res.status(500).json({ message: "ไม่สามารถบันทึกไฟล์ได้" });
     }
 
-    const orderId = orderResult.insertId;
+    // บันทึกข้อมูลลงในฐานข้อมูล
+    const query = `INSERT INTO orders (user_id, total_amount, slip_image_url, receiver_name, sending_bank, trans_date, trans_time) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-    // บันทึกรายการสินค้าลงในตาราง order_items
-    const itemSql = 'INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ?';
-    const itemValues = items.map(item => [orderId, item.id, item.quantity, item.price]);
+    db.query(
+      query,
+      [
+        1, // สมมติว่า user_id เป็น 1
+        totalAmount,
+        fileName,
+        slipData.receiverName,
+        slipData.sendingBank,
+        slipData.transDate,
+        slipData.transTime,
+      ],
+      (err, result) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ message: "ไม่สามารถบันทึกข้อมูลได้" });
+        }
 
-    db.query(itemSql, [itemValues], (err) => {
-      if (err) {
-        console.error('Error inserting order items:', err);
-        return res.status(500).send('Error saving order items: ' + err.message);
+        // บันทึก order items
+        const orderId = result.insertId;
+        const itemsQuery = `INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ?`;
+        const itemsValues = items.map((item) => [
+          orderId,
+          item.id,
+          item.quantity,
+          item.price,
+        ]);
+
+        db.query(itemsQuery, [itemsValues], (err) => {
+          if (err) {
+            console.error("Database error:", err);
+            return res
+              .status(500)
+              .json({ message: "ไม่สามารถบันทึกรายการสินค้าได้" });
+          }
+
+          res
+            .status(201)
+            .json({ message: "บันทึกคำสั่งซื้อเรียบร้อยแล้ว", orderId });
+        });
       }
-
-      return res.status(201).send('Order and slip information saved successfully');
-    });
+    );
   });
 });
 
@@ -836,14 +908,15 @@ router.get("/orders-admin", (req, res) => {
     FROM orders o
     LEFT JOIN order_items oi ON o.id = oi.order_id
   `;
-  
+
   db.query(query, (err, results) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ message: "ไม่สามารถดึงข้อมูลได้" });
     }
 
-    // จัดรูปแบบข้อมูลให้เหมาะสม
+    const url = req.protocol + "://" + req.get("host") + "/uploads/";
+
     const formattedResults = results.reduce((acc, row) => {
       if (!acc[row.id]) {
         acc[row.id] = {
@@ -851,27 +924,31 @@ router.get("/orders-admin", (req, res) => {
           user_id: row.user_id,
           total_amount: row.total_amount,
           order_date: row.order_date,
-          slip_image_url: row.slip_image_url,
+          slip_image_url: row.slip_image_url
+            ? url + row.slip_image_url.replace(/\\/g, "/")
+            : null,
           slip_verified: row.slip_verified,
           receiver_name: row.receiver_name,
           sending_bank: row.sending_bank,
           trans_date: row.trans_date,
           trans_time: row.trans_time,
-          items: []
+          items: [],
         };
-        
       }
-      acc[row.id].items.push({
-        product_id: row.product_id,
-        quantity: row.quantity,
-        price: row.price
-      });
+
+      if (row.product_id) {
+        acc[row.id].items.push({
+          product_id: row.product_id,
+          quantity: row.quantity,
+          price: row.price,
+        });
+      }
+
       return acc;
     }, {});
 
     res.status(200).json(Object.values(formattedResults));
   });
 });
-
 
 module.exports = router;

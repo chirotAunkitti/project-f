@@ -4,6 +4,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import "./Order.css";
 
+
 function Order() {
   const [category, setCategory] = useState("Smart collars");
   const [products, setProducts] = useState([]);
@@ -120,12 +121,14 @@ function Order() {
               <img src={product.image} alt={product.name} />
               <h3>{product.name}</h3>
               <p>${product.price}</p>
+              <Link to='/Shoppingcart'>
               <button
                 className="order-button-custom"
-                onClick={() => console.log(`Ordering ${product.name}`)}
+                onClick={() => addToCart(product)}
               >
                 Order
               </button>
+              </Link>
               <button
                 className="cart-icon-custom"
                 onClick={() => addToCart(product)}

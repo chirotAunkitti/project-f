@@ -1,88 +1,102 @@
 .delivery-page-container {
-    /* background-image: url('/image/logo/hjkl.jpg'); ระบุพาธของรูปภาพ */
-    background-size: cover; /* ปรับขนาดของภาพให้ครอบคลุมทั้งหน้าจอ */
-    background-position: center; /* จัดตำแหน่งของภาพให้อยู่ตรงกลาง */
-    padding: 40px; /* เพิ่มช่องว่างรอบๆ ฟอร์ม */
-    min-height: 100vh; /* ทำให้หน้าจอสูงอย่างน้อยเต็มความสูงของหน้าต่าง */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .delivery-form-container {
-    background-color: rgba(255, 255, 255, 0.9); /* สีพื้นหลังแบบโปร่งแสง */
-    padding: 30px; /* เพิ่มช่องว่างภายในฟอร์ม */
-    border-radius: 8px; /* ทำให้ขอบของฟอร์มมน */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เพิ่มเงาเพื่อความโดดเด่น */
-    max-width: 600px; /* กำหนดความกว้างสูงสุดของฟอร์ม */
-    width: 100%; /* ให้ฟอร์มขยายเต็มที่ */
-  }
-  
-  .delivery-form-title {
-    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
-    margin-bottom: 20px; /* เพิ่มช่องว่างด้านล่างหัวข้อ */
-    color: #333; /* สีข้อความ */
-  }
-  
-  .delivery-form-group {
-    margin-bottom: 15px; /* เพิ่มช่องว่างระหว่างกลุ่มฟอร์ม */
-  }
-  
-  .delivery-form-label {
-    display: block; /* จัดแสดงป้ายข้อความแบบบล็อก */
-    margin-bottom: 5px; /* เพิ่มช่องว่างด้านล่างป้ายข้อความ */
-    color: #555; /* สีข้อความ */
-  }
-  
-  .delivery-form-input,
-  .delivery-form-select,
-  .delivery-form-textarea {
-    width: 100%; /* ให้ฟิลด์ขยายเต็มที่ */
-    padding: 10px; /* เพิ่มช่องว่างภายในฟิลด์ */
-    border: 1px solid #ccc; /* สีของขอบ */
-    border-radius: 4px; /* ทำให้ขอบของฟิลด์มน */
-    font-size: 16px; /* ขนาดของฟอนต์ */
-    box-sizing: border-box; /* ทำให้ padding รวมอยู่ในขนาดฟิลด์ */
-  }
-  
-  .delivery-form-input:focus,
-  .delivery-form-select:focus,
-  .delivery-form-textarea:focus {
-    border-color: #007bff; /* สีขอบเมื่อฟิลด์ถูกเลือก */
-    outline: none; /* ลบเส้นขอบที่แสดงเมื่อฟิลด์ถูกเลือก */
-  }
-  
-  .delivery-form-submit {
-    width: 100%; /* ให้ปุ่มขยายเต็มที่ */
-    padding: 10px; /* เพิ่มช่องว่างภายในปุ่ม */
-    background-color: #007bff; /* สีพื้นหลังของปุ่ม */
-    color: white; /* สีข้อความของปุ่ม */
-    border: none; /* ลบขอบของปุ่ม */
-    border-radius: 4px; /* ทำให้ขอบของปุ่มมน */
-    font-size: 18px; /* ขนาดของฟอนต์ในปุ่ม */
-    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อชี้ไปที่ปุ่ม */
-  }
-  
-  .delivery-form-submit:hover {
-    background-color: #0056b3; /* สีพื้นหลังของปุ่มเมื่อวางเมาส์เหนือ */
-  }
-  
-  .delivery-error-message {
-    display: none; /* ซ่อนข้อความแจ้งเตือนโดยเริ่มต้น */
-    color: red; /* สีข้อความแจ้งเตือน */
-    font-size: 14px; /* ขนาดของฟอนต์แจ้งเตือน */
-    margin-top: 5px; /* เพิ่มช่องว่างด้านบนของข้อความแจ้งเตือน */
-  }
-  
-  input.error,
-  select.error,
-  textarea.error {
-    border-color: red; /* สีขอบเมื่อมีข้อผิดพลาด */
-  }
-  
-  input.error + .delivery-error-message,
-  select.error + .delivery-error-message,
-  textarea.error + .delivery-error-message {
-    display: block; /* แสดงข้อความแจ้งเตือนเมื่อมีข้อผิดพลาด */
-  }
-  
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delivery-form-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.delivery-form-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.delivery-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.delivery-form-group {
+  flex: 1 1 calc(50% - 7.5px);
+  margin-bottom: 15px;
+}
+
+.delivery-form-group.full-width {
+  flex-basis: 100%;
+}
+
+.delivery-form-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.delivery-form-input,
+.delivery-form-select,
+.delivery-form-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.delivery-form-textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.delivery-form-input:focus,
+.delivery-form-select:focus,
+.delivery-form-textarea:focus {
+  border-color: #000000;
+  outline: none;
+}
+
+.delivery-form-submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.delivery-form-submit:hover {
+  background-color: #3f5267;
+}
+
+.delivery-error-message {
+  display: none;
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+input.error,
+select.error,
+textarea.error {
+  border-color: red;
+}
+
+input.error + .delivery-error-message,
+select.error + .delivery-error-message,
+textarea.error + .delivery-error-message {
+  display: block;
+}

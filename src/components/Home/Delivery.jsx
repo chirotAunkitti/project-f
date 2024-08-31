@@ -31,7 +31,7 @@ function Delivery() {
   const [zipCode, setZipCode] = useState("");
   const [address, setAddress] = useState("");
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleProvinceChange = (e) => {
     setProvince(e.target.value);
@@ -67,14 +67,12 @@ function Delivery() {
           phone_number: phoneNumber,
         };
 
-
         await deli(formData);
-        console.log('Delivery data saved successfully');
-        navigate('/home');
-      } catch (error)  {
-        console.error('Error saving delivery data:', error.message);
+        console.log("Delivery data saved successfully");
+        navigate("/home");
+      } catch (error) {
+        console.error("Error saving delivery data:", error.message);
       }
-      
     }
   };
 
@@ -83,7 +81,6 @@ function Delivery() {
       <div className="delivery-form-container">
         <h2 className="delivery-form-title">ที่อยู่จัดส่งสินค้า</h2>
         <form onSubmit={handleSubmit} noValidate className="delivery-form">
-          {/* ข้อมูลฟอร์ม */}
           <div className="delivery-form-group">
             <label htmlFor="firstName" className="delivery-form-label">
               ชื่อ:
@@ -220,8 +217,8 @@ function Delivery() {
             </span>
           </div>
 
-          <div className="delivery-form-group">
-            <label htmlFor="address"  className="delivery-form-label">
+          <div className="delivery-form-group full-width">
+            <label htmlFor="address" className="delivery-form-label">
               ที่อยู่:
             </label>
             <textarea

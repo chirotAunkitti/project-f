@@ -12,7 +12,7 @@ import {
   fetchSmartCollars,
   fetchUsers,
   fetchddelivery,
-  fetchOrders
+  fetchOrders,
 } from "../../../Database/Api/AdminApi.js";
 import "./Admin.css";
 
@@ -25,8 +25,6 @@ function Admin() {
   const [collars, setCollars] = useState([]); // State สำหรับ collars
   const [deliveries, setDeliveries] = useState([]);
   const [orderlist, setOrderlist] = useState([]);
-
-
 
   const navigate = useNavigate();
 
@@ -43,7 +41,7 @@ function Admin() {
       fetchCollarsData();
     } else if (currentPage === "address") {
       renderDeliveriesData();
-    }else if (currentPage === "Order list") {
+    } else if (currentPage === "Order list") {
       fetchOrderlistData();
     }
   }, [currentPage]);
@@ -75,7 +73,7 @@ function Admin() {
     }
   };
 
-    const fetchOrderlistData = async () => {
+  const fetchOrderlistData = async () => {
     try {
       const OrderlistData = await fetchOrders(); // ใช้ฟังก์ชันดึงข้อมูลรายการสั่งซื้อ
       setOrderlist(OrderlistData);
@@ -616,10 +614,10 @@ function Admin() {
                   {order.slip_image_url ? (
                     <img src={order.slip_image_url} alt="Slip" width="100" />
                   ) : (
-                    'No image'
+                    "No image"
                   )}
                 </td>
-                <td>{order.slip_verified ? 'Verified' : 'Not Verified'}</td>
+                <td>{order.slip_verified ? "Verified" : "Not Verified"}</td>
                 <td>{order.receiver_name}</td>
                 <td>{order.sending_bank}</td>
                 <td>{order.trans_date}</td>
@@ -644,8 +642,6 @@ function Admin() {
       </table>
     </div>
   );
-  
-
 
   const renderContent = () => {
     switch (currentPage) {

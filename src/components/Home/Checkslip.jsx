@@ -1,4 +1,4 @@
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faTimesCircle, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -90,19 +90,30 @@ function Checkslip() {
 };
 
   return (
-    <div className="checkslip-wrapper">
-      <ToastContainer position="top-center" autoClose={3000} />
-      <h3 className="checkslip-heading">แนบสลิปโอนเงิน ของท่าน</h3>
-      <form onSubmit={handleSubmit} className="checkslip-form">
-        <div className="checkslip-file-input-wrapper">
-          <input className="checkslip-file-input" type="file" accept='image/*' onChange={handleFile} />
+      <div className="checkslip-wrapper">
+        <ToastContainer position="top-center" autoClose={3000} />
+        <h3 className="checkslip-heading">แนบสลิปโอนเงิน ของท่าน</h3>
+        <form onSubmit={handleSubmit} className="checkslip-form">
+          <div className="checkslip-file-input-wrapper">
+            <label htmlFor="file-upload" className="custom-file-upload">
+              <FontAwesomeIcon icon={faUpload} /> อัปโหลดสลิป
+            </label>
+            <input 
+              id="file-upload" 
+              className="checkslip-file-input" 
+              type="file" 
+              accept='image/*' 
+              onChange={handleFile} 
+            />
+          </div>
+          {files && <img src={URL.createObjectURL(files)} alt="slip" className="checkslip-slip-image" />}
+          <hr />
+          <div className="checkslip-file-input-wrapper">
           <button className="checkslip-submit-button" type='submit'>ตรวจสอบสลิป</button>
-        </div>
-        {files && <img src={URL.createObjectURL(files)} alt="slip" className="checkslip-slip-image" />}
-        <hr />
+          </div>
          <p>ผู้รับโอนเงิน: {slipOkData?.receiver?.displayName}</p>  
         {/* <p>ธนาคารผู้รับเงิน: {slipOkData?.receivingBank === "002" ? "ธนาคารกรุงเทพ" : null}</p> */}
-         <p>ธนาคารผู้โอนเงิน: {slipOkData?.sendingBank === "004" ? "ธนาคารกสิกร" : null}</p>  
+         {/* <p>ธนาคารผู้โอนเงิน: {slipOkData?.sendingBank === "004" ? "ธนาคารกสิกร" : null}</p>   */}
          {/* <p>ธนาคารผู้โอนเงิน: {slipOkData?.sendingBank === "002" ? "ธนาคารกรุงเทพ" : null}</p> 
         <p>ธนาคารผู้โอนเงิน: {slipOkData?.sendingBank === "006" ? "ธนาคารกรุงไทย" : null}</p>
          <p>ธนาคารผู้โอนเงิน: {slipOkData?.sendingBank === "011" ? "ธนาคารทหารไทยธนชาต" : null}</p> 
