@@ -60,3 +60,10 @@
     text-decoration: underline; /* ทำให้ลิงค์มีเส้นใต้เมื่อวางเมาส์ */
   }
   
+  .document-link{
+    color: rgb(255, 255, 255); /* ตั้งค่าสีของตัวหนังสือเป็นสีขาว */
+    text-decoration: none; /* เอาเส้นใต้ลิงค์ออก */
+  }
+  .document-link:hover{
+    text-decoration: underline; /* เอาเส้นใต้ลิงค์ออก */
+  }

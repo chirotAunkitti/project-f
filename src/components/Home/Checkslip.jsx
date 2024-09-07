@@ -19,75 +19,71 @@ function Checkslip() {
   console.log("Select files: ", files);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const formData = new FormData();
-  formData.append("files", files);
-  try {
-    const res = await fetch("https://api.slipok.com/api/line/apikey/28222", {
-      method: "POST",
-      headers: {
-        "x-authorization": "SLIPOK6154TNY"
-      },
-      body: formData
-    });
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-
-    console.log("Request successful");
-    const data = await res.json();
-    setSlipOkData(data.data);
-    console.log("Slipok data: ", data);
+    e.preventDefault();
     
-    if (data.data?.success === true) {
-      // Save order data to database
-      const orderData = {
-        items: [
-          // Add a dummy item
-          { id: 1, quantity: 1, price: parseFloat(data.data.amount) || 0 }
-        ],
-        totalAmount: parseFloat(data.data.amount) || 0,
-        slipData: {
-          slipImageUrl: URL.createObjectURL(files),
-          receiverName: data.data.receiver?.displayName || '',
-          sendingBank: data.data.sendingBank || '',
-          transDate: data.data.transDate || '',
-          transTime: data.data.transTime || ''
-        }
-      };
-
-      console.log("Order data to be saved:", orderData);
-
-      try {
-        const savedData = await saveOrderToDatabase(orderData);
-        console.log("Saved order data:", savedData);
-        toast.success('สลิปโอนเงินถูกต้องและบันทึกข้อมูลเรียบร้อย', {
-          icon: <FontAwesomeIcon icon={faCheckCircle} />
-        });
-        // นำทางไปยังหน้า /delivery หลังจาก 5 วินาที
-        setTimeout(() => {
-          navigate('/delivery');
-        }, 5000);
-      } catch (error) {
-        console.error("Error saving order to database:", error);
-        toast.error(`เกิดข้อผิดพลาดในการบันทึกข้อมูล: ${error.message}`, {
-          icon: <FontAwesomeIcon icon={faTimesCircle} />
-        });
-      }
-    } else {
-      console.warn("Slip validation failed:", data);
-      toast.error('สลิปโอนเงินไม่ถูกต้อง', {
-        icon: <FontAwesomeIcon icon={faTimesCircle} />
-      });
+    // ตรวจสอบว่ามีการเลือกไฟล์แล้ว
+    if (!files) {
+      toast.error("กรุณาเลือกไฟล์ก่อนทำการอัปโหลด");
+      return;
     }
-  } catch (error) {
-    console.error("Error during fetching or processing data: ", error);
-    toast.error(`เกิดข้อผิดพลาดในการตรวจสอบ: ${error.message}`, {
-      icon: <FontAwesomeIcon icon={faTimesCircle} />
-    });
-  }
-};
+  
+    const formData = new FormData();
+    formData.append("files", files);
+  
+    try {
+      const res = await fetch("https://api.slipok.com/api/line/apikey/28222", {
+        method: "POST",
+        headers: {
+          "x-authorization": "SLIPOK6154TNY"
+        },
+        body: formData
+      });
+      
+  
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+  
+      const data = await res.json();
+      setSlipOkData(data.data);
+      console.log("Slipok data: ", data);
+  
+      // ตรวจสอบ response ว่ามี success หรือไม่
+      if (data.data?.success === true) {
+        // ทำการบันทึกข้อมูลไปยังฐานข้อมูล
+        const orderData = {
+          items: [
+            { id: 1, quantity: 1, price: parseFloat(data.data.amount) || 0 }
+          ],
+          totalAmount: parseFloat(data.data.amount) || 0,
+          slipData: {
+            slipImageUrl: URL.createObjectURL(files),
+            receiverName: data.data.receiver?.displayName || '',
+            sendingBank: data.data.sendingBank || '',
+            transDate: data.data.transDate || '',
+            transTime: data.data.transTime || ''
+          }
+        };
+  
+        try {
+          const savedData = await saveOrderToDatabase(orderData);
+          console.log("Saved order data:", savedData);
+          toast.success('สลิปโอนเงินถูกต้องและบันทึกข้อมูลเรียบร้อย');
+          setTimeout(() => {
+            navigate('/delivery');
+          }, 5000);
+        } catch (error) {
+          console.error("Error saving order to database:", error);
+          toast.error(`เกิดข้อผิดพลาดในการบันทึกข้อมูล: ${error.message}`);
+        }
+      } else {
+        toast.error('สลิปโอนเงินไม่ถูกต้อง');
+      }
+    } catch (error) {
+      console.error("Error during fetching or processing data: ", error);
+      toast.error(`เกิดข้อผิดพลาดในการตรวจสอบ: ${error.message}`);
+    }
+  };
 
   return (
       <div className="checkslip-wrapper">

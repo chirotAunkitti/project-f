@@ -1,119 +1,115 @@
 /* สำหรับหน้า Admin */
 .admin-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  /* แทบข้างๆ สี */
-  .sidebar {
-    width: 200px;
-    background-color: #000000; /* สีม่วงเข้ม */
-    padding: 10px;  
-    height: 300vh; /* ทำให้ความสูงของ Sidebar เต็มหน้าจอ */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* เงาเล็กน้อยเพื่อเน้น */
-
+  display: flex;
+  height: 100vh;
 }
-  
+
+/* แทบข้างๆ สี */
+.sidebar {
+  position: fixed; /* ทำให้แทบด้านซ้ายอยู่กับที่ */
+  top: 0;
+  left: 0;
+  width: 200px; /* ขนาดความกว้างที่ต้องการสำหรับแทบด้านซ้าย */
+  height: 100%;
+  background-color: #626466; /* สีพื้นหลังของแทบด้านซ้าย */
+  padding: 20px;
+  overflow-y: auto; /* ถ้ามีเนื้อหายาวเกิน ก็จะสามารถเลื่อนขึ้นลงได้ */
+  z-index: 1000; /* ให้อยู่ด้านบนสุด */
+  border-radius: 15px; 
+}
+
 /* Admin Panel */
-  .sidebar-title {
-    color: white;
-    margin-bottom: 10px;
-    font-weight: bold;
-    padding: 10px;
-    background-color: white;
-    color: black;
-  }
-  
-  /* เมนู ข้างๆ */
-  .sidebar-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #000000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-align: left;
-    cursor: pointer;
-  }
-  
-  /* ขนาด ตาราง */
-  .main-content {
-    flex: 1;
-    background-color: #999393;
-    padding: 20px;
-  }
-  
-  /* แทบ User Management */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    background-color: white;
-    padding: 10px;
-    align-items: center;
-    
-  }
-  
-  .header h2 {
-    margin: 0;
-    
-  }
-  
-  /* ตาราง */
-  table {
-    width: 100%;
-    /* border-collapse: collapse; */
-    margin-top: 20px;
-  }
-  
-  /* เส้นตาราง */
-  th, td {
-    padding: 10px;
-    /* text-align: left; */
-    border-bottom: 2px solid #000000;
-    
-  }
-  
-  /* แทบnavbar ID	Email */
-  th {
-    background-color: #121212;
-    color: white;
-  }
-  
-  button {
-    padding: 5px 10px;
-    margin: 0 5px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #3a3a6f;
-    color: white;
-  }
-  
+.sidebar-title {
+  color: black;
+  margin-bottom: 10px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #fff;
+}
 
-  /* ปุ่ม Add Edit Delete */
-  .button-Add {
-    flex: 1;
-    background-color:#23dc3f;
-    padding: 20px;
-    color: white;
-  }
-  .button-Edit{
-    flex: 1;
-    background-color:#000000;
-    padding: 20px;
-    color: white;
-  }
-  .button-Delete{
-    flex: 1;
-    background-color:#d01d1d;
-    padding: 20px;
-    color: white;
-  }
+/* เมนู ข้างๆ */
+.sidebar-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: left;
+  cursor: pointer;
+}
 
-  
+/* ขนาด ตาราง */
+.main-content {
+  margin-left: 220px; /* ขยับเนื้อหาหลักให้ห่างจากแทบด้านซ้าย */
+  flex: 1;
+  padding: 20px;
+}
+
+/* แทบ User Management */
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  background-color: #808080;
+  padding: 10px;
+  align-items: center;
+  color: #ffffff;  
+}
+
+.header h2 {
+  margin: 0;
+}
+
+/* ตาราง */
+table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* เส้นตาราง */
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* แทบnavbar ID, Email */
+th {
+  background-color: #121212;
+  color: white;
+}
+
+/* ปุ่ม */
+button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3a3a6f;
+  color: white;
+}
+
+/* ปุ่ม Add, Edit, Delete */
+.button-Add {
+  background-color: #23dc3f;
+  padding: 10px 20px;
+  color: white;
+}
+
+.button-Edit {
+  background-color: #000000;
+  padding: 10px 20px;
+  color: white;
+}
+
+.button-Delete {
+  background-color: #d01d1d;
+  padding: 10px 20px;
+  color: white;
+}

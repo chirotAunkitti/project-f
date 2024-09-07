@@ -81,9 +81,9 @@ function Home() {
       <div id="about" ref={aboutRef}>
         <About />
       </div>
-      {/* <div id="contact" ref={contactRef}>
-        <Contact />
-      </div> */}
+     {/* <div id="contact" ref={contactRef}>
+         <Contact /> 
+      </div>  */}
       <div>
         <Content />
       </div>

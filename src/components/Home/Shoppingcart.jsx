@@ -5,7 +5,7 @@ import "./Shoppingcart.css";
 
 function Shoppingcart() {
   const [items, setItems] = useState([]);
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +36,15 @@ function Shoppingcart() {
     0
   );
 
+  const handlequotation =() => {
+    if (items.length === 0) {
+      alert("ไม่มีสินค้าในรายการ กรุณาเพิ่มสินค้าก่อนขอใบเสนอสินค้า");
+      return;
+    }
+    navigate("/document", { state: { items, subtotal } });
+  };
+  
+
   const handleCheckout = async () => {
     if (items.length === 0) {
       alert("ไม่มีสินค้าในรายการ กรุณาเพิ่มสินค้าก่อนชำระเงิน");
@@ -44,40 +53,42 @@ function Shoppingcart() {
 
     try {
       const response = await qrcode(items, subtotal);
-      navigate("/showQRCode", { 
-        state: { 
+      navigate("/showQRCode", {
+        state: {
           qrCodeUrl: response.Result,
           orderDetails: {
             items: items,
-            totalAmount: subtotal
-          }
-        } 
+            totalAmount: subtotal,
+          },
+        },
       });
     } catch (error) {
-      console.error('Error generating QR code:', error);
-      alert('เกิดข้อผิดพลาดในการสร้าง QR Code');
+      console.error("Error generating QR code:", error);
+      alert("เกิดข้อผิดพลาดในการสร้าง QR Code");
     }
   };
-
 
   return (
     <div className="shopping-cart-page">
       <header className="shopping-cart-header">
         <nav>
-          <span>
+          {/* <span>
             <Link to="/home" className="nav-link">
               HOME
             </Link>
-          </span>
+          </span> */}
           <span>
-            <Link to="/order" className="nav-link">
-              ORDER
+            <Link to="/order" className="icon-link">
+              ⇦
             </Link>
           </span>
         </nav>
       </header>
       <div className="shopping-cart-content">
         <h1>Your Cart</h1>
+        <button className="quotation-button" onClick={handlequotation}>
+          ขอใบเสนอราคา
+        </button>
         {items.length > 0 ? (
           <table>
             <thead>
@@ -142,13 +153,13 @@ function Shoppingcart() {
             <strong>ราคารวมทั้งหมด</strong>
             <strong>${subtotal}</strong>
           </p>
-          <button 
-          className="checkout" 
-          onClick={handleCheckout}
-          disabled={items.length === 0} // ปิดปุ่มเมื่อไม่มีสินค้า
-        >
-          CHECKOUT
-        </button>
+          <button
+            className="checkout"
+            onClick={handleCheckout}
+            disabled={items.length === 0} // ปิดปุ่มเมื่อไม่มีสินค้า
+          >
+            CHECKOUT
+          </button>
         </div>
       </div>
     </div>

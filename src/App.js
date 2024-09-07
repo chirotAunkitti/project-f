@@ -25,6 +25,7 @@ import Makepayment from "./components/Home/Makepayment.jsx";
 import ShowQRCode from "./components/Home/ShowQRCode .jsx";
 import Checkslip from "./components/Home/Checkslip.jsx";
 import Delivery from "./components/Home/Delivery.jsx";
+import Document from "./components/Home/Document.jsx";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Route path="/showQRCode" element={<ShowQRCode />} />
           <Route path="/checkslip" element={<Checkslip />} />
           <Route path="/delivery" element={<Delivery />} />
+          <Route path="/document" element={<Document />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>

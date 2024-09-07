@@ -49,7 +49,7 @@
   .shopping-cart-content table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: -70px;
   }
   
   .shopping-cart-content th,
@@ -131,4 +131,32 @@
     background-color: #cccccc;
     color: #666666;
     cursor: not-allowed;
+  }
+
+  .quotation-button{
+    background-color: #000000;
+    color: #f0f0f0;
+    position: relative; /* ใช้ position: relative เพื่อขยับตำแหน่ง */
+    right: 20px; /* ขยับปุ่มไปทางขวา 20px */
+    left: 500px;
+    top: -60px; /* ขยับปุ่มขึ้นบน 10px */
+    padding: 10px 20px; /* เพิ่มช่องว่างภายในปุ่ม */
+    border-radius: 5px; /* มุมโค้งของปุ่ม */
+    cursor: pointer; /* เปลี่ยนรูปแบบเมาส์เป็น pointer เมื่อชี้ที่ปุ่ม */
+    padding: 20px 50px;
+    font-size: 20px;
+    cursor: pointer;
+    font-style: normal;
+  }
+
+  .quotation-button:hover{
+    background-color: #78c07a;
+    color: #f0f0f0;
+  }
+
+  .icon-link{
+    color: #f0f0f0;
+    text-decoration: none; /* ลบขีดข้างใต้ลิงก์ */
+    margin-right: 20px;
+    font-size: 36px;
   }

@@ -833,18 +833,21 @@ router.get("/delivery-admin", (req, res) => {
 
 const { v4: uuidv4 } = require("uuid");
 
+
 router.post("/save-order", (req, res) => {
   const { items, totalAmount, slipData } = req.body;
 
+  // ตรวจสอบข้อมูลที่ได้รับจาก request
+  if (!slipData || !slipData.slipImageUrl || !slipData.receiverName || !slipData.sendingBank || !slipData.transDate || !slipData.transTime) {
+    return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+  }
+
   // สร้างชื่อไฟล์ที่ไม่ซ้ำกันโดยใช้ UUID
-  const fileName = `${uuidv4()}`;
+  const fileName = `${uuidv4()}.png`;
   const filePath = path.join(__dirname, "../uploads", fileName);
 
   // แปลง base64 เป็นไฟล์และบันทึก
-  const base64Data = slipData.slipImageUrl.replace(
-    /^data:image\/\w+;base64,/,
-    ""
-  );
+  const base64Data = slipData.slipImageUrl.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(base64Data, "base64");
 
   fs.writeFile(filePath, buffer, (err) => {
@@ -862,7 +865,7 @@ router.post("/save-order", (req, res) => {
       [
         1, // สมมติว่า user_id เป็น 1
         totalAmount,
-        fileName,
+        fileName, // ใช้ชื่อไฟล์ที่ถูกสร้างใหม่
         slipData.receiverName,
         slipData.sendingBank,
         slipData.transDate,
@@ -900,6 +903,9 @@ router.post("/save-order", (req, res) => {
     );
   });
 });
+
+
+
 
 // ดึงข้อมูลคำสั่งซื้อสำหรับหน้า Admin
 router.get("/orders-admin", (req, res) => {
@@ -950,5 +956,6 @@ router.get("/orders-admin", (req, res) => {
     res.status(200).json(Object.values(formattedResults));
   });
 });
+
 
 module.exports = router;
