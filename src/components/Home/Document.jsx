@@ -11,17 +11,16 @@ function Document() {
   const generatePDF = () => {
     const input = document.getElementById('invoice');
     
-    html2canvas(input, { scrollY: -window.scrollY }).then((canvas) => {
+    html2canvas(input, { scrollY: -window.scrollY, useCORS: true }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'p', // 'p' for portrait, 'l' for landscape
         unit: 'mm',
-        format: [canvas.width * 0.75, canvas.height * 0.75] // A4 size can be used here
+        format: 'a4' // A4 size in mm
       });
 
-      // Convert canvas to PDF
-      const imgWidth = 398; // A4 width in mm
-      const pageHeight = 282; // A4 height in mm
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 295; // A4 height in mm
       const imgHeight = canvas.height * imgWidth / canvas.width;
       let heightLeft = imgHeight;
 
