@@ -49,7 +49,7 @@
   }
   
   .editusers-button:hover {
-    background-color: #3a3a6f;
+    background-color: #ffffff;
   }
   /* กำหนดลักษณะของลิงก์ภายในปุ่ม */
 button a {
@@ -68,7 +68,7 @@ button a {
   }
   
   .back-link {
-    color: rgb(0, 0, 0);
+    color: rgb(255, 249, 249);
     text-decoration: none;
     display: block;
     width: 100%;

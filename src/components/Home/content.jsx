@@ -8,7 +8,8 @@ const Content = () => {
         <p className="subscription-text"></p>
       </div>
       <div className="contentr__text">
-        <p className="subscription-text">Screw D</p>
+        
+        <p className="subscription-text"></p>
       </div>
       <div className="contentr__text">
         <p className="subscription-text"></p>

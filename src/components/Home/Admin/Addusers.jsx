@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import './Addusers.css'; // เพิ่มการนำเข้าไฟล์ CSS ของ Addusers
 
 function Addusers() {
@@ -10,8 +11,7 @@ function Addusers() {
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // ป้องกันการรีเฟรชหน้าเมื่อส่งฟอร์ม
-
+    event.preventDefault();
     try {
       const response = await fetch('http://localhost:8000/api/users', {
         method: 'POST',
@@ -26,14 +26,33 @@ function Addusers() {
         }),
       });
 
-      if (response.ok) {
-        alert('User added successfully!');
-        navigate('/admin'); // นำทางไปยังหน้า admin หลังจากเพิ่มข้อมูลเสร็จ
+      if (response.status === 201) {
+        Swal.fire({
+          title: 'สำเร็จ!',
+          text: 'เพิ่มผู้ใช้สำเร็จ',
+          icon: 'success',
+          confirmButtonText: 'ตกลง'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // ล้างข้อมูลฟอร์มและนำทางกลับไปหน้า admin
+            setEmail('');
+            setPassword('');
+            setPhone('');
+            setAddress('');
+            navigate('/admin');
+          }
+        });
       } else {
-        alert('Error adding user');
+        throw new Error('Failed to add user');
       }
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error("Error adding user:", error);
+      Swal.fire({
+        title: 'ข้อผิดพลาด!',
+        text: 'เกิดข้อผิดพลาดในการเพิ่มผู้ใช้',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+      });
     }
   };
 

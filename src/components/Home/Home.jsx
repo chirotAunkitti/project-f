@@ -12,7 +12,7 @@ function Home() {
   const imagePaths = [
     '/image/logo/ll.jpg',
     '/image/logo/gg.jpg',
-    '/image/logo/Untitleddesign.png',
+    '/image/logo/LINE_ALBUM9_1.jpg',
     '/image/logo/hh.jpg',
   ];
 
@@ -65,13 +65,13 @@ function Home() {
         scrollToAbout={scrollToAbout}
         // scrollToContact={scrollToContact}
       />
-      <main>
+      <main_>
         <div className="home-container-container">
           <h1>Welcome to Screw D Company.</h1>
           <h7>IT'S NICE TO MEET YOU</h7>
         </div>
         <button onClick={scrollToServices}>TELL ME MORE</button>
-      </main>
+      </main_>
       <div id="services" ref={servicesRef}>
         <Services />
       </div>

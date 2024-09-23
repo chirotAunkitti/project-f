@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import './Addorder1.css'; // ใช้ CSS ที่อัปเดต
 
 function Addorder1() {
@@ -21,17 +22,33 @@ function Addorder1() {
           'Content-Type': 'multipart/form-data',
         },
       });
+
       if (response.status === 201) {
-        alert("เพิ่มสินค้าสำเร็จ!");
-        // ล้างข้อมูลฟอร์มหลังจากเพิ่มสินค้า
-        navigate('/admin');
-        setName('');
-        setPrice('');
-        setImage(null);
+        // ใช้ SweetAlert2 แสดงป็อปอัพเมื่อสำเร็จ
+        Swal.fire({
+          title: 'สำเร็จ!',
+          text: 'เพิ่มสินค้าสำเร็จ',
+          icon: 'success',
+          confirmButtonText: 'ตกลง'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // ล้างข้อมูลฟอร์มและนำทางกลับไปหน้า admin
+            setName('');
+            setPrice('');
+            setImage(null);
+            navigate('/admin');
+          }
+        });
       }
     } catch (error) {
       console.error("Error adding product:", error);
-      alert("เกิดข้อผิดพลาดในการเพิ่มสินค้า");
+      // ใช้ SweetAlert2 แสดงป็อปอัพเมื่อเกิดข้อผิดพลาด
+      Swal.fire({
+        title: 'ข้อผิดพลาด!',
+        text: 'เกิดข้อผิดพลาดในการเพิ่มสินค้า',
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+      });
     }
   };
 

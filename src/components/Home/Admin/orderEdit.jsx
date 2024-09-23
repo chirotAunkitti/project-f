@@ -1,24 +1,30 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './orderEdit.css'; // นำเข้าฟิล์ CSS
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import './Order3Edit.css';
 
-function OrderEdit() {
+function Order3Edit() {
   const [collar, setCollar] = useState({ name: '', price: '', image: '' });
   const [imageFile, setImageFile] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchSmartCollar();
+    fetchCollar();
   }, []);
 
-  const fetchSmartCollar = async () => {
+  const fetchCollar = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/smart-collars/${id}`);
+      const response = await axios.get(`http://localhost:8000/api/collars/${id}`);
       setCollar(response.data);
     } catch (error) {
-      console.error('Error fetching smart collar:', error);
+      console.error('Error fetching collar:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถดึงข้อมูลปลอกคอได้',
+      });
     }
   };
 
@@ -33,37 +39,38 @@ function OrderEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting data:', collar);
-
     try {
       const formData = new FormData();
       formData.append('name', collar.name);
       formData.append('price', collar.price);
-
       if (imageFile) {
         formData.append('image', imageFile);
       }
 
-      console.log('FormData:', formData.get('image')); // ตรวจสอบว่าภาพถูกเพิ่มใน formData หรือไม่
+      await axios.put(`http://localhost:8000/api/smart-collars/${id}`, formData);
 
-      await axios.put(`http://localhost:8000/api/smart-collars/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      Swal.fire({
+        icon: 'success',
+        title: 'สำเร็จ',
+        text: 'อัปเดตเรียบร้อยแล้ว',
+      }).then(() => {
+        navigate('/admin');
       });
-      alert('Smart collar updated successfully');
-      navigate('/admin');
     } catch (error) {
-      console.error('Error updating smart collar:', error);
-      alert('Failed to update smart collar');
+      console.error('Error updating smart-collar:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถอัปเดตปลอกคอได้',
+      });
     }
   };
 
   return (
-    <div className="order-edit-container">
-      <h2>Edit Smart Collar</h2>
+    <div className="order3-edit-container">
+      <h2>Edit smartCollar</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="order3-form-group">
           <label htmlFor="name">Name:</label>
           <input
             type="text"
@@ -74,7 +81,7 @@ function OrderEdit() {
             required
           />
         </div>
-        <div>
+        <div className="order3-form-group">
           <label htmlFor="price">Price:</label>
           <input
             type="number"
@@ -85,8 +92,8 @@ function OrderEdit() {
             required
           />
         </div>
-        <div>
-          <label className='order-image' htmlFor="image">Image:</label>
+        <div className="order3-form-group">
+          <label htmlFor="image">Image:</label>
           <input
             type="file"
             id="image"
@@ -94,10 +101,10 @@ function OrderEdit() {
             onChange={handleFileChange}
           />
         </div>
-        <button type="submit">Update Smart Collar</button>
+        <button type="submit" className="order3-button">Update Collar</button>
       </form>
     </div>
   );
 }
 
-export default OrderEdit;
+export default Order3Edit;

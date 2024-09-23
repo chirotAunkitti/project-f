@@ -3,24 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./Delivery.css";
 import { deli } from "../../Database/Api/AdminApi";
 
-const provinces = ["กรุงเทพมหานคร", "เชียงใหม่", "ภูเก็ต"];
-const districts = {
-  กรุงเทพมหานคร: ["บางรัก", "ปทุมวัน", "สาทร"],
-  เชียงใหม่: ["เมืองเชียงใหม่", "แม่ริม", "สันทราย"],
-  ภูเก็ต: ["เมืองภูเก็ต", "กะทู้", "ถลาง"],
-};
-const subdistricts = {
-  บางรัก: ["สีลม", "สุริยวงศ์", "มหาพฤฒาราม"],
-  ปทุมวัน: ["รองเมือง", "วังใหม่", "ปทุมวัน"],
-  สาทร: ["ทุ่งวัดดอน", "ยานนาวา", "ทุ่งมหาเมฆ"],
-  เมืองเชียงใหม่: ["ช้างเผือก", "ศรีภูมิ", "พระสิงห์"],
-  แม่ริม: ["ริมใต้", "ริมเหนือ", "สันโป่ง"],
-  สันทราย: ["สันทรายหลวง", "สันทรายน้อย", "สันพระเนตร"],
-  เมืองภูเก็ต: ["ตลาดใหญ่", "ตลาดเหนือ", "รัษฎา"],
-  กะทู้: ["กะทู้", "ป่าตอง"],
-  ถลาง: ["เทพกระษัตรี", "ศรีสุนทร", "เชิงทะเล"],
-};
-
 function Delivery() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -33,17 +15,6 @@ function Delivery() {
 
   const navigate = useNavigate();
 
-  const handleProvinceChange = (e) => {
-    setProvince(e.target.value);
-    setDistrict("");
-    setSubdistrict("");
-  };
-
-  const handleDistrictChange = (e) => {
-    setDistrict(e.target.value);
-    setSubdistrict("");
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (e.target.checkValidity()) {
@@ -51,10 +22,10 @@ function Delivery() {
         const recipient_name = `${firstName} ${lastName}`;
         const address_line1 = address;
         const address_line2 = `${subdistrict}, ${district}, ${province}`;
-        const city = subdistrict; // ให้ค่า city เป็นค่าที่ไม่เป็น null
-        const state = province; // ใช้ค่า province เป็น state
-        const postal_code = zipCode; // ใช้รหัสไปรษณีย์ที่กรอก
-        const country = "Thailand"; // หรือค่าอื่นๆ ตามที่ต้องการ
+        const city = subdistrict;
+        const state = province;
+        const postal_code = zipCode;
+        const country = "Thailand";
 
         const formData = {
           recipient_name,
@@ -128,73 +99,55 @@ function Delivery() {
             </span>
           </div>
 
-          <div className="delivery-form-group">
-            <label htmlFor="province" className="delivery-form-label">
-              จังหวัด:
-            </label>
-            <select
-              id="province"
-              className="delivery-form-select"
-              value={province}
-              onChange={handleProvinceChange}
-              required
-            >
-              <option value="">เลือกจังหวัด</option>
-              {provinces.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-            <span className="delivery-error-message">กรุณาเลือกจังหวัด</span>
-          </div>
-
-          <div className="delivery-form-group">
-            <label htmlFor="district" className="delivery-form-label">
-              อำเภอ/เขต:
-            </label>
-            <select
-              id="district"
-              className="delivery-form-select"
-              value={district}
-              onChange={handleDistrictChange}
-              disabled={!province}
-              required
-            >
-              <option value="">เลือกอำเภอ/เขต</option>
-              {province &&
-                districts[province] &&
-                districts[province].map((d) => (
-                  <option key={d} value={d}>
-                    {d}
-                  </option>
-                ))}
-            </select>
-            <span className="delivery-error-message">กรุณาเลือกอำเภอ/เขต</span>
-          </div>
-
+          {/* เปลี่ยนตำบลเป็น input */}
           <div className="delivery-form-group">
             <label htmlFor="subdistrict" className="delivery-form-label">
               ตำบล/แขวง:
             </label>
-            <select
+            <input
+              type="text"
               id="subdistrict"
-              className="delivery-form-select"
+              className="delivery-form-input"
               value={subdistrict}
               onChange={(e) => setSubdistrict(e.target.value)}
-              disabled={!district}
+              placeholder="กรุณากรอกตำบล/แขวง"
               required
-            >
-              <option value="">เลือกตำบล/แขวง</option>
-              {district &&
-                subdistricts[district] &&
-                subdistricts[district].map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-            </select>
-            <span className="delivery-error-message">กรุณาเลือกตำบล/แขวง</span>
+            />
+            <span className="delivery-error-message">กรุณากรอกตำบล/แขวง</span>
+          </div>
+
+          {/* เปลี่ยนอำเภอเป็น input */}
+          <div className="delivery-form-group">
+            <label htmlFor="district" className="delivery-form-label">
+              อำเภอ/เขต:
+            </label>
+            <input
+              type="text"
+              id="district"
+              className="delivery-form-input"
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+              placeholder="กรุณากรอกอำเภอ/เขต"
+              required
+            />
+            <span className="delivery-error-message">กรุณากรอกอำเภอ/เขต</span>
+          </div>
+
+          {/* เปลี่ยนจังหวัดเป็น input */}
+          <div className="delivery-form-group">
+            <label htmlFor="province" className="delivery-form-label">
+              จังหวัด:
+            </label>
+            <input
+              type="text"
+              id="province"
+              className="delivery-form-input"
+              value={province}
+              onChange={(e) => setProvince(e.target.value)}
+              placeholder="กรุณากรอกจังหวัด"
+              required
+            />
+            <span className="delivery-error-message">กรุณากรอกจังหวัด</span>
           </div>
 
           <div className="delivery-form-group">
@@ -231,6 +184,7 @@ function Delivery() {
             />
             <span className="delivery-error-message">กรุณากรอกที่อยู่</span>
           </div>
+          
           <button type="submit" className="delivery-form-submit">
             บันทึกที่อยู่
           </button>

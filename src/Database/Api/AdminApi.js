@@ -112,6 +112,27 @@ export const fetchCollars = async () => {
   }
 };
 
+// ดึงข้อมูล ton
+export const fetchton = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/orders/ton');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching ton:', error);
+    throw error;
+  }
+};
+
+export const fetchtons = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/api/ton/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching smart collar:', error);
+    throw error;
+  }
+};
+
 // ดึงข้อมูล Smart Collar ตาม ID
 export const fetchSmartCollar = async (id) => {
   try {
@@ -178,6 +199,17 @@ export const deleteordercollars = async (ordercollarsId) => {
   }
 };
 
+// ลบสินค้า order Product 4
+export const deleteton = async (tonId) => {
+  try {
+    const response = await axios.delete(`http://localhost:8000/api/ton/${tonId}`);
+    return response;
+  } catch (error) {
+    console.error('Error deleting ton:', error);
+    throw error;
+  }
+};
+
 // เพิ่ม สินค้า order Product1
 export const addProder1 = async (prtder1Data) => {
   try {
@@ -209,6 +241,19 @@ export const addProder2 = async (prtder2Data) => {
 export const addProder3 = async (prtder3Data) => {
   try {
     const response = await axios.post('http://localhost:8000/api/order3collars', prtder3Data, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding user:', error);
+    throw error;
+  }
+};
+
+// เพิ่ม สินค้า order Product3
+export const addProder4 = async (prtder3Data) => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/order4ton', prtder3Data, {
       headers: { 'Content-Type': 'application/json' },
     });
     return response.data;

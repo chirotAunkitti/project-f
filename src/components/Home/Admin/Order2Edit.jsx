@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import './Order2Edit.css'; // นำเข้าฟิล์ CSS
 
 function Order2Edit() {
@@ -19,6 +20,11 @@ function Order2Edit() {
       setAddressTag(response.data);
     } catch (error) {
       console.error('Error fetching address tag:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถดึงข้อมูล Address Tag ได้',
+      });
     }
   };
 
@@ -42,11 +48,22 @@ function Order2Edit() {
       }
 
       await axios.put(`http://localhost:8000/api/address-tags/${id}`, formData);
-      alert('Address tag updated successfully');
-      navigate('/admin'); // เปลี่ยนเส้นทางไปที่หน้า admin หรือหน้าที่คุณต้องการหลังจากอัปเดต
+
+      Swal.fire({
+        icon: 'success',
+        title: 'สำเร็จ',
+        text: 'อัปเดต Address Tag เรียบร้อยแล้ว',
+      }).then(() => {
+        navigate('/admin'); // เปลี่ยนเส้นทางไปที่หน้า admin หลังจากอัปเดต
+      });
+      
     } catch (error) {
       console.error('Error updating address tag:', error);
-      alert('Failed to update address tag');
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถอัปเดต Address Tag ได้',
+      });
     }
   };
 

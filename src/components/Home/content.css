@@ -1,19 +1,10 @@
 .content__container {
-    background-color: #000000;
-    padding: 70px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .contentr__text {
-    flex: 1;
-    text-align: center;
-  }
-  
-  .subscription-text {
-    font-size: 20px;
-    font-weight: bold;
-    color: #000000;
-    cursor: pointer;
-  }
-  
+  background-color: #beb6b6;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  height: 20px; /* กำหนดความสูงของแทบสีเทา */
+  margin: 0 20px; /* เพิ่มระยะห่างจากขอบจอทางซ้ายและขวา */
+  box-sizing: border-box; /* ทำให้ padding และ border นับรวมในความกว้าง */
+}
+ 

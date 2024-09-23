@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import './Order3Edit.css'; 
 
 function Order3Edit() {
@@ -19,6 +20,11 @@ function Order3Edit() {
       setCollar(response.data);
     } catch (error) {
       console.error('Error fetching collar:', error);
+     Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถดึงข้อมูล Collar ได้',
+      });
     }
   };
 
@@ -42,11 +48,22 @@ function Order3Edit() {
       }
 
       await axios.put(`http://localhost:8000/api/collars/${id}`, formData);
-      alert('Collar updated successfully');
-      navigate('/admin'); // เปลี่ยนเส้นทางไปที่หน้า admin หรือหน้าที่คุณต้องการหลังจากอัปเดต
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'สำเร็จ',
+        text: 'อัปเดต Collar เรียบร้อยแล้ว',
+      }).then(() => {
+        navigate('/admin'); // เปลี่ยนเส้นทางไปที่หน้า admin หลังจากอัปเดต
+      });
+      
     } catch (error) {
-      console.error('Error updating collar:', error);
-      alert('Failed to update collar');
+      console.error('Error updating Collar:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถอัปเดต Collar ได้',
+      });
     }
   };
 

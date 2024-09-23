@@ -13,7 +13,10 @@ import {
   fetchUsers,
   fetchddelivery,
   fetchOrders,
+  fetchton,
+  deleteton,
 } from "../../../Database/Api/AdminApi.js";
+import Swal from 'sweetalert2';
 import "./Admin.css";
 
 function Admin() {
@@ -23,6 +26,7 @@ function Admin() {
   const [smartCollars, setSmartCollars] = useState([]); // State สำหรับ smart_collars
   const [addressTags, setAddressTags] = useState([]); // State สำหรับ address_tags
   const [collars, setCollars] = useState([]); // State สำหรับ collars
+  const [ton, setTon] = useState([]); // State สำหรับ collars
   const [deliveries, setDeliveries] = useState([]);
   const [orderlist, setOrderlist] = useState([]);
 
@@ -39,6 +43,8 @@ function Admin() {
       fetchAddressTagsData();
     } else if (currentPage === "Order Product 3") {
       fetchCollarsData();
+    } else if (currentPage === "Order Product 4") {
+      fetchTonData();
     } else if (currentPage === "address") {
       renderDeliveriesData();
     } else if (currentPage === "Order list") {
@@ -109,6 +115,15 @@ function Admin() {
     }
   };
 
+  const fetchTonData = async () => {
+    try {
+      const data = await fetchton();
+      setTon(data);
+    } catch (error) {
+      console.error("Error fetching ton:", error);
+    }
+  };
+
   const handleEditClick = (userId) => {
     navigate(`/editusers/${userId}`);
   };
@@ -129,63 +144,166 @@ function Admin() {
     navigate(`/addorder3`);
   };
 
+  const handleAddorder4Click = (userId) => {
+    navigate(`/addorder4`);
+  };
+
   const handleDeleteClick = async (userId) => {
-    try {
-      const response = await deleteUser(userId);
-      if (response.ok) {
-        alert("User deleted successfully!");
-        fetchUsersData(); // Refresh the user list after deletion
-      } else {
-        alert("Error deleting user");
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบเลย!',
+      cancelButtonText: 'ยกเลิก',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await deleteUser(userId);
+          
+          // ตรวจสอบการตอบกลับจากเซิร์ฟเวอร์
+          if (response.ok || response.status === 200) {
+            Swal.fire('สำเร็จ!', 'ข้อมูลผู้ใช้ถูกลบเรียบร้อยแล้ว', 'success');
+            
+            // อัปเดตข้อมูลใน State โดยไม่ต้องรีเฟรช
+            setUsers((prevUsers) => prevUsers.filter(user => user.id !== userId));
+            
+            // หรือเรียก fetchUsersData() และรอให้ทำงานเสร็จก่อน
+            // await fetchUsersData();
+          } else {
+            Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบผู้ใช้ได้', 'error');
+          }
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          Swal.fire('เกิดข้อผิดพลาด', 'มีบางอย่างผิดพลาด', 'error');
+        }
       }
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
+    });
   };
-
+  
+  
   const handleOrderDeleteClick = async (collarId) => {
-    try {
-      await deletecollars(collarId);
-      alert("Smart collar deleted successfully!");
-      // Refresh the smart collars list after deletion
-      fetchSmartCollarsData();
-    } catch (error) {
-      console.error("Error deleting smart collar:", error);
-    }
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: ' ลบเลย!',
+      cancelButtonText: 'ยกเลิก',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deletecollars(collarId);
+          Swal.fire('สำเร็จ!', 'สินค้าถูกลบเรียบร้อยแล้ว', 'success');
+          fetchSmartCollarsData(); // Refresh the smart collars list after deletion
+        } catch (error) {
+          console.error("Error deleting smart collar:", error);
+          Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบปลอกคออัจฉริยะได้', 'error');
+        }
+      }
+    });
   };
-
+  
   const handleTagDeleteClick = async (tagsId) => {
-    try {
-      await deletetags(tagsId);
-      alert("Smart collar deleted successfully!");
-      // Refresh the smart collars list after deletion
-      fetchAddressTagsData();
-    } catch (error) {
-      console.error("Error deleting smart collar:", error);
-    }
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: ' ลบเลย!',
+      cancelButtonText: 'ยกเลิก',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deletetags(tagsId);
+          Swal.fire('สำเร็จ!', 'สินค้าถูกลบเรียบร้อยแล้ว', 'success');
+          fetchAddressTagsData(); // Refresh the address tags list after deletion
+        } catch (error) {
+          console.error("Error deleting address tag:", error);
+          Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบที่อยู่ได้', 'error');
+        }
+      }
+    });
   };
-
+  
   const handleordercollarsDeleteClick = async (ordercollarsId) => {
-    try {
-      await deleteordercollars(ordercollarsId);
-      alert("Smart collar deleted successfully!");
-      // Refresh the smart collars list after deletion
-      fetchCollarsData();
-    } catch (error) {
-      console.error("Error deleting smart collar:", error);
-    }
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: ' ลบเลย!',
+      cancelButtonText: 'ยกเลิก',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteordercollars(ordercollarsId);
+          Swal.fire('สำเร็จ!', 'สินค้าถูกลบเรียบร้อยแล้ว', 'success');
+          fetchCollarsData(); // Refresh the smart collars list after deletion
+        } catch (error) {
+          console.error("Error deleting order collar:", error);
+          Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบปลอกคออัจฉริยะได้', 'error');
+        }
+      }
+    });
   };
-
+  
   const handleProductDeleteClick = async (productId) => {
-    try {
-      await deleteProduct(productId);
-      alert("Product deleted successfully!");
-      // Refresh the product list after deletion
-      fetchProductsData();
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: ' ลบเลย!',
+      cancelButtonText: 'ยกเลิก',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteProduct(productId);
+          Swal.fire('สำเร็จ!', 'สินค้าถูกลบเรียบร้อยแล้ว', 'success');
+          fetchProductsData(); // Refresh the product list after deletion
+        } catch (error) {
+          console.error("Error deleting product:", error);
+          Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบสินค้าได้', 'error');
+        }
+      }
+    });
   };
+  
+  const handleTonDeleteClick = async (tonId) => {
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: ' ลบเลย!',
+      cancelButtonText: 'ยกเลิก',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteton(tonId);
+          Swal.fire('สำเร็จ!', 'สินค้าถูกลบเรียบร้อยแล้ว', 'success');
+          fetchTonData(); // Refresh the product list after deletion
+        } catch (error) {
+          console.error("Error deleting product:", error);
+          Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบสินค้าได้', 'error');
+        }
+      }
+    });
+  };
+  
 
   const handleProductEditClick = (productId) => {
     navigate(`/editproduct/${productId}`);
@@ -202,6 +320,11 @@ function Admin() {
   const handleOrder3EditClick = (collarId) => {
     navigate(`/order3edit/${collarId}`);
   };
+
+  const handleTonEditClick = (tonId) => {
+    navigate(`/tonedit/${tonId}`);
+  };
+
 
   const renderUserManagement = () => (
     <div>
@@ -324,7 +447,7 @@ function Admin() {
 
   const renderOrderProduct1 = () => (
     <div>
-      <h3>Order Product 1 - Smart Collars</h3>
+      <h3>-การไฟฟ้า-</h3>
       <table>
         <thead>
           <tr>
@@ -391,7 +514,7 @@ function Admin() {
 
   const renderOrderProduct2 = () => (
     <div>
-      <h3>Order Product 2 - Address Tags</h3>
+      <h3>-การประปา-</h3>
       <table>
         <thead>
           <tr>
@@ -458,7 +581,7 @@ function Admin() {
 
   const renderOrderProduct3 = () => (
     <div>
-      <h3>Order Product 3 - Collars</h3>
+      <h3>-โทรมนาคม-</h3>
       <table>
         <thead>
           <tr>
@@ -516,6 +639,73 @@ function Admin() {
           ) : (
             <tr>
               <td colSpan="6">No collars found</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  const renderOrderProduct4 = () => (
+    <div>
+      <h3>Order Product 4 - Ton</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Actions</th>
+            <button
+              className="button-Add"
+              onClick={() => handleAddorder4Click()}
+            >
+              Add
+            </button>
+          </tr>
+        </thead>
+        <tbody>
+          {ton.length > 0 ? (
+            ton.map((ton) => (
+              <tr key={ton.id}>
+                <td>{ton.id}</td>
+                <td>{ton.name}</td>
+                <td>{ton.price}</td>
+                <td>
+                  <img
+                    src={
+                      ton.image
+                        ? ton.image.startsWith("http")
+                          ? ton.image
+                          : `${
+                              process.env.REACT_APP_IMAGE_BASE_URL || ""
+                            }/${ton.image.replace(/\\/g, "/")}`
+                        : "/path/to/default/image.jpg"
+                    }
+                    alt={ton.name}
+                    style={{ width: "100px" }}
+                  />
+                </td>
+                <td>
+                  <button
+                    className="button-Edit"
+                    onClick={() => handleTonEditClick(ton.id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="button-Delete"
+                    onClick={() => handleTonDeleteClick(ton.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6">No smart collars found</td>
             </tr>
           )}
         </tbody>
@@ -654,7 +844,9 @@ function Admin() {
       case "Order Product 2":
         return renderOrderProduct2(); // แสดงตาราง address tags
       case "Order Product 3":
-        return renderOrderProduct3(); // แสดงตาราง collars
+        return renderOrderProduct3();
+      case "Order Product 4":
+        return renderOrderProduct4(); 
       case "address":
         return renderDeliveries();
       case "Order list":
@@ -685,19 +877,25 @@ function Admin() {
           className="sidebar-button"
           onClick={() => setCurrentPage("Order Product 1")}
         >
-          Order Product 1
+          การไฟฟ้า
         </button>
         <button
           className="sidebar-button"
           onClick={() => setCurrentPage("Order Product 2")}
         >
-          Order Product 2
+          การประปา
         </button>
         <button
           className="sidebar-button"
           onClick={() => setCurrentPage("Order Product 3")}
         >
-          Order Product 3
+          โทรมนาคม
+        </button>
+        <button
+          className="sidebar-button"
+          onClick={() => setCurrentPage("Order Product 4")}
+        >
+          Order Product 4
         </button>
         <button
           className="sidebar-button"

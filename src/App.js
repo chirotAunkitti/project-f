@@ -26,6 +26,8 @@ import ShowQRCode from "./components/Home/ShowQRCode .jsx";
 import Checkslip from "./components/Home/Checkslip.jsx";
 import Delivery from "./components/Home/Delivery.jsx";
 import Document from "./components/Home/Document.jsx";
+import TonEdit from "./components/Home/Admin/TonEdit.jsx";
+import Addorder4 from "./components/Home/Admin/Addorder4.jsx";
 
 
 function App() {
@@ -48,12 +50,14 @@ function App() {
           <Route path="/addorder1" element={<Addorder1 />} />
           <Route path="/addorder2" element={<Addorder2 />} />
           <Route path="/addorder3" element={<Addorder3 />} />
+          <Route path="/addorder4" element={<Addorder4 />} />
           <Route path="/shoppingCart" element={<ShoppingCart />} />
           <Route path="/makepayment" element={<Makepayment />} />
           <Route path="/showQRCode" element={<ShowQRCode />} />
           <Route path="/checkslip" element={<Checkslip />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/document" element={<Document />} />
+          <Route path="/tonedit/:id" element={<TonEdit />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>

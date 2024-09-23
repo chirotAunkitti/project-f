@@ -245,6 +245,7 @@ router.get("/order/:category", (req, res) => {
   const tableNames = {
     "Smart collars": "smart_collars",
     "Address tags": "address_tags",
+    "ton":"ton",
     Collars: "collars",
   };
 
@@ -333,6 +334,79 @@ router.get("/orders/collars", (req, res) => {
 
     res.json(results);
   });
+});
+
+router.get("/orders/ton", (req, res) => {
+  const query = "SELECT * FROM ton";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching ton:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+
+    const url = req.protocol + "://" + req.get("host") + "/";
+
+    results = results.map((item) => ({
+      ...item,
+      image: item.image ? url + item.image.replace(/\\/g, "/") : null, // ตรวจสอบว่าค่า image เป็น null หรือไม่
+    }));
+
+    res.json(results);
+  });
+});
+
+// ดึงข้อมูล ton ตาม ID เพื่อแสดงในหน้าแก้ไข
+router.get("/ton/:id", (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM ton WHERE id = ?";
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Error fetching smart collar:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Smart collar not found" });
+    }
+
+    const url = req.protocol + "://" + req.get("host") + "/";
+    const smartCollar = {
+      ...results[0],
+      image: results[0].image
+        ? url + results[0].image.replace(/\\/g, "/")
+        : null,
+    };
+
+    res.json(smartCollar);
+  });
+});
+
+// การอัปเดตข้อมูล ton ตาม ID
+router.put("/ton/:id", upload.single("image"), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, price } = req.body;
+    const image = req.file ? req.file.path : null;
+
+    // อัปเดตข้อมูล smart collar ในฐานข้อมูล
+    const query =
+      "UPDATE ton SET name = ?, price = ?, image = ? WHERE id = ?";
+    db.query(query, [name, price, image, id], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "ไม่สามารถอัปเดตข้อมูลได้" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ message: "ไม่พบข้อมูลที่ต้องการอัปเดต" });
+      }
+
+      res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จ" });
+    });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
 });
 
 // ดึงข้อมูล smart collar ตาม ID เพื่อแสดงในหน้าแก้ไข
@@ -551,6 +625,25 @@ router.delete("/ordercollars/:id", (req, res) => {
   });
 });
 
+//ลบ order product4
+router.delete("/ton/:id", (req, res) => {
+  const { id } = req.params;
+  const query = "DELETE FROM ton WHERE id = ?";
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "ไม่สามารถลบข้อมูลสินค้าได้" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: "ไม่พบสินค้าที่ต้องการลบ" });
+    }
+
+    res.status(200).json({ message: "ลบข้อมูลสินค้าสำเร็จ" });
+  });
+});
+
 // API สำหรับเพิ่มสินค้าใหม่ใน smart_collars
 router.post("/smart-collars", (req, res) => {
   const { name, price, image } = req.body;
@@ -633,7 +726,7 @@ router.post("/orderaddress-tags", upload.single("image"), (req, res) => {
   });
 });
 
-// API สำหรับเพิ่มสินค้าใหม่ใน address_tags
+// API สำหรับเพิ่มสินค้าใหม่ใน collars
 
 router.post("/order3collars", upload.single("image"), (req, res) => {
   const { name, price } = req.body;
@@ -644,6 +737,33 @@ router.post("/order3collars", upload.single("image"), (req, res) => {
   }
 
   const query = "INSERT INTO collars (name, price, image) VALUES (?, ?, ?)";
+
+  db.query(query, [name, price, image], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res
+        .status(500)
+        .json({ message: "ไม่สามารถเพิ่มสินค้าลงในฐานข้อมูลได้" });
+    }
+
+    res.status(201).json({
+      message: "เพิ่มสินค้าสำเร็จ",
+      product: { id: results.insertId, name, price, image },
+    });
+  });
+});
+
+// API สำหรับเพิ่มสินค้าใหม่ใน ton
+
+router.post("/order4ton", upload.single("image"), (req, res) => {
+  const { name, price } = req.body;
+  const image = req.file ? `uploads/${req.file.filename}` : null;
+
+  if (!name || !price || !image) {
+    return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+  }
+
+  const query = "INSERT INTO ton (name, price, image) VALUES (?, ?, ?)";
 
   db.query(query, [name, price, image], (err, results) => {
     if (err) {

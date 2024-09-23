@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2';
 import "./EditProduct.css"; // ตรวจสอบให้แน่ใจว่าใช้ชื่อไฟล์ CSS ที่ถูกต้อง
 
 function EditProduct() {
@@ -24,6 +25,11 @@ function EditProduct() {
         setProduct(response.data);
       } catch (error) {
         console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถดึงข้อมูลสินค้าที่ต้องการแก้ไขได้',
+        });
       }
     };
 
@@ -66,14 +72,26 @@ function EditProduct() {
         }
       );
       if (response.status === 200) {
-        alert("อัปเดตสินค้าสำเร็จ!");
+        Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ',
+          text: 'อัปเดตสินค้าสำเร็จแล้ว!',
+        });
         navigate("/admin");
       } else {
-        alert("ไม่สามารถอัปเดตสินค้าได้");
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถอัปเดตสินค้าได้',
+        });
       }
     } catch (error) {
       console.error("เกิดข้อผิดพลาดในการอัปเดตสินค้า:", error);
-      alert("ไม่สามารถอัปเดตสินค้าได้");
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'ไม่สามารถอัปเดตสินค้าได้',
+      });
     }
   };
 

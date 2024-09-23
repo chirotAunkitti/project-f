@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2';
 import "./Editusers.css";
 
 function Editusers() {
@@ -26,10 +27,19 @@ function Editusers() {
           setPhone(userData.phone);
           setAddress(userData.address);
         } else {
-          alert("User not found");
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'ไม่พบผู้ใช้',
+          });
         }
       } catch (error) {
         console.error("Error fetching user:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถดึงข้อมูลผู้ใช้ได้',
+        });
       }
     };
 
@@ -39,7 +49,6 @@ function Editusers() {
   const handleSave = async () => {
     try {
       const response = await fetch(`http://localhost:8000/api/users/${id}`, {
-        // ใช้ ID ที่มาจาก URL
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -52,13 +61,27 @@ function Editusers() {
         }),
       });
       if (response.ok) {
-        alert("User updated successfully!");
-        navigate("/admin"); // นำทางกลับไปยังหน้าหลักหรือหน้าอื่นที่ต้องการ
+        Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ',
+          text: 'บันทึกข้อมูลผู้ใช้เรียบร้อยแล้ว',
+        }).then(() => {
+          navigate("/admin"); // นำทางกลับไปยังหน้าหลักหรือหน้าอื่นที่ต้องการหลังจากบันทึกสำเร็จ
+        });
       } else {
-        alert("Error updating user");
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถบันทึกข้อมูลผู้ใช้ได้',
+        });
       }
     } catch (error) {
       console.error("Error updating user:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+      });
     }
   };
 
