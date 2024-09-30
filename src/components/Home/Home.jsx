@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import About from './About';
-import Contact from './Contact';
-import './Home.css';
-import Navbar from './Navbar';
-import Portfolio from './Portfolio';
-import Services from './Services';
-import Content from './content';
+import React, { useEffect, useRef, useState } from "react";
+import About from "./About";
+import "./Home.css";
+import Navbar from "./Navbar";
+import Portfolio from "./Portfolio";
+import Services from "./Services";
+import Bottom from "./bottommm";
 
 function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const imagePaths = [
-    '/image/logo/ll.jpg',
-    '/image/logo/gg.jpg',
-    '/image/logo/LINE_ALBUM9_1.jpg',
-    '/image/logo/hh.jpg',
+    "/image/logo/ll.jpg",
+    "/image/logo/gg.jpg",
+    "/image/logo/LINE_ALBUM9_1.jpg",
+    "/image/logo/hh.jpg",
   ];
 
   const servicesRef = useRef(null);
@@ -24,15 +23,15 @@ function Home() {
   const almostRef = useRef(null);
 
   const scrollToServices = () => {
-    servicesRef.current.scrollIntoView({ behavior: 'smooth' });
+    servicesRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const scrollToPortfolio = () => {
-    portfolioRef.current.scrollIntoView({ behavior: 'smooth' });
+    portfolioRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const scrollToAbout = () => {
-    aboutRef.current.scrollIntoView({ behavior: 'smooth' });
+    aboutRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   // const scrollToContact = () => {
@@ -40,11 +39,11 @@ function Home() {
   // };
 
   const scrollToContent = () => {
-    ContentRef.current.scrollIntoView({ behavior: 'smooth' });
+    ContentRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const scrollToAlmost = () => {
-    almostRef.current.scrollIntoView({ behavior: 'smooth' });
+    almostRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -58,8 +57,11 @@ function Home() {
   }, [imagePaths.length]);
 
   return (
-    <div className="home-container" style={{ backgroundImage: `url(${imagePaths[currentImageIndex]})` }}>
-      <Navbar 
+    <div
+      className="home-container"
+      style={{ backgroundImage: `url(${imagePaths[currentImageIndex]})` }}
+    >
+      <Navbar
         scrollToServices={scrollToServices}
         scrollToPortfolio={scrollToPortfolio}
         scrollToAbout={scrollToAbout}
@@ -81,17 +83,17 @@ function Home() {
       <div id="about" ref={aboutRef}>
         <About />
       </div>
-     {/* <div id="contact" ref={contactRef}>
+      {/* <div id="contact" ref={contactRef}>
          <Contact /> 
       </div>  */}
-      <div>
+      {/* <div>
         <Content />
+      </div> */}
+      <div>
+        <Bottom />
       </div>
-    </div>  
+    </div>
   );
 }
 
 export default Home;
-
-
-

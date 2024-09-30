@@ -1,0 +1,21 @@
+.content__container_ooo {
+    background-color: #000000; /* สีพื้นหลังของแถบ */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    /* margin: 0 20px; ระยะห่างด้านซ้ายและขวาจากขอบ */
+    box-sizing: border-box;
+}
+
+.contentr__column {
+    width: 15%; /* ขนาดของแต่ละคอลัมน์ */
+}
+
+.contentr__column h4 {
+    color: rgb(234, 220, 37); /* สีของหัวข้อ */
+    margin-bottom: 10px; /* ระยะห่างระหว่างหัวข้อและข้อความ */
+}
+
+.contentr__column p {
+    margin: 5px 0; /* ระยะห่างระหว่างบรรทัดข้อความ */
+}

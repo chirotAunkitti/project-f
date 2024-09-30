@@ -7,19 +7,21 @@
     background-color: white;
     color: black;
     padding: 50px 20px;
+    
   }
   
   .services h2 {
     font-size: 36px;
-    margin-bottom: 50px;
+    margin-bottom: 130px;
     text-transform: uppercase;
+    margin-top: -100px;
   }
   
   .service-icons {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1300px;
   }
   
   .service-item {
@@ -28,8 +30,8 @@
   }
   
   .service-icon {
-    width: 100px; /* ขนาดของไอคอน */
-    height: 100px; /* ขนาดของไอคอน */
+    width: 150px; /* ขนาดของไอคอน */
+    height: 150px; /* ขนาดของไอคอน */
     margin: 0 auto 20px;
   }
   
@@ -39,7 +41,7 @@
   }
   
   .service-item p {
-    font-size: 16px;
-    color: #555;
+    font-size: 18px;
+    color: #000000;
   }
   

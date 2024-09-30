@@ -41,7 +41,7 @@
   
   .popup-image {
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
     height: auto;
     margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรูปภาพและปุ่ม */
     object-fit: cover;

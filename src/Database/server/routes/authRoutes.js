@@ -151,6 +151,7 @@ router.post("/users", (req, res) => {
   });
 });
 
+
 // เส้นทางสำหรับการดึงข้อมูลสินค้าทั้งหมด
 router.get("/products", (req, res) => {
   const query = "SELECT * FROM products";
