@@ -68,12 +68,12 @@ function Navbar({
           >
             PORTFOLIO
           </li>
-          <li
+          {/* <li
             className={activeSection === "about" ? "active" : ""}
             onClick={scrollToAbout}
           >
             ABOUT
-          </li>
+          </li> */}
           {/* <li className={activeSection === 'contact' ? 'active' : ''} onClick={scrollToContact}>CONTACT</li> */}
           <li>
             <Link to="/order" className="order-link">

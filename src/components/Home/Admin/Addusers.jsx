@@ -58,8 +58,8 @@ function Addusers() {
 
   return (
     <div className="addusers-container">
-      <h2>Add User</h2>
       <form onSubmit={handleSubmit}>
+      <h1>Add User</h1>
         <div className="addusers-form-group">
           <label htmlFor="email">Email:</label>
           <input

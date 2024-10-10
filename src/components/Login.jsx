@@ -31,7 +31,7 @@ function Login() {
           title: 'success',
           text: 'welcome!',
         });
-        navigate('/home');
+        navigate('/admin');
       } else {
         const error = await response.json();
         console.error('Login error:', error);

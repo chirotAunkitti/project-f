@@ -387,7 +387,7 @@ function Admin() {
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Price</th>
+            {/* <th>Price</th> */}
             <th>Image</th>
             <th>Actions</th>
             {/* <button className="button-Add" onClick={() => handleAddClick()}>
@@ -402,7 +402,7 @@ function Admin() {
                 <td>{product.id}</td>
                 <td>{product.name}</td>
                 <td>{product.description}</td>
-                <td>{product.price}</td>
+                {/* <td>{product.price}</td> */}
                 <td>
                   {console.log("Image URL:", product.image)}
                   <img
@@ -648,7 +648,7 @@ function Admin() {
 
   const renderOrderProduct4 = () => (
     <div>
-      <h3>Order Product 4 - Ton</h3>
+      <h3>สินค้าประเภทตัน</h3>
       <table>
         <thead>
           <tr>
@@ -745,12 +745,12 @@ function Admin() {
                 <td>{delivery.country}</td>
                 <td>{delivery.phone_number || "-"}</td>
                 <td>
-                  <button
+                  {/* <button
                     className="button-Edit"
                     // onClick={() => handleEditDeliveryClick(delivery.id)}
                   >
                     Edit
-                  </button>
+                  </button> */}
                   <button
                     className="button-Delete"
                     // onClick={() => handleDeleteDeliveryClick(delivery.id)}
@@ -895,7 +895,7 @@ function Admin() {
           className="sidebar-button"
           onClick={() => setCurrentPage("Order Product 4")}
         >
-          Order Product 4
+          สินค้าประเภทตัน
         </button>
         <button
           className="sidebar-button"

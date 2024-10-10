@@ -54,10 +54,10 @@ function Addorder1() {
 
   return (
     <div className="addorder1-container">
-      <div className="addorder1-header">
-        <h2>Add Smart Collar</h2>
-      </div>
       <form onSubmit={(e) => { e.preventDefault(); handleAddProduct(); }}>
+      <div className="addorder1-header">
+        <h1>Add การไฟฟ้า</h1>
+      </div>
         <div className="addorder1-form-group">
           <label>Name:</label>
           <input

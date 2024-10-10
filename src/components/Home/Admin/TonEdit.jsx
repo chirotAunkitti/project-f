@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import { useNavigate, useParams } from "react-router-dom";
 import './TonEdit.css';
+import { Link } from "react-router-dom";
 
 function TonEdit() {
   const [Ton, setTon] = useState({ name: "", price: "", image: "" });
@@ -111,6 +112,11 @@ function TonEdit() {
           />
         </div>
         <button type="submit">Update Ton</button>
+        <button className="order3-button">
+        <Link to="/admin" className="back-link">
+          Back to Admin
+        </Link>
+      </button>
       </form>
     </div>
   );

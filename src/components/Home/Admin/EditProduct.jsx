@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from 'sweetalert2';
 import "./EditProduct.css"; // ตรวจสอบให้แน่ใจว่าใช้ชื่อไฟล์ CSS ที่ถูกต้อง
+import { Link } from "react-router-dom"; 
 
 function EditProduct() {
   const { id } = useParams(); // รับ ID ของสินค้าที่จะถูกแก้ไขจาก URL
@@ -147,7 +148,12 @@ function EditProduct() {
             required
           />
         </div>
-        <button type="submit">อัปเดตสินค้า</button>
+        <button className="button-Edit" type="submit">อัปเดตสินค้า</button>
+        <button className="button-Edit">
+        <Link to="/admin" className="back-link">
+          Back to Admin
+        </Link>
+      </button>
       </form>
     </div>
   );

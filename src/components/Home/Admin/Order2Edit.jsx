@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Order2Edit.css'; // นำเข้าฟิล์ CSS
+import { Link } from 'react-router-dom';
 
 function Order2Edit() {
   const [addressTag, setAddressTag] = useState({ name: '', price: '', image: '' });
@@ -103,6 +104,11 @@ function Order2Edit() {
           />
         </div>
         <button type="submit" className="order2-button">Update Address Tag</button>
+        <button className="order2-button">
+        <Link to="/admin" className="back-link">
+          Back to Admin
+        </Link>
+      </button>
       </form>
     </div>
   );

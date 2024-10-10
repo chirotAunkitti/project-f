@@ -35,7 +35,6 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
@@ -59,7 +58,7 @@ function App() {
           <Route path="/document" element={<Document />} />
           <Route path="/bottomm" element={<Bottom />} />
           <Route path="/tonedit/:id" element={<TonEdit />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
         </Routes>
       </div>
     </Router>

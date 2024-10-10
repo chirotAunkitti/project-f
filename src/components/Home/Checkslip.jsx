@@ -21,7 +21,6 @@ function Checkslip() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // ตรวจสอบว่ามีการเลือกไฟล์แล้ว
     if (!files) {
       toast.error("กรุณาเลือกไฟล์ก่อนทำการอัปโหลด");
       return;
@@ -39,7 +38,6 @@ function Checkslip() {
         body: formData
       });
       
-  
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -48,22 +46,19 @@ function Checkslip() {
       setSlipOkData(data.data);
       console.log("Slipok data: ", data);
   
-      // ตรวจสอบ response ว่ามี success หรือไม่
       if (data.data?.success === true) {
-        // ทำการบันทึกข้อมูลไปยังฐานข้อมูล
-        const orderData = {
-          items: [
-            { id: 1, quantity: 1, price: parseFloat(data.data.amount) || 0 }
-          ],
-          totalAmount: parseFloat(data.data.amount) || 0,
-          slipData: {
-            slipImageUrl: URL.createObjectURL(files),
-            receiverName: data.data.receiver?.displayName || '',
-            sendingBank: data.data.sendingBank || '',
-            transDate: data.data.transDate || '',
-            transTime: data.data.transTime || ''
-          }
-        };
+        const orderData = new FormData();
+        orderData.append('slipImage', files);
+        orderData.append('slipData', JSON.stringify({
+          receiverName: data.data.receiver?.displayName || '',
+          sendingBank: data.data.sendingBank || '',
+          transDate: data.data.transDate || '',
+          transTime: data.data.transTime || ''
+        }));
+        orderData.append('items', JSON.stringify([
+          { id: 1, quantity: 1, price: parseFloat(data.data.amount) || 0 }
+        ]));
+        orderData.append('totalAmount', parseFloat(data.data.amount) || 0);
   
         try {
           const savedData = await saveOrderToDatabase(orderData);

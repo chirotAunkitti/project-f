@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Order3Edit.css';
 
@@ -101,7 +101,14 @@ function Order3Edit() {
             onChange={handleFileChange}
           />
         </div>
+        <div className="order3-form-group_G">
         <button type="submit" className="order3-button">Update Collar</button>
+        <button className="order3-button">
+        <Link to="/admin" className="back-link">
+          Back to Admin
+        </Link>
+      </button>
+      </div>
       </form>
     </div>
   );

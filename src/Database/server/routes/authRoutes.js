@@ -3,52 +3,81 @@ const router = express.Router();
 const db = require("../../Database");
 const multer = require("multer");
 const { Client } = require("@line/bot-sdk");
-const upload = multer({ dest: "uploads/" });
-
+const upload = multer({ dest: "uploads/", });
+const { v4: uuidv4 } = require("uuid");
 const QRCode = require("qrcode");
 const generatePayload = require("promptpay-qr");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    const fileExtension = path.extname(file.originalname); // รับนามสกุลของไฟล์
+    const fileName = `${uuidv4()}${fileExtension}`; // ตั้งชื่อไฟล์ใหม่
+    cb(null, fileName);
+  }
+});
+
 // เส้นทางสำหรับการลงทะเบียน
 router.post("/register", (req, res) => {
+  // รับข้อมูลจาก request body
   const { email, password, phone, address } = req.body;
+  
+  // ตรวจสอบว่ามีข้อมูลครบทุกช่องหรือไม่
   if (!email || !password || !phone || !address) {
+    // ถ้าข้อมูลไม่ครบ ส่งข้อความแจ้งเตือนกลับไป
     return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบทุกช่อง" });
   }
 
+  // สร้าง query สำหรับเพิ่มข้อมูลผู้ใช้ใหม่ลงในฐานข้อมูล
   const query =
     "INSERT INTO users (email, password, phone, address) VALUES (?, ?, ?, ?)";
+  
+  // ทำการ query ฐานข้อมูล
   db.query(query, [email, password, phone, address], (err, results) => {
+    // ถ้าเกิดข้อผิดพลาดในการ query
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ message: "ไม่สามารถลงทะเบียนผู้ใช้ได้" });
     }
+    
+    // ถ้าสำเร็จ แสดงข้อความในคอนโซลและส่งข้อความตอบกลับ
     console.log("Registration successful:", results);
     res.status(201).json({ message: "ลงทะเบียนผู้ใช้สำเร็จ" });
   });
 });
 
-// เส้นทางสำหรับการล็อกอิน
+/// เส้นทางสำหรับการล็อกอิน
 router.post("/login", (req, res) => {
+  // รับข้อมูล email และ password จาก request body
   const { email, password } = req.body;
 
+  // ตรวจสอบว่ามีทั้ง email และ password หรือไม่
   if (!email || !password) {
     return res.status(400).json({ message: "กรุณาระบุอีเมลและรหัสผ่าน" });
   }
 
+  // สร้าง query เพื่อตรวจสอบ email และ password ในฐานข้อมูล
   const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+  
+  // ทำการ query ฐานข้อมูล
   db.query(query, [email, password], (err, results) => {
+    // ถ้าเกิดข้อผิดพลาดในการ query
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ message: "เกิดข้อผิดพลาดในการล็อกอิน" });
     }
 
+    // ถ้าไม่พบผู้ใช้
     if (results.length === 0) {
       return res.status(401).json({ message: "อีเมลหรือรหัสผ่านไม่ถูกต้อง" });
     }
 
+    // ถ้าพบผู้ใช้ ส่งข้อมูลผู้ใช้กลับไป
     const user = results[0];
     res.status(200).json({
       message: "ล็อกอินสำเร็จ",
@@ -69,36 +98,51 @@ router.get("/users", (req, res) => {
   });
 });
 
-// เส้นทางสำหรับการดึงข้อมูลผู้ใช้ตาม ID Admin
+// เส้นทางสำหรับการดึงข้อมูลผู้ใช้ตาม ID (สำหรับ Admin)
 router.get("/users/:id", (req, res) => {
+  // รับ ID จาก URL parameters
   const { id } = req.params;
+  
+  // สร้าง query เพื่อดึงข้อมูลผู้ใช้ตาม ID
   const query = "SELECT * FROM users WHERE id = ?";
+  
+  // ทำการ query ฐานข้อมูล
   db.query(query, [id], (err, results) => {
+    // ถ้าเกิดข้อผิดพลาดในการ query
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ message: "ไม่สามารถดึงข้อมูลผู้ใช้ได้" });
     }
 
+    // ถ้าไม่พบผู้ใช้
     if (results.length === 0) {
       return res.status(404).json({ message: "ไม่พบผู้ใช้" });
     }
 
+    // ส่งข้อมูลผู้ใช้กลับไป
     res.status(200).json(results[0]);
   });
 });
 
-// เส้นทางสำหรับการแก้ไขข้อมูลผู้ใช้  user Admin
+
+// เส้นทางสำหรับการแก้ไขข้อมูลผู้ใช้ (สำหรับ Admin)
 router.put("/users/:id", (req, res) => {
+  // รับ ID จาก URL parameters และข้อมูลที่จะอัปเดตจาก request body
   const { id } = req.params;
   const { email, password, phone, address } = req.body;
 
+  // ตรวจสอบว่ามีข้อมูลครบทุกช่องหรือไม่
   if (!email || !password || !phone || !address) {
     return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบทุกช่อง" });
   }
 
+  // สร้าง query สำหรับอัปเดตข้อมูลผู้ใช้
   const query =
     "UPDATE users SET email = ?, password = ?, phone = ?, address = ? WHERE id = ?";
+  
+  // ทำการ query ฐานข้อมูล
   db.query(query, [email, password, phone, address, id], (err, results) => {
+    // ถ้าเกิดข้อผิดพลาดในการ query
     if (err) {
       console.error("Database error:", err);
       return res
@@ -106,47 +150,68 @@ router.put("/users/:id", (req, res) => {
         .json({ message: "ไม่สามารถอัปเดตข้อมูลผู้ใช้ได้" });
     }
 
+    // ถ้าไม่พบผู้ใช้ที่ต้องการอัปเดต
     if (results.affectedRows === 0) {
       return res.status(404).json({ message: "ไม่พบผู้ใช้ที่ต้องการอัปเดต" });
     }
 
+    // ส่งข้อความแจ้งสำเร็จกลับไป
     res.status(200).json({ message: "อัปเดตข้อมูลผู้ใช้สำเร็จ" });
   });
 });
 
-// เส้นทางสำหรับการลบผู้ใช้ Admin
+
+
+// เส้นทางสำหรับการลบผู้ใช้ (สำหรับ Admin)
 router.delete("/users/:id", (req, res) => {
+  // รับ ID จาก URL parameters
   const { id } = req.params;
+  
+  // สร้าง query สำหรับลบผู้ใช้
   const query = "DELETE FROM users WHERE id = ?";
+  
+  // ทำการ query ฐานข้อมูล
   db.query(query, [id], (err, results) => {
+    // ถ้าเกิดข้อผิดพลาดในการ query
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ message: "ไม่สามารถลบข้อมูลผู้ใช้ได้" });
     }
 
+    // ถ้าไม่พบผู้ใช้ที่ต้องการลบ
     if (results.affectedRows === 0) {
       return res.status(404).json({ message: "ไม่พบผู้ใช้ที่ต้องการลบ" });
     }
 
+    // ส่งข้อความแจ้งสำเร็จกลับไป
     res.status(200).json({ message: "ลบข้อมูลผู้ใช้สำเร็จ" });
   });
 });
 
-// เส้นทางสำหรับการเพิ่มผู้ใช้ Admin
+
+// เส้นทางสำหรับการเพิ่มผู้ใช้ (สำหรับ Admin)
 router.post("/users", (req, res) => {
+  // รับข้อมูลจาก request body
   const { email, password, phone, address } = req.body;
+  
+  // ตรวจสอบว่ามีข้อมูลครบทุกช่องหรือไม่
   if (!email || !password || !phone || !address) {
     return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบทุกช่อง" });
   }
 
+  // สร้าง query สำหรับเพิ่มข้อมูลผู้ใช้ใหม่
   const query =
     "INSERT INTO users (email, password, phone, address) VALUES (?, ?, ?, ?)";
+  
+  // ทำการ query ฐานข้อมูล
   db.query(query, [email, password, phone, address], (err, results) => {
+    // ถ้าเกิดข้อผิดพลาดในการ query
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ message: "ไม่สามารถเพิ่มข้อมูลผู้ใช้ได้" });
     }
 
+    // ส่งข้อความแจ้งสำเร็จกลับไป
     res.status(201).json({ message: "เพิ่มข้อมูลผู้ใช้สำเร็จ" });
   });
 });
@@ -951,57 +1016,41 @@ router.get("/delivery-admin", (req, res) => {
 });
 
 
+router.post("/save-order", upload.single('slipImage'), (req, res) => {
+  console.log("Received request body:", req.body);
+  console.log("Received file:", req.file);
 
-const { v4: uuidv4 } = require("uuid");
+  try {
+    const { items, totalAmount, slipData } = req.body;
 
+    // ตรวจสอบว่า slipData เป็น string หรือไม่ ถ้าใช่ให้แปลงเป็น object
+    const parsedSlipData = typeof slipData === 'string' ? JSON.parse(slipData) : slipData;
 
-router.post("/save-order", (req, res) => {
-  const { items, totalAmount, slipData } = req.body;
-
-  // ตรวจสอบข้อมูลที่ได้รับจาก request
-  if (!slipData || !slipData.slipImageUrl || !slipData.receiverName || !slipData.sendingBank || !slipData.transDate || !slipData.transTime) {
-    return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
-  }
-
-  // สร้างชื่อไฟล์ที่ไม่ซ้ำกันโดยใช้ UUID
-  const fileName = `${uuidv4()}.png`;
-  const filePath = path.join(__dirname, "../uploads", fileName);
-
-  // แปลง base64 เป็นไฟล์และบันทึก
-  const base64Data = slipData.slipImageUrl.replace(/^data:image\/\w+;base64,/, "");
-  const buffer = Buffer.from(base64Data, "base64");
-
-  fs.writeFile(filePath, buffer, (err) => {
-    if (err) {
-      console.error("Error saving file:", err);
-      return res.status(500).json({ message: "ไม่สามารถบันทึกไฟล์ได้" });
+    if (!req.file || !parsedSlipData.receiverName || !parsedSlipData.sendingBank || !parsedSlipData.transDate || !parsedSlipData.transTime) {
+      return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
     }
 
-    // บันทึกข้อมูลลงในฐานข้อมูล
-    const query = `INSERT INTO orders (user_id, total_amount, slip_image_url, receiver_name, sending_bank, trans_date, trans_time) 
-                   VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
+    const query = `INSERT INTO orders (user_id, total_amount, slip_image_url, receiver_name, sending_bank, trans_date, trans_time) VALUES (?, ?, ?, ?, ?, ?, ?)`;
     db.query(
       query,
       [
         1, // สมมติว่า user_id เป็น 1
         totalAmount,
-        fileName, // ใช้ชื่อไฟล์ที่ถูกสร้างใหม่
-        slipData.receiverName,
-        slipData.sendingBank,
-        slipData.transDate,
-        slipData.transTime,
+        req.file.filename,
+        parsedSlipData.receiverName,
+        parsedSlipData.sendingBank,
+        parsedSlipData.transDate,
+        parsedSlipData.transTime,
       ],
       (err, result) => {
         if (err) {
-          console.error("Database error:", err);
-          return res.status(500).json({ message: "ไม่สามารถบันทึกข้อมูลได้" });
+          console.error("Database error when inserting order:", err);
+          return res.status(500).json({ message: "ไม่สามารถบันทึกข้อมูลได้", error: err.message });
         }
 
-        // บันทึก order items
         const orderId = result.insertId;
         const itemsQuery = `INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ?`;
-        const itemsValues = items.map((item) => [
+        const itemsValues = JSON.parse(items).map((item) => [
           orderId,
           item.id,
           item.quantity,
@@ -1010,30 +1059,28 @@ router.post("/save-order", (req, res) => {
 
         db.query(itemsQuery, [itemsValues], (err) => {
           if (err) {
-            console.error("Database error:", err);
-            return res
-              .status(500)
-              .json({ message: "ไม่สามารถบันทึกรายการสินค้าได้" });
+            console.error("Database error when inserting order items:", err);
+            return res.status(500).json({ message: "ไม่สามารถบันทึกรายการสินค้าได้", error: err.message });
           }
-
-          res
-            .status(201)
-            .json({ message: "บันทึกคำสั่งซื้อเรียบร้อยแล้ว", orderId });
+          res.status(201).json({ message: "บันทึกคำสั่งซื้อเรียบร้อยแล้ว", orderId });
         });
       }
     );
-  });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    res.status(500).json({ message: "เกิดข้อผิดพลาดที่ไม่คาดคิด", error: error.message });
+  }
 });
-
 
 
 
 // ดึงข้อมูลคำสั่งซื้อสำหรับหน้า Admin
 router.get("/orders-admin", (req, res) => {
   const query = `
-    SELECT o.*, oi.product_id, oi.quantity, oi.price
+    SELECT o.*, oi.product_id, oi.quantity, oi.price, p.image
     FROM orders o
     LEFT JOIN order_items oi ON o.id = oi.order_id
+    LEFT JOIN products p ON oi.product_id = p.id
   `;
 
   db.query(query, (err, results) => {
@@ -1068,6 +1115,7 @@ router.get("/orders-admin", (req, res) => {
           product_id: row.product_id,
           quantity: row.quantity,
           price: row.price,
+          image: row.image ? url + row.image.replace(/\\/g, "/") : null, // เพิ่มการปรับแต่ง URL ของรูปภาพสินค้า
         });
       }
 
@@ -1077,6 +1125,7 @@ router.get("/orders-admin", (req, res) => {
     res.status(200).json(Object.values(formattedResults));
   });
 });
+
 
 
 module.exports = router;

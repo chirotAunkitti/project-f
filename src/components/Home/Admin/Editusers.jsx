@@ -128,7 +128,7 @@ function Editusers() {
           onChange={(e) => setAddress(e.target.value)}
         />
       </div>
-      <button onClick={handleSave}>Save</button>
+      <button className="back-button" onClick={handleSave}>Save</button>
       <button className="back-button">
         <Link to="/admin" className="back-link">
           Back to Admin

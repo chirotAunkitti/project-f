@@ -54,7 +54,7 @@ function Addorder4() {
   return (
     <div className="addorder1-container">
       <div className="addorder1-header">
-        <h2>Add Ton</h2>
+        <h1>Add Ton</h1>
       </div>
       <form onSubmit={(e) => { e.preventDefault(); handleAddProduct(); }}>
         <div className="addorder1-form-group">

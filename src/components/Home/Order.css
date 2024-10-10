@@ -1,3 +1,4 @@
+/* CSS เดิมทั้งหมด */
 /* การจัดการขนาดของหน้าและสไตล์ทั่วไป */
 .order-page {
   position: relative;
@@ -90,7 +91,7 @@ nav ul li a {
   gap: 10px;
   margin-bottom: 10px;
   font-size: 1.7vw;
-  margin-left: 400px;
+  margin-left: 430px;
 }
 
 /* สไตล์ใหม่สำหรับปุ่มสั่งซื้อสินค้า */
@@ -112,7 +113,6 @@ nav ul li a {
 .filter-buttons .order-product-button:hover {
   background-color: #668c3b;
 }
-
 
 /* สไตล์สำหรับโหมดมืด */
 .order-page.dark {
@@ -196,7 +196,6 @@ h4 {
   font-weight: bold;
 }
 
-
 .cart-icon {
   position: relative;
   display: inline-block;
@@ -218,4 +217,77 @@ h4 {
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* เพิ่ม Media Queries สำหรับการรองรับหน้าจอโทรศัพท์ */
+@media screen and (max-width: 768px) {
+  .order-page {
+    padding: 15px;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  nav ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  nav ul li {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 0;
+    font-size: 1rem;
+  }
+
+  .filter-buttons .order-product-button {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  .Catalog-order {
+    font-size: 36px;
+    margin-left: 0;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-buttons .order-product-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .Catalog-order {
+    font-size: 28px;
+  }
+
+  .product-item img {
+    width: 100%;
+  }
 }

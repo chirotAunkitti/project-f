@@ -1,37 +1,40 @@
 import axios from 'axios';
 
 // ดึงข้อมูลผู้ใช้ทั้งหมด
-export const fetchUsers = async () => {
-  try {
-    const response = await axios.get('http://localhost:8000/api/users');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    throw error;
+export const fetchUsers = async () => { // สร้างฟังก์ชัน fetchUsers แบบ asynchronous เพื่อดึงข้อมูลผู้ใช้
+  try { // เริ่มต้นการใช้ try-catch เพื่อดักจับข้อผิดพลาด
+    const response = await axios.get('http://localhost:8000/api/users'); 
+    // ใช้ axios เพื่อส่ง HTTP GET request ไปยัง URL ที่กำหนดและรอรับข้อมูลจากเซิร์ฟเวอร์
+    return response.data; // ส่งข้อมูลที่ได้จากเซิร์ฟเวอร์ (response.data) กลับไปยังที่เรียกใช้งานฟังก์ชัน
+  } catch (error) { // ถ้ามีข้อผิดพลาดเกิดขึ้นใน try block
+    console.error('Error fetching users:', error); // แสดงข้อความข้อผิดพลาดใน console
+    throw error; // ขว้างข้อผิดพลาดเพื่อให้ฟังก์ชันที่เรียกสามารถจัดการได้
   }
 };
 
 // ลบผู้ใช้
-export const deleteUser = async (userId) => {
-  try {
+export const deleteUser = async (userId) => { // สร้างฟังก์ชัน deleteUser แบบ asynchronous โดยรับ userId เป็นพารามิเตอร์
+  try { // ใช้ try-catch เพื่อดักจับข้อผิดพลาด
     const response = await axios.delete(`http://localhost:8000/api/users/${userId}`);
-    return response;
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    throw error;
+    // ใช้ axios เพื่อส่ง HTTP DELETE request ไปยัง URL ที่รวม userId เพื่อลบผู้ใช้ที่ตรงกับ userId
+    return response; // ส่ง response กลับไปยังที่เรียกใช้งานฟังก์ชัน
+  } catch (error) { // ถ้ามีข้อผิดพลาดเกิดขึ้นใน try block
+    console.error('Error deleting user:', error); // แสดงข้อความข้อผิดพลาดใน console
+    throw error; // ขว้างข้อผิดพลาดเพื่อให้ฟังก์ชันที่เรียกสามารถจัดการได้
   }
 };
-
 // เพิ่มผู้ใช้
-export const addUser = async (userData) => {
-  try {
+export const addUser = async (userData) => { // สร้างฟังก์ชัน addUser แบบ asynchronous โดยรับ userData เป็นพารามิเตอร์
+  try { // ใช้ try-catch เพื่อดักจับข้อผิดพลาด
     const response = await axios.post('http://localhost:8000/api/users', userData, {
       headers: { 'Content-Type': 'application/json' },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error adding user:', error);
-    throw error;
+    }); 
+    // ใช้ axios ส่ง HTTP POST request ไปยัง URL พร้อมข้อมูลผู้ใช้ (userData) 
+    // กำหนด header ให้กับ request โดยระบุประเภทข้อมูลเป็น JSON
+    return response.data; // ส่งข้อมูลที่ได้จากเซิร์ฟเวอร์ (response.data) กลับไปยังที่เรียกใช้งานฟังก์ชัน
+  } catch (error) { // ถ้ามีข้อผิดพลาดเกิดขึ้นใน try block
+    console.error('Error adding user:', error); // แสดงข้อความข้อผิดพลาดใน console
+    throw error; // ขว้างข้อผิดพลาดเพื่อให้ฟังก์ชันที่เรียกสามารถจัดการได้
   }
 };
 
@@ -54,8 +57,9 @@ export const fetchProductById = async (productId) => {
   } catch (error) {
     console.error('Error fetching product details:', error);
     throw error;
-  }
+  } 
 };
+
 
 // ลบสินค้า
 export const deleteProduct = async (productId) => {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Order3Edit.css'; 
+import { Link } from 'react-router-dom';
 
 function Order3Edit() {
   const [collar, setCollar] = useState({ name: '', price: '', image: '' });
@@ -103,6 +104,11 @@ function Order3Edit() {
           />
         </div>
         <button type="submit" className="order3-button">Update Collar</button>
+        <button className="order3-button">
+        <Link to="/admin" className="back-link">
+          Back to Admin
+        </Link>
+      </button>
       </form>
     </div>
   );

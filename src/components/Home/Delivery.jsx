@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Delivery.css";
-import { deli } from "../../Database/Api/AdminApi";
+import "./Delivery.css"; // นำเข้าไฟล์ CSS สำหรับจัดรูปแบบคอมโพเนนต์
+import { deli } from "../../Database/Api/AdminApi"; // นำเข้าฟังก์ชัน deli สำหรับบันทึกข้อมูล
+import Swal from 'sweetalert2';
+
 
 function Delivery() {
+  // สร้าง state สำหรับข้อมูลที่อยู่
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -13,7 +16,7 @@ function Delivery() {
   const [zipCode, setZipCode] = useState("");
   const [address, setAddress] = useState("");
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // ใช้ navigate เพื่อเปลี่ยนเส้นทาง
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +29,7 @@ function Delivery() {
         const state = province;
         const postal_code = zipCode;
         const country = "Thailand";
-
+  
         const formData = {
           recipient_name,
           address_line1,
@@ -37,25 +40,41 @@ function Delivery() {
           country,
           phone_number: phoneNumber,
         };
-
+  
         await deli(formData);
         console.log("Delivery data saved successfully");
+        
+        // แสดง Swal เมื่อบันทึกสำเร็จ
+        Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ!',
+          text: 'ข้อมูลที่อยู่จัดส่งของคุณถูกบันทึกแล้ว!',
+          confirmButtonText: 'ตกลง'
+        });
+  
         navigate("/home");
       } catch (error) {
         console.error("Error saving delivery data:", error.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'ผิดพลาด!',
+          text: 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองอีกครั้ง.',
+          confirmButtonText: 'ตกลง'
+        });
       }
     }
   };
+  
 
   return (
     <div className="delivery-page-container">
       <div className="delivery-form-container">
         <h2 className="delivery-form-title">ที่อยู่จัดส่งสินค้า</h2>
+        <img className="icon-D" src="/image/logo/De.png" alt="" />
         <form onSubmit={handleSubmit} noValidate className="delivery-form">
+          {/* ฟอร์มสำหรับกรอกข้อมูลที่อยู่ */}
           <div className="delivery-form-group">
-            <label htmlFor="firstName" className="delivery-form-label">
-              ชื่อ:
-            </label>
+            <label htmlFor="firstName" className="delivery-form-label">ชื่อ:</label>
             <input
               type="text"
               id="firstName"
@@ -68,9 +87,7 @@ function Delivery() {
           </div>
 
           <div className="delivery-form-group">
-            <label htmlFor="lastName" className="delivery-form-label">
-              นามสกุล:
-            </label>
+            <label htmlFor="lastName" className="delivery-form-label">นามสกุล:</label>
             <input
               type="text"
               id="lastName"
@@ -83,9 +100,7 @@ function Delivery() {
           </div>
 
           <div className="delivery-form-group">
-            <label htmlFor="phoneNumber" className="delivery-form-label">
-              เบอร์โทรศัพท์:
-            </label>
+            <label htmlFor="phoneNumber" className="delivery-form-label">เบอร์โทรศัพท์:</label>
             <input
               type="tel"
               id="phoneNumber"
@@ -94,16 +109,12 @@ function Delivery() {
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
-            <span className="delivery-error-message">
-              กรุณากรอกเบอร์โทรศัพท์
-            </span>
+            <span className="delivery-error-message">กรุณากรอกเบอร์โทรศัพท์</span>
           </div>
 
-          {/* เปลี่ยนตำบลเป็น input */}
+          {/* ตำบล/แขวง */}
           <div className="delivery-form-group">
-            <label htmlFor="subdistrict" className="delivery-form-label">
-              ตำบล/แขวง:
-            </label>
+            <label htmlFor="subdistrict" className="delivery-form-label">ตำบล/แขวง:</label>
             <input
               type="text"
               id="subdistrict"
@@ -116,11 +127,9 @@ function Delivery() {
             <span className="delivery-error-message">กรุณากรอกตำบล/แขวง</span>
           </div>
 
-          {/* เปลี่ยนอำเภอเป็น input */}
+          {/* อำเภอ/เขต */}
           <div className="delivery-form-group">
-            <label htmlFor="district" className="delivery-form-label">
-              อำเภอ/เขต:
-            </label>
+            <label htmlFor="district" className="delivery-form-label">อำเภอ/เขต:</label>
             <input
               type="text"
               id="district"
@@ -133,11 +142,9 @@ function Delivery() {
             <span className="delivery-error-message">กรุณากรอกอำเภอ/เขต</span>
           </div>
 
-          {/* เปลี่ยนจังหวัดเป็น input */}
+          {/* จังหวัด */}
           <div className="delivery-form-group">
-            <label htmlFor="province" className="delivery-form-label">
-              จังหวัด:
-            </label>
+            <label htmlFor="province" className="delivery-form-label">จังหวัด:</label>
             <input
               type="text"
               id="province"
@@ -150,10 +157,9 @@ function Delivery() {
             <span className="delivery-error-message">กรุณากรอกจังหวัด</span>
           </div>
 
+          {/* รหัสไปรษณีย์ */}
           <div className="delivery-form-group">
-            <label htmlFor="zipCode" className="delivery-form-label">
-              รหัสไปรษณีย์:
-            </label>
+            <label htmlFor="zipCode" className="delivery-form-label">รหัสไปรษณีย์:</label>
             <input
               type="text"
               id="zipCode"
@@ -165,15 +171,12 @@ function Delivery() {
               title="กรุณากรอกรหัสไปรษณีย์ 5 หลัก"
               required
             />
-            <span className="delivery-error-message">
-              กรุณากรอกรหัสไปรษณีย์ 5 หลัก
-            </span>
+            <span className="delivery-error-message">กรุณากรอกรหัสไปรษณีย์ 5 หลัก</span>
           </div>
 
+          {/* ที่อยู่ */}
           <div className="delivery-form-group full-width">
-            <label htmlFor="address" className="delivery-form-label">
-              ที่อยู่:
-            </label>
+            <label htmlFor="address" className="delivery-form-label">ที่อยู่:</label>
             <textarea
               id="address"
               className="delivery-form-textarea"
@@ -194,4 +197,4 @@ function Delivery() {
   );
 }
 
-export default Delivery;
+export default Delivery; // ส่งออกคอมโพเนนต์ Delivery

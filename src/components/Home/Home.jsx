@@ -72,7 +72,7 @@ function Home() {
           <h1>Welcome to Screw D Company.</h1>
           <h7>IT'S NICE TO MEET YOU</h7>
         </div>
-        <button onClick={scrollToServices}>TELL ME MORE</button>
+        <button className="button-home" onClick={scrollToServices}>TELL ME MORE</button>
       </main_>
       <div id="services" ref={servicesRef}>
         <Services />
@@ -81,7 +81,7 @@ function Home() {
         <Portfolio />
       </div>
       <div id="about" ref={aboutRef}>
-        <About />
+        {/* <About /> */}
       </div>
       {/* <div id="contact" ref={contactRef}>
          <Contact /> 

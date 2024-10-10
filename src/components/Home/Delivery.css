@@ -100,3 +100,69 @@ select.error + .delivery-error-message,
 textarea.error + .delivery-error-message {
   display: block;
 }
+
+.icon-D {
+  width: 150px;  /* กำหนดความกว้างของรูปภาพ */
+  height: auto;  /* ให้ความสูงปรับตามสัดส่วนของความกว้าง */
+  border-radius: 8px;  /* เพิ่มการโค้งของขอบรูปภาพ (ถ้าต้องการ) */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .delivery-page-container {
+    padding: 10px;
+  }
+
+  .delivery-form-container {
+    padding: 15px;
+  }
+
+  .delivery-form-title {
+    font-size: 20px;
+  }
+
+  .delivery-form-group {
+    flex: 1 1 100%;
+  }
+
+  .delivery-form-input,
+  .delivery-form-select,
+  .delivery-form-textarea {
+    font-size: 16px; /* Increase font size for better readability on mobile */
+  }
+
+  .delivery-form-submit {
+    font-size: 18px;
+    padding: 15px;
+  }
+
+  .icon-D {
+    width: 80px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .delivery-form-title {
+    font-size: 18px;
+  }
+
+  .delivery-form-label {
+    font-size: 14px;
+  }
+
+  .delivery-form-input,
+  .delivery-form-select,
+  .delivery-form-textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .delivery-form-submit {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .icon-D {
+    width: 60px;
+  }
+}

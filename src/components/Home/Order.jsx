@@ -133,7 +133,7 @@ function Order() {
             }`}
             onClick={() => handleCategoryChange("ton")}
           >
-            Ton Product 4
+            สินค้าประเภทตัน
           </button>
         </div>
         </div>
@@ -142,7 +142,7 @@ function Order() {
             <div key={product.id} className="product-item">
               <img src={product.image} alt={product.name} />
               <h3>{product.name}</h3>
-              <p>${product.price}</p>
+              <p>{product.price}.THB</p>
               <Link to="/Shoppingcart">
                 <button
                   className="order-button-custom"

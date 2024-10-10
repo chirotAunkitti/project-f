@@ -34,10 +34,11 @@
 /* สไตล์รูปภาพ */
 .portfolio-icon {
   width: 100%;
-  max-width: 300px; /* ขนาดสูงสุดของรูปภาพ */
-  height: auto;
-  transition: filter 0.3s ease; /* ทำให้เอฟเฟกต์เปลี่ยนสีมีการเคลื่อนไหว */
+  height: 200px; /* กำหนดความสูงคงที่ของภาพ */
+  object-fit: 100px; /* ให้รูปถูกปรับขนาดเพื่อครอบคลุมพื้นที่ของบล็อกโดยไม่บิดเบือน */
+  transition: filter 0.3s ease;
 }
+
 
 /* สไตล์ชื่อสินค้า */
 .portfolio-name {
